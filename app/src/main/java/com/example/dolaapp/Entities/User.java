@@ -22,6 +22,8 @@ public class User {
         UserDoB = userDoB;
     }
 
+    public User(){}
+
     public String getUserEmail() {
         return UserEmail;
     }

@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.example.dolaapp.Entities.User;
 
 public class LoginScreenActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
@@ -24,6 +27,11 @@ public class LoginScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
+				
+				User loginUser = new User();
+				loginUser.setUserName(usernameEditText.getText().toString());
+				loginUser.setUserPassword(passwordEditText.getText().toString());
+
             }
         });
     }
