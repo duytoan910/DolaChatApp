@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
@@ -21,7 +22,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.4:3000/api/")
+            .baseUrl("http://192.168.1.13:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -31,11 +32,6 @@ public interface ApiService {
 
     @PUT("users")
     @FormUrlEncoded
-    Call<User> createNewUser(
-            @Field("phone") String phone,
-            @Field("name") String name,
-            @Field("Dob") String Dob,
-            @Field("mail") String mail,
-            @Field("password") String password
-    );
+    Call<User> createNewUser(@Field("phone") String phone, @Field("name") String name, @Field("Dob") String Dob, @Field("mail") String mail, @Field("password") String password);
+
 }

@@ -24,12 +24,6 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="176dp"
-            android:layout_height="169dp"
-            app:srcCompat="@drawable/logo_pic_glow" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,11 +38,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
-                android:text="Số điện thoại"
+                android:text="Ngày sinh"
                 android:textColor="#DCDCDC" />
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/dob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="#4DFFFFFF"
+                android:ems="10"
+                android:inputType="date"
+                android:paddingLeft="35dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="09/10/1998" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:paddingLeft="15dp"
+                android:text="Email"
+                android:textColor="#DCDCDC" />
+
+            <EditText
+                android:id="@+id/passwordCheck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/border_radius"
@@ -59,85 +75,22 @@
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
-                android:text="0947047314" />
-            <TextView
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Mật Khẩu"
-                android:textColor="#DCDCDC"
-                android:paddingLeft="15dp"/>
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="#4DFFFFFF"
-                android:ems="10"
-                android:fadingEdge="horizontal"
-                android:inputType="textPassword"
-                android:paddingLeft="35dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:text="123" />
-
+                android:text="123@gmail.com" />
             <Button
-                android:id="@+id/forgotPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:text="Quên mật khẩu?"
-                android:textColor="#DCDCDC"
-                android:textSize="11dp"
-                android:padding="0dp"
-                android:textStyle="normal"
-                android:textAllCaps="false"/>
-            <Button
-                android:id="@+id/login"
+                android:id="@+id/nextStep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="30dp"
+                android:paddingRight="30dp"
+                android:paddingLeft="65dp"
                 android:background="@drawable/border_radius"
                 android:backgroundTint="@color/dola_green"
-                android:text="Đăng nhập"
-                app:backgroundTint="@color/dola_green" />
+                android:drawableRight="@drawable/dola_right_32"
+                android:scaleType="fitCenter"
+                android:text="Tiếp" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="50dp"
-            android:gravity="center">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Không có tài khoản?"
-                android:textColor="#DCDCDC"
-                android:textSize="13dp" />
-            <Button
-                android:id="@+id/signUp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#00FFFFFF"
-                android:insetTop="0dp"
-                android:insetBottom="0dp"
-                android:text="Đăng ký"
-                android:textColor="#DCDCDC"
-                android:textSize="13dp"
-                android:layout_marginLeft="-15dip"
-                android:layout_marginRight="-15dip"
-                android:layout_marginTop="-5dip"
-                android:layout_marginBottom="-5dip"
-                android:textStyle="normal"
-                android:textAllCaps="false"/>
-
-        </LinearLayout>
     </LinearLayout>
     <ProgressBar
         android:id="@+id/loading"
