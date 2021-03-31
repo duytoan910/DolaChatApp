@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginScreenActivity extends AppCompatActivity {
+public class LoginScreen extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
     Button loginButton,forgotPassword,signUp;
     ImageButton info;
@@ -45,12 +45,13 @@ public class LoginScreenActivity extends AppCompatActivity {
                     for(User user : list){
                         if(user.getUserPhone().equals(usernameEditText.getText().toString())){
                             if(user.getUserPassword().equals(passwordEditText.getText().toString())){
-                                Toast.makeText(LoginScreenActivity.this, "Success!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginScreen.this, "Success!", Toast.LENGTH_SHORT).show();
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 return;
                             }
                         }
                     }
-                    Toast.makeText(LoginScreenActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreen.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -58,16 +59,27 @@ public class LoginScreenActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginScreenActivity.this, ForgotPassword.class);
+                Intent intent = new Intent(LoginScreen.this, ForgotPassword.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginScreenActivity.this, SignUp_1.class);
+                Intent intent = new Intent(LoginScreen.this, SignUp_1.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
+
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginScreen.this, AppInfo.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
@@ -89,7 +101,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(LoginScreenActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginScreen.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -101,5 +113,15 @@ public class LoginScreenActivity extends AppCompatActivity {
         signUp = findViewById(R.id.signUp);
         info = findViewById(R.id.info);
         loadingProgressBar = findViewById(R.id.loading);
+    }
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

@@ -7,15 +7,15 @@
     android:background="@drawable/dola_gradient"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".LoginScreenActivity">
-
+    tools:context=".LoginScreen">
 
     <ImageButton
         android:id="@+id/info"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_gravity="right"
-        android:layout_margin="10dp"
+        android:layout_marginTop="20px"
+        android:layout_marginRight="8px"
         android:background="@android:drawable/ic_dialog_info"
         android:backgroundTint="#DCDCDC"/>
     <LinearLayout
@@ -29,7 +29,6 @@
             android:layout_width="176dp"
             android:layout_height="169dp"
             app:srcCompat="@drawable/logo_pic_glow" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

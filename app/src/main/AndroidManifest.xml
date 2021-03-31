@@ -12,11 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity android:name=".AppInfo"></activity>
         <activity android:name=".SignUp.SignUp_3" />
         <activity android:name=".SignUp.SignUp_2" />
         <activity android:name=".SignUp.SignUp_1" />
         <activity android:name=".ForgotPassword" />
-        <activity android:name=".LoginScreenActivity">
+        <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
