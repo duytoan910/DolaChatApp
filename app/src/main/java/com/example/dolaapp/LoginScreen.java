@@ -45,9 +45,10 @@ public class LoginScreen extends AppCompatActivity {
                     for(User user : list){
                         if(user.getUserPhone().equals(usernameEditText.getText().toString())){
                             if(user.getUserPassword().equals(passwordEditText.getText().toString())){
-                                Toast.makeText(LoginScreen.this, "Success!", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(LoginScreen.this, ConversationScreen.class);
+                                startActivity(intent);
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                                return;
                             }
                         }
                     }
