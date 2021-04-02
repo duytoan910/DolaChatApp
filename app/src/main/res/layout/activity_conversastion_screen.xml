@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="20"
+    android:orientation="vertical"
+    tools:context=".ConversationScreen">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:padding="15dp"
+        android:layout_weight="9"
+        android:weightSum="10"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="0dp"
+                android:scaleType="fitCenter"
+                tools:srcCompat="@tools:sample/avatars" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:text="Các đoạn hội thoại"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="7"
+            android:gravity="right">
+
+            <ImageButton
+                android:id="@+id/btnNewMessage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="@color/gray"
+                app:srcCompat="@android:drawable/ic_menu_add" />
+            <ImageButton
+                android:id="@+id/btnWaitMessage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="@color/gray"
+                app:srcCompat="@android:drawable/sym_action_email" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_weight="9"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imgBtnConversation"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_margin="0dp"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:background="@color/white"
+            app:srcCompat="@android:drawable/sym_action_chat" />
+
+        <ImageButton
+            android:id="@+id/imgBtnContact"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            app:srcCompat="@android:drawable/sym_action_chat" />
+
+        <ImageButton
+            android:id="@+id/imgBtnGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            app:srcCompat="@android:drawable/sym_action_chat" />
+
+    </LinearLayout>
+</LinearLayout>
