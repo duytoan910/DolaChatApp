@@ -13,65 +13,89 @@
         android:layout_height="match_parent"
         android:gravity="top"
         android:padding="15dp"
-        android:layout_weight="9"
+        android:layout_weight="8"
         android:weightSum="10"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="3"
+            android:weightSum="10"
             android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:padding="0dp"
-                android:scaleType="fitCenter"
-                tools:srcCompat="@tools:sample/avatars" />
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="15dp"
-                android:text="Các đoạn hội thoại"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:layout_weight="3"
+                android:weightSum="10"
+                android:orientation="horizontal">
+                <ImageButton
+                    android:id="@+id/imageButton2"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:padding="0dp"
+                    android:scaleType="fitCenter"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:text="Các đoạn hội thoại"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:orientation="horizontal"
+                android:gravity="right">
+
+                <ImageButton
+                    android:id="@+id/btnNewMessage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/border_radius"
+                    android:backgroundTint="@color/ControlBackground"
+                    app:srcCompat="@android:drawable/ic_menu_add" />
+                <ImageButton
+                    android:id="@+id/btnWaitMessage"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/border_radius"
+                    android:backgroundTint="@color/ControlBackground"
+                    app:srcCompat="@android:drawable/sym_action_email" />
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/username2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="159dp"
             android:layout_weight="7"
-            android:gravity="right">
-
-            <ImageButton
-                android:id="@+id/btnNewMessage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="@color/gray"
-                app:srcCompat="@android:drawable/ic_menu_add" />
-            <ImageButton
-                android:id="@+id/btnWaitMessage"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="@color/gray"
-                app:srcCompat="@android:drawable/sym_action_email" />
-        </LinearLayout>
-
+            android:background="@drawable/border_radius"
+            android:backgroundTint="@color/ControlBackground"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:paddingLeft="35dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:hint="Tìm kiếm"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="3"
         android:orientation="vertical">
         <ListView
             android:id="@+id/listView"
@@ -84,34 +108,27 @@
         android:layout_height="match_parent"
         android:gravity="bottom"
         android:layout_weight="9"
-        android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="2">
 
         <ImageButton
             android:id="@+id/imgBtnConversation"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_margin="0dp"
-            android:layout_weight="1"
             android:padding="0dp"
+            android:layout_weight="1"
             android:background="@color/white"
-            app:srcCompat="@android:drawable/sym_action_chat" />
+            app:srcCompat="@drawable/conversation_focus_48"
+            />
 
         <ImageButton
             android:id="@+id/imgBtnContact"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_weight="1"
             android:background="@color/white"
-            app:srcCompat="@android:drawable/sym_action_chat" />
-
-        <ImageButton
-            android:id="@+id/imgBtnGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
-            android:layout_weight="1"
-            android:background="@color/white"
-            app:srcCompat="@android:drawable/sym_action_chat" />
+            app:srcCompat="@drawable/user_group_48" />
 
     </LinearLayout>
 </LinearLayout>
