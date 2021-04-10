@@ -17,7 +17,7 @@
         android:layout_gravity="right"
         android:layout_margin="10dp"
         android:background="@android:drawable/ic_dialog_info"
-        android:backgroundTint="#DCDCDC"/>
+        android:backgroundTint="@color/dola_control_white"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:text="Ngày sinh"
-                android:textColor="#DCDCDC" />
+                android:textColor="@color/dola_control_white"/>
 
             <EditText
                 android:id="@+id/dob"
@@ -53,7 +53,8 @@
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
-                android:text="09/10/1998" />
+                android:text="09/10/1998"
+                android:textColor="@color/dola_control_white"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -61,7 +62,7 @@
                 android:layout_marginTop="15dp"
                 android:paddingLeft="15dp"
                 android:text="Email"
-                android:textColor="#DCDCDC" />
+                android:textColor="@color/dola_control_white" />
 
             <EditText
                 android:id="@+id/passwordCheck"
@@ -75,6 +76,7 @@
                 android:paddingTop="10dp"
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
+                android:textColor="@color/dola_control_white"
                 android:text="123@gmail.com" />
             <Button
                 android:id="@+id/nextStep"
@@ -85,8 +87,9 @@
                 android:paddingLeft="65dp"
                 android:background="@drawable/border_radius"
                 android:backgroundTint="@color/dola_green"
-                android:drawableRight="@drawable/dola_right_32"
+                android:drawableRight="@drawable/go_right"
                 android:scaleType="fitCenter"
+                android:textColor="@color/dola_control_white"
                 android:text="Tiếp" />
 
         </LinearLayout>

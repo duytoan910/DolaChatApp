@@ -1,4 +1,4 @@
-package com.example.dolaapp.SignUp;
+package com.example.dolaapp.Others.SignUp;
 
 import androidx.appcompat.app.AppCompatActivity;
 

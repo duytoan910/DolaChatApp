@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.SignUp.SignUp_1;
+import com.example.dolaapp.Others.SignUp.SignUp_1;
 
 import java.util.List;
 
@@ -41,6 +41,7 @@ public class LoginScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
+                if(list == null) return;
                 if(list.size() > 0){
                     for(User user : list){
                         if(user.getUserPhone().equals(usernameEditText.getText().toString())){
@@ -49,6 +50,7 @@ public class LoginScreen extends AppCompatActivity {
                                 Intent intent = new Intent(LoginScreen.this, ConversationScreen.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                return;
                             }
                         }
                     }

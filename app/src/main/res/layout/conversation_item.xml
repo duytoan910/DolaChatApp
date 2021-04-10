@@ -10,12 +10,22 @@
     android:paddingLeft="15dp"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/imageView2"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_weight="8"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_weight="8">
+
+        <ImageView
+            android:id="@+id/imgUserSetting"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:layout_weight="8"
+            android:src="@drawable/images" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,13 +41,17 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:gravity="fill"
+            android:paddingTop="10dp"
             android:text="Châu Nguyễn Duy Toàn"
-            android:textSize="20sp" />
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textStyle="normal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5"
+            android:paddingBottom="15dp"
             android:orientation="horizontal">
 
             <TextView
@@ -46,20 +60,25 @@
                 android:layout_height="match_parent"
                 android:gravity="fill"
                 android:text="Hé lô"
-                android:textSize="18sp" />
+                android:textColor="@color/dola_control_gray"
+                android:textSize="14sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="fill"
                 android:text=" - "
-                android:textSize="18sp" />
+                android:textColor="@color/dola_control_gray"
+                android:textSize="14sp" />
+
             <TextView
                 android:id="@+id/txtUserMessageTime"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="fill"
+                android:textColor="@color/dola_control_gray"
                 android:text="19:00"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
