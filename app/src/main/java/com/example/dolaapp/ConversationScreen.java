@@ -2,38 +2,31 @@ package com.example.dolaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Fragment;
 import android.os.Bundle;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Others.ConversationListAdapter;
+import com.example.dolaapp.Others.Fragments.ConversationListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConversationScreen extends AppCompatActivity {
-    private ArrayList<Conversation> conversations;
-
-    ListView listView;
+    Button imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
+    EditText txtSearchConversation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_conversastion_screen);
-
-        listView = findViewById(R.id.listView);
-
-        conversations = new ArrayList<Conversation>();
-        conversations.add(new Conversation("Châu Nguyễn Duy Toàn", "Xin chào Toàn!", "19:00"));
-        conversations.add(new Conversation("Phan Trọng Hinh", "Xin chào Hinh!", "9:00"));
-        conversations.add(new Conversation("Châu Nguyễn Duy Toàn", "Xin chào Toàn!", "19:00"));
-        conversations.add(new Conversation("Phan Trọng Hinh", "Xin chào Hinh!", "9:00"));
-        conversations.add(new Conversation("Châu Nguyễn Duy Toàn", "Xin chào Toàn!", "19:00"));
-        conversations.add(new Conversation("Phan Trọng Hinh", "Xin chào Hinh!", "9:00"));
-        conversations.add(new Conversation("Châu Nguyễn Duy Toàn", "Xin chào Toàn!", "19:00"));
-        conversations.add(new Conversation("Phan Trọng Hinh", "Xin chào Hinh!", "9:00"));
-        conversations.add(new Conversation("Châu Nguyễn Duy Toàn", "Xin chào Toàn!", "19:00"));
-        conversations.add(new Conversation("Phan Trọng Hinh", "Xin chào Hinh!", "9:00"));
-        ConversationListAdapter adapter = new ConversationListAdapter(conversations, this);
-        listView.setAdapter(adapter);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragmentConversationList, new ConversationListFragment("asdasd"))
+                .commit();
     }
 }

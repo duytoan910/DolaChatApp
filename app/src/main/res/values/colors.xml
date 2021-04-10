@@ -11,6 +11,9 @@
     <color name="dola_gradient_start">#4158d0</color>
     <color name="dola_gradient_center">#9053c7</color>
     <color name="dola_gradient_end">#c850c0</color>
+    <color name="dola_control_gray">#bdbdbd</color>
+    <color name="dola_control_white">#ffffff</color>
+    <color name="transparent">#00FFFFFF</color>
 
     <color name="ivory">#FFFFF0</color>
     <color name="lightyellow">#FFFFE0</color>
@@ -150,5 +153,4 @@
     <color name="mediumblue">#0000CD</color>
     <color name="darkblue">#00008B</color>
     <color name="navy">#000080</color>
-    <color name="ControlBackground">#e5e5e5</color>
 </resources>

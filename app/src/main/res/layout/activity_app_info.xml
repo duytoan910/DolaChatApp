@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Dola Chat App v0.0.1"
-            android:textColor="#DCDCDC"
+            android:textColor="@color/dola_control_white"
             android:textSize="13dp" />
     </LinearLayout>
     <ProgressBar
