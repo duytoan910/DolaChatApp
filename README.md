@@ -1,2 +1,2 @@
 # DolaChatApp
-Dolo Android v1
+Dola Android v1
