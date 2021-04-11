@@ -18,7 +18,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:paddingBottom="10dp"
-        android:layout_weight="20.5"
+        android:layout_weight="22.5"
         android:background="#4d000000"
         android:weightSum="10"
         android:orientation="vertical">
@@ -33,28 +33,36 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:background="@color/transparent"
-                android:weightSum="10">
+                android:weightSum="12">
 
+                <ImageButton
+                    android:id="@+id/btnReturn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left|center"
+                    android:layout_weight="5.5"
+                    android:background="@color/transparent"
+                    android:src="@drawable/go_left" />
                 <ImageView
                     android:id="@+id/imgUserSetting"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/transparent"
-                    android:layout_weight="8"
+                    android:layout_weight="5"
                     android:src="@drawable/images" />
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/chatUserName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity=""
                     android:layout_marginLeft="15dp"
-                    android:layout_weight="2"
-                    android:text="Các đoạn hội thoại"
+                    android:layout_weight="1.5"
+                    android:text="Châu Nguyễn Duy Toàn"
                     android:textColor="@color/dola_control_white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -62,7 +70,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="7"
+                android:layout_weight="9"
                 android:orientation="vertical"
                 android:layout_gravity="center"
                 android:weightSum="20"
@@ -75,80 +83,70 @@
                     android:layout_gravity="center"
                     android:gravity="center|right"
                     android:layout_weight="2">
-                    <ImageButton
-                        android:id="@+id/btnNewMessage"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginRight="10dp"
-                        android:background="@drawable/border_radius"
-                        android:backgroundTint="@color/dola_control_white"
-                        android:src="@drawable/add" />
+
                     <ImageButton
                         android:id="@+id/btnWaitMessage"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:background="@drawable/border_radius"
-                        android:backgroundTint="@color/dola_control_white"
-                        android:src="@drawable/request_message_40" />
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:background="@color/transparent"
+                        android:src="@drawable/info_32" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        <EditText
-            android:id="@+id/txtSearchConversation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="4.5"
-            android:layout_marginTop="13dp"
-            android:layout_marginBottom="2dp"
-            android:background="@drawable/border_radius"
-            android:backgroundTint="@color/dola_control_white"
-            android:drawableLeft="@drawable/search_40"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:hint="Tìm kiếm" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="6.8"
+        android:layout_weight="4.7"
         android:background="@drawable/border_shadow"
+        android:gravity="bottom"
         android:orientation="vertical">
-        <FrameLayout
-            android:id="@+id/fragmentConversationList"
+
+        <ListView
+            android:id="@+id/messageListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="wrap_content"
+            android:transcriptMode="alwaysScroll"
+            android:stackFromBottom="true"
+            android:divider="@color/transparent" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/navBar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="22.7"
+        android:layout_weight="22.8"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="#4d000000"
-        android:weightSum="2">
+        android:weightSum="10">
 
-        <ImageButton
-            android:id="@+id/imgBtnConversation"
+        <EditText
+            android:id="@+id/txtMessageContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:layout_weight="1"
-            android:background="@color/transparent"
-            android:src="@drawable/message_focus_40"
-            />
+            android:layout_weight="1.5"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:paddingLeft="15dp"
+            android:textFontWeight="2"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+
+            android:background="@drawable/border_radius"
+            android:backgroundTint="@color/dola_control_white"/>
 
         <ImageButton
-            android:id="@+id/imgBtnContact"
-            android:layout_width="match_parent"
+            android:id="@+id/btnSend"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_gravity="right"
+            android:layout_weight="8.5"
             android:background="@color/transparent"
-            android:src="@drawable/contact_blur_40" />
-
+            android:src="@drawable/send_icon" />
     </LinearLayout>
 </LinearLayout>

@@ -16,7 +16,7 @@ import com.example.dolaapp.Others.Fragments.ConversationListFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversationScreen extends AppCompatActivity {
+public class ConversationScreenActivity extends AppCompatActivity {
     Button imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
     EditText txtSearchConversation;
     @Override

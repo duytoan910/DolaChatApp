@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.Others.SignUp.SignUp_1;
+import com.example.dolaapp.Others.SignUp.SignUp_1_Activity;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginScreen extends AppCompatActivity {
+public class LoginScreenActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
     Button loginButton,forgotPassword,signUp;
     ImageButton info;
@@ -47,14 +47,14 @@ public class LoginScreen extends AppCompatActivity {
                         if(user.getUserPhone().equals(usernameEditText.getText().toString())){
                             if(user.getUserPassword().equals(passwordEditText.getText().toString())){
 
-                                Intent intent = new Intent(LoginScreen.this, ConversationScreen.class);
+                                Intent intent = new Intent(LoginScreenActivity.this, ConversationScreenActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 return;
                             }
                         }
                     }
-                    Toast.makeText(LoginScreen.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreenActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -62,7 +62,7 @@ public class LoginScreen extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginScreen.this, ForgotPassword.class);
+                Intent intent = new Intent(LoginScreenActivity.this, ForgotPasswordActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -71,7 +71,7 @@ public class LoginScreen extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginScreen.this, SignUp_1.class);
+                Intent intent = new Intent(LoginScreenActivity.this, SignUp_1_Activity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -80,7 +80,7 @@ public class LoginScreen extends AppCompatActivity {
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginScreen.this, AppInfo.class);
+                Intent intent = new Intent(LoginScreenActivity.this, AppInfoActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -104,7 +104,7 @@ public class LoginScreen extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast.makeText(LoginScreen.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginScreenActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
             }
         });
     }

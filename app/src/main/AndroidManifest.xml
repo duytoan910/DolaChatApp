@@ -12,13 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DolaApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ConversationScreen"/>
-        <activity android:name=".AppInfo" />
-        <activity android:name=".Others.SignUp.SignUp_3" />
-        <activity android:name=".Others.SignUp.SignUp_2" />
-        <activity android:name=".Others.SignUp.SignUp_1" />
-        <activity android:name=".ForgotPassword" />
-        <activity android:name=".LoginScreen">
+        <activity android:name=".ChatScreenActivity"></activity>
+        <activity android:name=".ConversationScreenActivity" />
+        <activity android:name=".AppInfoActivity" />
+        <activity android:name=".Others.SignUp.SignUp_3_Activity" />
+        <activity android:name=".Others.SignUp.SignUp_2_Activity" />
+        <activity android:name=".Others.SignUp.SignUp_1_Activity" />
+        <activity android:name=".ForgotPasswordActivity" />
+        <activity android:name=".LoginScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

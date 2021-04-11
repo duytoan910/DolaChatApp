@@ -6,31 +6,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.example.dolaapp.LoginScreen;
 import com.example.dolaapp.R;
 
-public class SignUp_3 extends AppCompatActivity {
+public class SignUp_1_Activity extends AppCompatActivity {
     Button nextStep;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up_3);
+        setContentView(R.layout.activity_sign_up_1);
 
         nextStep = findViewById(R.id.nextStep);
 
         nextStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignUp_3.this, LoginScreen.class);
+                Intent intent = new Intent(SignUp_1_Activity.this, SignUp_2_Activity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                Toast.makeText(SignUp_3.this, "Đăng ký thành công! Vui lòng đăng nhập.", Toast.LENGTH_SHORT).show();
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }
+
     @Override
     public void finish() {
         super.finish();

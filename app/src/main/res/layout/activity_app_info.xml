@@ -7,7 +7,7 @@
     android:background="@drawable/dola_gradient"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".LoginScreen">
+    tools:context=".LoginScreenActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
