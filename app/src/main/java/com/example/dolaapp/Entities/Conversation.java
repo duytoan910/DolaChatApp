@@ -1,6 +1,8 @@
 package com.example.dolaapp.Entities;
+import java.io.Serializable;
 
-public class Conversation {
+@SuppressWarnings("serial")
+public class Conversation implements Serializable{
     protected String userName;
     protected String userMessage;
     protected String userMessageTime;

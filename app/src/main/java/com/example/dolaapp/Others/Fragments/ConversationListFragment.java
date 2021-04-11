@@ -2,6 +2,7 @@ package com.example.dolaapp.Others.Fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.R;
@@ -75,6 +77,14 @@ public class ConversationListFragment extends Fragment {
                 ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
                 listView.setAdapter(adapter);
                 swiperefresh.setRefreshing(false);
+            }
+        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent result = new Intent(getContext(), ChatScreenActivity.class);
+                result.putExtra("userObject", conversations.get(position).getUserName());
+                startActivity(result);
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
