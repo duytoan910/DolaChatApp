@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DolaApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChatScreenActivity"></activity>
+        <activity android:name=".ReportErrorActivity"></activity>
+        <activity android:name=".TermsAndPoliciesActivity" />
+        <activity android:name=".UserSettingActivity" />
+        <activity android:name=".ChatScreenActivity" />
         <activity android:name=".ConversationScreenActivity" />
         <activity android:name=".AppInfoActivity" />
         <activity android:name=".Others.SignUp.SignUp_3_Activity" />
