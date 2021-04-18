@@ -8,6 +8,8 @@
     android:weightSum="50"
     android:orientation="vertical"
     android:background="@drawable/dola_gradient"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".ConversationScreenActivity">
 
     <LinearLayout
@@ -44,14 +46,14 @@
                     android:layout_height="match_parent"
                     android:background="@color/transparent"
                     android:layout_weight="8"
-                    android:src="@drawable/images" />
+                    android:src="@drawable/images"
+                    android:onClick="userSetting"/>
 
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity=""
+                    android:gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:layout_weight="2"
                     android:text="Các đoạn hội thoại"

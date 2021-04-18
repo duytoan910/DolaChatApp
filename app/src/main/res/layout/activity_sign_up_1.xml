@@ -55,21 +55,22 @@
                 android:paddingRight="10dp"
                 android:paddingBottom="10dp"
                 android:text="0947047314" />
-
             <Button
                 android:id="@+id/nextStep"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="@color/dola_green"
+                android:text="Tiếp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:paddingRight="30dp"
                 android:paddingLeft="65dp"
                 android:textColor="@color/dola_control_white"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="@color/dola_green"
                 android:drawableRight="@drawable/go_right"
                 android:scaleType="fitCenter"
-                android:text="Tiếp" />
-
+                app:backgroundTint="@color/dola_green" />
         </LinearLayout>
 
     </LinearLayout>

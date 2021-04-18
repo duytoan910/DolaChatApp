@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dola_gradient"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ReportErrorActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentTop="true"
+        android:background="#4d000000"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.5"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageButton
+                android:id="@+id/btnReturn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:src="@drawable/go_left"
+                android:onClick="pressBack"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1.5"
+                android:text="Báo cáo lỗi"
+                android:textColor="@color/dola_control_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="0dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thông tin của bạn"
+            android:textColor="@color/dola_control_gray"
+            android:textSize="18dp"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:weightSum="10"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="7"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:text="Tên"
+                android:textColor="@color/dola_control_gray"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/tbxUserName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="#4DFFFFFF"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="35dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="Châu Nguyễn Duy Toàn"
+                android:textColor="@color/dola_control_white" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:weightSum="10"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Điện thoại"
+                android:layout_weight="7"
+                android:paddingLeft="5dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/dola_control_gray"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/tbxUserPhone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="#4DFFFFFF"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="35dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="0947047314"
+                android:textColor="@color/dola_control_white" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:weightSum="10"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Email"
+                android:layout_weight="7"
+                android:paddingLeft="5dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/dola_control_gray"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/tbxUserMail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="#4DFFFFFF"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="35dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="chaunguyenduytoan@gmail.com"
+                android:textColor="@color/dola_control_white" />
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nội dung lỗi"
+            android:textColor="@color/dola_control_gray"
+            android:textSize="18dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/tbxError"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_radius_multiple_line"
+                android:backgroundTint="#4DFFFFFF"
+                android:inputType="textMultiLine"
+                android:lines="10"
+                android:minLines="10"
+                android:gravity="left"
+                android:scrollHorizontally="false"
+                android:scrollbars="vertical"
+                android:padding="10dp"
+                android:text="Lỗi gì đó"
+                android:textColor="@color/dola_control_white" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/border_radius"
+            android:backgroundTint="@color/dola_green"
+            android:text="Báo cáo lỗi"
+            android:textColor="@color/dola_control_white"
+            app:backgroundTint="@color/dola_green"
+            android:onClick="btnReportClick"/>
+    </LinearLayout>
+
+</LinearLayout>

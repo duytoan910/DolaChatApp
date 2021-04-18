@@ -22,8 +22,8 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-//            .baseUrl("http://192.168.1.41:3000/api/")
-            .baseUrl("http://192.168.0.168:3000/api/")
+            .baseUrl("http://192.168.1.2:3000/api/")
+//            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
