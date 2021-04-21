@@ -67,4 +67,10 @@ public class ConversationScreenActivity extends AppCompatActivity {
     public void onBackPressed() {
         System.exit(0);
     }
+
+    public void addNewFriend(View view) {
+    }
+
+    public void requestMessage(View view) {
+    }
 }
