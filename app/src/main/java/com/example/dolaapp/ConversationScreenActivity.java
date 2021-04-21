@@ -65,10 +65,16 @@ public class ConversationScreenActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        System.exit(0);
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 
     public void addNewFriend(View view) {
+            Intent intent = new Intent(ConversationScreenActivity.this, FindFriendActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     public void requestMessage(View view) {
