@@ -40,7 +40,7 @@
                 android:src="@drawable/go_left"
                 android:onClick="pressBack"/>
             <EditText
-                android:id="@+id/txtSearchConversation"
+                android:id="@+id/txtSearchUser"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -51,7 +51,8 @@
                 android:drawableLeft="@drawable/search_40"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:hint="Tìm kiếm" />
+                android:hint="Tìm kiếm"
+                />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -61,7 +62,7 @@
         android:scrollbars="vertical"
         android:orientation="vertical">
         <ListView
-            android:id="@+id/listView"
+            android:id="@+id/listView_FindFriend"
             android:layout_width="match_parent"
             android:divider="#FFFFFF"
             android:longClickable="true"
