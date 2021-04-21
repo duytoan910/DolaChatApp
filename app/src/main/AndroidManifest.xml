@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DolaApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ReportErrorActivity"></activity>
+        <activity android:name=".FindFriendActivity"></activity>
+        <activity android:name=".ReportErrorActivity" />
         <activity android:name=".TermsAndPoliciesActivity" />
         <activity android:name=".UserSettingActivity" />
         <activity android:name=".ChatScreenActivity" />
