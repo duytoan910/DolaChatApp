@@ -11,7 +11,6 @@ import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ConversationListAdapter extends BaseAdapter {
     private ArrayList<Conversation> list;
@@ -40,7 +39,7 @@ public class ConversationListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.conversation_item, null);
+        convertView = inflater.inflate(R.layout.list_item_conversation, null);
 
         ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getUserName() + "");
         ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getUserMessage() + "");

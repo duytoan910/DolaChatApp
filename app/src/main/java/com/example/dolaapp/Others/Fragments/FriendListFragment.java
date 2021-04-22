@@ -4,10 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +11,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.R;
 
-import java.io.Console;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,17 +26,17 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-public class ConversationListFragment extends Fragment {
+public class FriendListFragment extends Fragment {
     private ArrayList<Conversation> conversations;
-    ListView listView;
+    ListView listViewFriendList;
     SwipeRefreshLayout swiperefresh;
 
     private String userID;
 
-    public ConversationListFragment() {
+    public FriendListFragment() {
         // Required empty public constructor
     }
-    public ConversationListFragment(String userID) {
+    public FriendListFragment(String userID) {
         this.userID = userID;
     }
 
@@ -49,9 +47,9 @@ public class ConversationListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_conversation_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_friend_list, container, false);
 
-        listView = view.findViewById(R.id.listView);
+        listViewFriendList = view.findViewById(R.id.listViewFriendList);
         swiperefresh = view.findViewById(R.id.swiperefresh);
 
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
@@ -68,18 +66,18 @@ public class ConversationListFragment extends Fragment {
         conversations.add(new Conversation("Châu Nguyễn Duy Toàn", "Xin chào Toàn!", currentTime));
         conversations.add(new Conversation("Phan Trọng Hinh", "Xin chào Hinh!", currentTime));
         ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
-        listView.setAdapter(adapter);
+        listViewFriendList.setAdapter(adapter);
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Collections.shuffle(conversations, new Random(System.currentTimeMillis()));
                 ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
-                listView.setAdapter(adapter);
+                listViewFriendList.setAdapter(adapter);
                 swiperefresh.setRefreshing(false);
             }
         });
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewFriendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent result = new Intent(getContext(), ChatScreenActivity.class);
@@ -87,7 +85,7 @@ public class ConversationListFragment extends Fragment {
                 startActivity(result);
             }
         });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        listViewFriendList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 new AlertDialog.Builder(getContext()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -103,8 +101,5 @@ public class ConversationListFragment extends Fragment {
             }
         });
         return view;
-    }
-    public void triggerSwipeRefresh(){
-        swiperefresh.setRefreshing(true);
     }
 }

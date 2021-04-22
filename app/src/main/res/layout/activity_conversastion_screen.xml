@@ -119,8 +119,7 @@
         <FrameLayout
             android:id="@+id/fragmentConversationList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <LinearLayout
@@ -139,8 +138,9 @@
             android:layout_height="match_parent"
             android:layout_margin="0dp"
             android:layout_weight="1"
-            android:background="@color/transparent"
+            android:background="@drawable/btn_click_effect"
             android:src="@drawable/message_focus_40"
+            android:onClick="chatListClick"
             />
 
         <ImageButton
@@ -149,8 +149,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="10dp"
-            android:background="@color/transparent"
-            android:src="@drawable/contact_blur_40" />
+            android:background="@drawable/btn_click_effect"
+            android:src="@drawable/contact_blur_40"
+            android:onClick="contactListClick" />
 
     </LinearLayout>
 </LinearLayout>
