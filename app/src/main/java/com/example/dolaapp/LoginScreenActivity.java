@@ -28,7 +28,6 @@ public class LoginScreenActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
     Button loginButton,forgotPassword,signUp;
     ImageButton info;
-    ProgressBar loadingProgressBar;
 
     List<User> list;
     @Override
@@ -42,7 +41,6 @@ public class LoginScreenActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
                 if(list == null) {
                     User user = new User(
                             "Test_chaunguyenduytoan@gmail.com",
@@ -57,7 +55,8 @@ public class LoginScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     return;
-                }else if(list.size() > 0){
+                }else
+                    if(list.size() > 0){
                     for(User user : list){
                         if(user.getUserPhone().equals(usernameEditText.getText().toString())){
                             if(user.getUserPassword().equals(passwordEditText.getText().toString())){
@@ -154,7 +153,6 @@ public class LoginScreenActivity extends AppCompatActivity {
         forgotPassword = findViewById(R.id.forgotPassword);
         signUp = findViewById(R.id.signUp);
         info = findViewById(R.id.info);
-        loadingProgressBar = findViewById(R.id.loading);
     }
 
     @Override
