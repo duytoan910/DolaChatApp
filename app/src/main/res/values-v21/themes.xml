@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.DolaApp" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/dola_control_gray</item>
+        <item name="colorPrimaryVariant">@color/dola_control_gray</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/dola_control_gray</item>
+        <item name="colorSecondaryVariant">@color/dola_control_gray</item>
+        <item name="colorOnSecondary">@color/dola_control_gray</item>
+        <item name="android:fontFamily" >@font/sfprodisplay</item>
+        <item name="android:windowNoTitle" >true</item>
+        <item name="android:windowActionBar" >false</item>
+        <item name="android:windowContentOverlay" >@null</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:statusBarColor">#4d000000</item>
+
+    </style>
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>

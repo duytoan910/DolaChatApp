@@ -41,9 +41,9 @@ public class ConversationListAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.list_item_conversation, null);
 
-        ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getUserName() + "");
-        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getUserMessage() + "");
-        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getUserMessageTime() + "");
+        ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getConversationName() + "");
+//        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
+//        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
 
         return convertView;
     }

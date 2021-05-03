@@ -1,6 +1,8 @@
 package com.example.dolaapp.Entities;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User {
     protected String UserEmail;
@@ -8,11 +10,23 @@ public class User {
     protected String UserPhone;
     protected String UserName;
     protected String UserDoB;
+    protected ArrayList<String> UserConversation;
+    protected ArrayList<String> listrequest;
+    protected ArrayList<String> listfriend;
+    protected ArrayList<String> requestSend;
 
-    protected List<String> UserConversation;
-    protected List<String> requestSend;
-    protected List<String> listRequest;
-    protected List<String> listFriend;
+    public User(String userEmail, String userPassword, String userPhone, String userName, String userDoB, ArrayList<String> userConversation, ArrayList<String> listRequest, ArrayList<String> listFriend, ArrayList<String> requestSend) {
+        UserEmail = userEmail;
+        UserPassword = userPassword;
+        UserPhone = userPhone;
+        UserName = userName;
+        UserDoB = userDoB;
+        UserConversation = userConversation;
+        this.listrequest = listRequest;
+        this.listfriend = listFriend;
+        this.requestSend = requestSend;
+    }
+
 
     public User(String userEmail, String userPassword, String userPhone, String userName, String userDoB) {
         UserEmail = userEmail;
@@ -68,7 +82,7 @@ public class User {
         return UserConversation;
     }
 
-    public void setUserConversation(List<String> userConversation) {
+    public void setUserConversation(ArrayList<String> userConversation) {
         UserConversation = userConversation;
     }
 
@@ -76,23 +90,23 @@ public class User {
         return requestSend;
     }
 
-    public void setRequestSend(List<String> requestSend) {
+    public void setRequestSend(ArrayList<String> requestSend) {
         this.requestSend = requestSend;
     }
 
     public List<String> getListRequest() {
-        return listRequest;
+        return listfriend;
     }
 
-    public void getListRequest(List<String> listrequest) {
-        this.listRequest = listrequest;
+    public void getListRequest(ArrayList<String> listrequest) {
+        this.listrequest = listrequest;
     }
 
     public List<String> getListFriend() {
-        return listFriend;
+        return listfriend;
     }
 
-    public void setListFriend(List<String> listfriend) {
-        this.listFriend = listfriend;
+    public void setListFriend(ArrayList<String> listfriend) {
+        this.listrequest = listfriend;
     }
 }

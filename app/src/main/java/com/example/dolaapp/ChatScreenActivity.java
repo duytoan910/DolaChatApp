@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,10 +21,13 @@ import com.example.dolaapp.Others.MessageAdapter;
 
 import java.util.ArrayList;
 
+import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
+import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+
 public class ChatScreenActivity extends AppCompatActivity {
     TextView chatUserName;
     ImageButton btnSend,btnReturn;
-    EditText txtMessageContent;
+    EmojiconEditText txtMessageContent;
     ListView messageListView;
 
     MessageAdapter messageAdapter;
@@ -39,6 +43,11 @@ public class ChatScreenActivity extends AppCompatActivity {
         txtMessageContent = findViewById(R.id.txtMessageContent);
         messageListView = findViewById(R.id.messageListView);
 
+        EmojIconActions emojIcon=new EmojIconActions(this,findViewById(R.id.rootView),txtMessageContent,findViewById(R.id.emojicon_icon),
+                "#495C66",
+                "#DCE1E2",
+                "#E6EBEF");
+        emojIcon.ShowEmojIcon();
         messageAdapter = new MessageAdapter(ChatScreenActivity.this);
         messageListView.setAdapter(messageAdapter);
 
@@ -48,20 +57,19 @@ public class ChatScreenActivity extends AppCompatActivity {
         messageAdapter.add(new Message("Hi!", i.getStringExtra("userObject"), false));
         txtMessageContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    String message = txtMessageContent.getText().toString();
-                    if (message.length() > 0) {
-                        messageAdapter.add(new Message(txtMessageContent.getText().toString().trim(), "toan", true));
-                        txtMessageContent.getText().clear();
-                    }
-                }
+//                String message = txtMessageContent.getText().toString().trim();
+//                if (message.length() > 0) return false;
+//                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+//                    messageAdapter.add(new Message(txtMessageContent.getText().toString().trim(), "toan", true));
+//                    txtMessageContent.getText().clear();
+//                }
                 return false;
             }
         });
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = txtMessageContent.getText().toString();
+                String message = txtMessageContent.getText().toString().trim();
                 if (message.length() > 0) {
                     messageAdapter.add(new Message(txtMessageContent.getText().toString().trim(), "toan", true));
                     txtMessageContent.getText().clear();

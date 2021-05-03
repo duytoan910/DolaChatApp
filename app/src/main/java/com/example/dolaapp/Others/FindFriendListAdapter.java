@@ -11,11 +11,17 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
+import com.example.dolaapp.FindFriendActivity;
 import com.example.dolaapp.R;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FindFriendListAdapter extends BaseAdapter implements Filterable {
     private ArrayList<User> list;
@@ -50,6 +56,26 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
         convertView = inflater.inflate(R.layout.find_friend_list, null);
 
         Button btnAdd = ((Button) convertView.findViewById(R.id.btnAdd));
+
+        Session sessionManagement = new Session(context);
+        ArrayList<String> userInfos = sessionManagement.getSession();
+        ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(response.body().getRequestSend().size()>0){
+                    for (String requestSend : response.body().getRequestSend()) {
+                        if(requestSend.equals(list.get(position).getUserPhone())){
+                            btnAdd.setText("Hủy lời mời");
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
 
         ((TextView) convertView.findViewById(R.id.txtUserName)).setText(mDisplayedValues.get(position).getUserName() + "");
         btnAdd.setOnClickListener(new View.OnClickListener() {

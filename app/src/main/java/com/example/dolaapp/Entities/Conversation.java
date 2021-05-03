@@ -1,39 +1,41 @@
 package com.example.dolaapp.Entities;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class Conversation implements Serializable{
-    protected String userName;
-    protected String userMessage;
-    protected String userMessageTime;
+    protected String ConversationID;
+    protected String ConversationName;
+    protected ArrayList<String> ConversationMember;
 
-
-    public Conversation(String userName, String userMessage, String userMessageTime) {
-        this.userName = userName;
-        this.userMessage = userMessage;
-        this.userMessageTime = userMessageTime;
+    public Conversation(String ConversationID, String ConversationName, ArrayList<String> ConversationMember) {
+        this.ConversationID = ConversationID;
+        this.ConversationName = ConversationName;
+        this.ConversationMember = ConversationMember;
+    }
+    public String getConversationID() {
+        return ConversationID;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setConversationID(String conversationID) {
+        ConversationID = conversationID;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public String getConversationName() {
+        return ConversationName;
     }
 
-    public String getUserMessage() {
-        return userMessage;
+    public void setConversationName(String conversationName) {
+        ConversationName = conversationName;
     }
 
-    public void setUserMessage(String userMessage) {
-        this.userMessage = userMessage;
-    }
-    public String getUserMessageTime() {
-        return userMessageTime;
+    public ArrayList<String> getConversationMember() {
+        return ConversationMember;
     }
 
-    public void setUserMessageTime(String userMessageTime) {
-        this.userMessageTime = userMessageTime;
+    public void setConversationMember(ArrayList<String> conversationMember) {
+        ConversationMember = conversationMember;
     }
+
+
 }

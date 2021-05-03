@@ -11,11 +11,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.FindFriendListAdapter;
+import com.example.dolaapp.Others.Session;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FindFriendActivity extends AppCompatActivity {
     private ArrayList<User> users;
@@ -29,17 +35,28 @@ public class FindFriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_friend);
 
         txtSearchUser = findViewById(R.id.txtSearchUser);
-
-        users = new ArrayList<User>();
-        users.add(new User("Châu Nguyễn Duy Toàn", "", "", "Châu Nguyễn Duy Toàn", ""));
-        users.add(new User("Phan Trọng Hinh", "", "", "Phan Trọng Hinh", ""));
-        users.add(new User("Châu Nguyễn Duy Toàn", "", "", "zxzx qw x aweq", ""));
-        users.add(new User("Phan Trọng Hinh", "", "", "Trần Ánh Kim", ""));
-        users.add(new User("Châu Nguyễn Duy Toàn", "", "", "Nguyễn Văn A", ""));
-        users.add(new User("Phan Trọng Hinh", "", "", "Nguyễn Thị B", ""));
         listView_FindFriend = (ListView) findViewById(R.id.listView_FindFriend);
-        FindFriendListAdapter findFriendListAdapter = new FindFriendListAdapter(users,FindFriendActivity.this);
-        listView_FindFriend.setAdapter(findFriendListAdapter);
+
+        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                Session sessionManagement = new Session(FindFriendActivity.this);
+                ArrayList<String> userInfos = sessionManagement.getSession();
+                for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
+                    if(response.body().get(i).getUserPhone().equals(userInfos.get(1))){
+                        response.body().remove(i);
+                    }
+                }
+                FindFriendListAdapter findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                listView_FindFriend.setAdapter(findFriendListAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                Toast.makeText(FindFriendActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         txtSearchUser.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -62,7 +79,6 @@ public class FindFriendActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
 
             }
 

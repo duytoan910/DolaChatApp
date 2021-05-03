@@ -1,9 +1,11 @@
 package com.example.dolaapp.API;
 
+import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -14,6 +16,8 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -22,17 +26,34 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.2:3000/api/")
+            .baseUrl("http://192.168.1.7:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
 
+    //Get all user
     @GET("users")
-    Call<List<User>> getAllUser();
+    Call<ArrayList<User>> getAllUser();
 
+    //Get user by id
+    @GET("Users/{id}")
+    Call<User> getUserById(@Path("id") String id);
+
+    //Create new user
     @PUT("users")
     @FormUrlEncoded
     Call<User> createNewUser(@Field("phone") String phone, @Field("name") String name, @Field("Dob") String Dob, @Field("mail") String mail, @Field("password") String password);
+
+    //Get all conversation of user
+    @GET("getAllListConversation/{id}")
+    Call<ArrayList<Conversation>> getAllConversationByUserID(@Path("id") String id);
+    //Get all conversation
+    @GET("Conversations")
+    Call<ArrayList<Conversation>> getAllConversation();
+
+    //Get all user friends
+    @GET("getAllListFriend/{id}")
+    Call<ArrayList<User>> getAllListFriend(@Path("id") String id);
 
 }
