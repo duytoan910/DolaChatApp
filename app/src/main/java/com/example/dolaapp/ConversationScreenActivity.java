@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -16,14 +17,21 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Fragments.ConversationListFragment;
 import com.example.dolaapp.Others.Fragments.FriendListFragment;
 import com.example.dolaapp.Others.Session;
+import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConversationScreenActivity extends AppCompatActivity {
     ImageButton imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
@@ -49,7 +57,6 @@ public class ConversationScreenActivity extends AppCompatActivity {
         transaction.replace(R.id.fragmentConversationList, fragment);
         transaction.commit();
     }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -83,6 +90,9 @@ public class ConversationScreenActivity extends AppCompatActivity {
     }
 
     public void requestMessage(View view) {
+        Intent intent = new Intent(ConversationScreenActivity.this, RequestMessageActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     public void userSetting(View view) {

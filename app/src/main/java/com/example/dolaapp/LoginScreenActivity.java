@@ -124,23 +124,23 @@ public class LoginScreenActivity extends AppCompatActivity {
     }
 
     private void getAllUser(){
-        ApiService.api.getAllUser().enqueue(new Callback<List<User>>() {
+        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                list = (List<User>) response.body();
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                list = (ArrayList<User>) response.body();
                 Log.e("Length: ", response.body().size() + "");
-                for(User user : list){
-                    Log.e("Email: ",user.getUserEmail().toString());
-                    Log.e("Phone: ",user.getUserPhone().toString());
-                    Log.e("DoB: ",user.getUserDoB().toString());
-                    Log.e("Name: ",user.getUserName().toString());
-                    Log.e("Password: ",user.getUserPassword().toString());
-                    Log.e("---------------------",user.getUserName().toString() + " [End]");
-                }
+//                for(User user : list){
+//                    Log.e("Email: ",user.getUserEmail().toString());
+//                    Log.e("Phone: ",user.getUserPhone().toString());
+//                    Log.e("DoB: ",user.getUserDoB().toString());
+//                    Log.e("Name: ",user.getUserName().toString());
+//                    Log.e("Password: ",user.getUserPassword().toString());
+//                    Log.e("---------------------",user.getUserName().toString() + " [End]");
+//                }
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
                 Toast.makeText(LoginScreenActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
             }
         });
