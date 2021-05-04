@@ -1,25 +1,84 @@
 package com.example.dolaapp.Entities;
 
-public class Message {
-    private String text; // message body
-    private String userSendID; // data of the user that sent this message
-    private boolean belongsToCurrentUser; // is this message sent by us?
+import com.example.dolaapp.Others.Session;
 
-    public Message(String text, String userSendID, boolean belongsToCurrentUser) {
-        this.text = text;
-        this.userSendID = userSendID;
+import java.util.ArrayList;
+
+public class Message {
+    private String Message; // message body
+    private String MessageId; // data of the user that sent this message
+    private String NameSender; // is this message sent by us?
+    private String Receiver; // is this message sent by us?
+    private String Sender; // is this message sent by us?
+
+    public Message(String message, String messageId, String nameSender, String receiver, String sender, String timeStamp, boolean belongsToCurrentUser) {
+        Message = message;
+        MessageId = messageId;
+        NameSender = nameSender;
+        Receiver = receiver;
+        Sender = sender;
+        this.timeStamp = timeStamp;
         this.belongsToCurrentUser = belongsToCurrentUser;
     }
 
-    public String getText() {
-        return text;
+    private String timeStamp; // is this message sent by us?
+
+    public String getMessage() {
+        return Message;
     }
 
-    public String getUserSendID() {
-        return userSendID;
+    public void setMessage(String message) {
+        Message = message;
+    }
+
+    public String getMessageId() {
+        return MessageId;
+    }
+
+    public void setMessageId(String messageId) {
+        MessageId = messageId;
+    }
+
+    public String getNameSender() {
+        return NameSender;
+    }
+
+    public void setNameSender(String nameSender) {
+        NameSender = nameSender;
+    }
+
+    public String getReceiver() {
+        return Receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        Receiver = receiver;
+    }
+
+    public String getSender() {
+        return Sender;
+    }
+
+    public void setSender(String sender) {
+        Sender = sender;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public boolean isBelongsToCurrentUser() {
         return belongsToCurrentUser;
     }
+
+    public void setBelongsToCurrentUser(boolean belongsToCurrentUser) {
+        this.belongsToCurrentUser = belongsToCurrentUser;
+    }
+
+    private boolean belongsToCurrentUser;
+
 }
