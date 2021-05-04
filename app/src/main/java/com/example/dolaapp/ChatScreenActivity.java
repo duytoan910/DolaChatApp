@@ -16,13 +16,23 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.Message;
+import com.example.dolaapp.Entities.User;
+import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.MessageAdapter;
+import com.example.dolaapp.Others.Session;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ChatScreenActivity extends AppCompatActivity {
     TextView chatUserName;
@@ -52,17 +62,81 @@ public class ChatScreenActivity extends AppCompatActivity {
         messageListView.setAdapter(messageAdapter);
 
         Intent i = getIntent();
-        chatUserName.setText(i.getStringExtra("userObject"));
+        ArrayList<User> userlist = new ArrayList<User>();
+        Session sessionManagement = new Session(ChatScreenActivity.this);
+        ArrayList<String> userInfos = sessionManagement.getSession();
+        for (String userObject : ((Conversation) i.getSerializableExtra("userObject")).getConversationMember()) {
+            if(((Conversation) i.getSerializableExtra("userObject")).getConversationMember().size() == 2){
+                if(userObject.equals(userInfos.get(1)))
+                    continue;
 
-        messageAdapter.add(new Message("Hi!", i.getStringExtra("userObject"), false));
+                ApiService.api.getUserById(userObject).enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        chatUserName.setText(response.body().getUserName());
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+
+                    }
+                });
+            }
+        }
+
+
+        ApiService.api.getMessages2(((Conversation) i.getSerializableExtra("userObject")).getConversationID()).enqueue(new Callback<ArrayList<Message>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Message>> call, Response<ArrayList<Message>> response) {
+                for (Message message : response.body()) {
+                    ApiService.api.getUserById(message.getSender()).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> callUser, Response<User> responseUser) {
+                            String[] parts = responseUser.body().getUserName().split(" ");
+                            String lastWord = parts[parts.length - 1];
+                            messageAdapter.add(new Message(
+                                    message.getMessage(),
+                                    message.getMessageId(),
+                                    lastWord,
+                                    message.getReceiver(),
+                                    message.getSender(),
+                                    message.getTimeStamp(),
+                                    message.getSender().equals(userInfos.get(1))?true:false
+                            ));
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Message>> call, Throwable t) {
+
+            }
+        });
+
         txtMessageContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                String message = txtMessageContent.getText().toString().trim();
-//                if (message.length() > 0) return false;
-//                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-//                    messageAdapter.add(new Message(txtMessageContent.getText().toString().trim(), "toan", true));
-//                    txtMessageContent.getText().clear();
-//                }
+                String message = txtMessageContent.getText().toString().trim();
+                if (message.length() > 0) return false;
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    messageAdapter.add(new Message(
+                            txtMessageContent.getText().toString().trim(),
+                            "message.getMessageId()",
+                            userInfos.get(0),
+                            ((Conversation) i.getSerializableExtra("userObject")).getConversationID(),
+                            userInfos.get(1),
+                            ((Date)Calendar.getInstance().getTime()).toString(),
+                            true
+                    ));
+
+                    txtMessageContent.getText().clear();
+               }
                 return false;
             }
         });
@@ -71,7 +145,15 @@ public class ChatScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String message = txtMessageContent.getText().toString().trim();
                 if (message.length() > 0) {
-                    messageAdapter.add(new Message(txtMessageContent.getText().toString().trim(), "toan", true));
+                    messageAdapter.add(new Message(
+                            txtMessageContent.getText().toString().trim(),
+                            "message.getMessageId()",
+                            userInfos.get(0),
+                            ((Conversation) i.getSerializableExtra("userObject")).getConversationID(),
+                            userInfos.get(1),
+                            ((Date)Calendar.getInstance().getTime()).toString(),
+                            true
+                    ));
                     txtMessageContent.getText().clear();
                 }
             }

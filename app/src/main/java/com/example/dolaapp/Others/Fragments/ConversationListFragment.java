@@ -73,7 +73,8 @@ public class ConversationListFragment extends Fragment {
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                ConversationListAdapter adapter = new ConversationListAdapter((ArrayList<Conversation>) response.body(), getContext());
+                conversations = (ArrayList<Conversation>) response.body();
+                ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
                 listView.setAdapter(adapter);
             }
 
@@ -90,7 +91,8 @@ public class ConversationListFragment extends Fragment {
                 ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                        ConversationListAdapter adapter = new ConversationListAdapter((ArrayList<Conversation>) response.body(), getContext());
+                        conversations = (ArrayList<Conversation>) response.body();
+                        ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
                         listView.setAdapter(adapter);
                     }
 
@@ -105,9 +107,9 @@ public class ConversationListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*Intent result = new Intent(getContext(), ChatScreenActivity.class);
-                result.putExtra("userObject", conversations.get(position).getUserName());
-                startActivity(result);*/
+                Intent result = new Intent(getContext(), ChatScreenActivity.class);
+                result.putExtra("userObject", conversations.get(position));
+                startActivity(result);
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

@@ -51,6 +51,7 @@ public class RequestMessageActivity extends AppCompatActivity {
         Session sessionManagement = new Session(RequestMessageActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
 
+        listRequestCurrentUser = new ArrayList<String>();
         ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

@@ -1,6 +1,7 @@
 package com.example.dolaapp.API;
 
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,7 +27,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.41:3000/api/")
+            .baseUrl("http://192.168.1.7:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -56,4 +57,7 @@ public interface ApiService {
     @GET("getAllListFriend/{id}")
     Call<ArrayList<User>> getAllListFriend(@Path("id") String id);
 
+    //Get all message in conversation
+    @GET("getMessages2/{Receiver}")
+    Call<ArrayList<Message>> getMessages2(@Path("Receiver") String Receiver);
 }
