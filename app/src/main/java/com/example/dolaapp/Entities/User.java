@@ -95,7 +95,7 @@ public class User {
     }
 
     public List<String> getListRequest() {
-        return listfriend;
+        return listrequest;
     }
 
     public void getListRequest(ArrayList<String> listrequest) {
