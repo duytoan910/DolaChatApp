@@ -24,9 +24,12 @@ import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.MessageAdapter;
 import com.example.dolaapp.Others.Session;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
@@ -145,13 +148,31 @@ public class ChatScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String message = txtMessageContent.getText().toString().trim();
                 if (message.length() > 0) {
+                    ApiService.api.createMessage(
+                            txtMessageContent.getText().toString().trim(),
+                            userInfos.get(1),
+                            ((Conversation) i.getSerializableExtra("userObject")).getConversationID(),
+                            userInfos.get(0),
+                            ((Date)Calendar.getInstance().getTime()).toString()
+                    ).enqueue(new Callback<Message>() {
+                        @Override
+                        public void onResponse(Call<Message> call, Response<Message> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Message> call, Throwable t) {
+
+                        }
+                    });
+                    SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
                     messageAdapter.add(new Message(
                             txtMessageContent.getText().toString().trim(),
                             "message.getMessageId()",
                             userInfos.get(0),
                             ((Conversation) i.getSerializableExtra("userObject")).getConversationID(),
                             userInfos.get(1),
-                            ((Date)Calendar.getInstance().getTime()).toString(),
+                            myFormat.format(Calendar.getInstance().getTime()),
                             true
                     ));
                     txtMessageContent.getText().clear();
