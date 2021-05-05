@@ -41,18 +41,19 @@ public class LoginScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(list == null) {
-                    User user = new User(
-                            "Test_chaunguyenduytoan@gmail.com",
-                            "Test_toanheo",
-                            "Test_0947047314",
-                            "Test_Châu Nguyễn Duy Toàn",
-                            "Test_09/10/1998");
-                    Session sessionManagement = new Session(LoginScreenActivity.this);
-                    sessionManagement.saveSession(user);
-
-                    Intent intent = new Intent(LoginScreenActivity.this, ConversationScreenActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//                    User user = new User(
+//                            "Test_chaunguyenduytoan@gmail.com",
+//                            "Test_toanheo",
+//                            "Test_0947047314",
+//                            "Test_Châu Nguyễn Duy Toàn",
+//                            "Test_09/10/1998");
+//                    Session sessionManagement = new Session(LoginScreenActivity.this);
+//                    sessionManagement.saveSession(user);
+//
+//                    Intent intent = new Intent(LoginScreenActivity.this, ConversationScreenActivity.class);
+//                    startActivity(intent);
+//                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    Toast.makeText(LoginScreenActivity.this, "Không có kết nối internet!", Toast.LENGTH_SHORT).show();
                     return;
                 }else
                     if(list.size() > 0){

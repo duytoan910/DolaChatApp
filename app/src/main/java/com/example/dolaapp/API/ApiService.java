@@ -27,7 +27,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.7:3000/api/")
+            .baseUrl("http://192.168.1.41:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -60,4 +60,15 @@ public interface ApiService {
     //Get all message in conversation
     @GET("getMessages2/{Receiver}")
     Call<ArrayList<Message>> getMessages2(@Path("Receiver") String Receiver);
+
+    //Create new message
+    @POST("Messages")
+    @FormUrlEncoded
+    Call<Message> createMessage(
+            @Field("Message") String Message,
+            @Field("Sender") String Sender,
+            @Field("Receiver") String Receiver,
+            @Field("NameSender") String NameSender,
+            @Field("Time") String Time
+    );
 }
