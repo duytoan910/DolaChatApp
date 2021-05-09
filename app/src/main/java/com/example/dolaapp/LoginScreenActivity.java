@@ -53,7 +53,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 //                    Intent intent = new Intent(LoginScreenActivity.this, ConversationScreenActivity.class);
 //                    startActivity(intent);
 //                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    Toast.makeText(LoginScreenActivity.this, "Không có kết nối internet!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginScreenActivity.this, "Không kết nối được đến máy chủ!", Toast.LENGTH_SHORT).show();
                     return;
                 }else
                     if(list.size() > 0){

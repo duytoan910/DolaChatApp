@@ -27,7 +27,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.41:3000/api/")
+            .baseUrl("http://192.168.1.9:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -41,21 +41,44 @@ public interface ApiService {
     @GET("Users/{id}")
     Call<User> getUserById(@Path("id") String id);
 
+    //Get user by id
+    @GET("Users/{id}/SendPassword")
+    Call<String> sendPassword(@Path("id") String id);
+
     //Create new user
     @PUT("users")
     @FormUrlEncoded
     Call<User> createNewUser(@Field("phone") String phone, @Field("name") String name, @Field("Dob") String Dob, @Field("mail") String mail, @Field("password") String password);
 
     //Get all conversation of user
-    @GET("getAllListConversation/{id}")
+    //http://localhost:3001/api/:idUser/Conversations
+    @GET("{id}/Conversations")
     Call<ArrayList<Conversation>> getAllConversationByUserID(@Path("id") String id);
-    //Get all conversation
-    @GET("Conversations")
-    Call<ArrayList<Conversation>> getAllConversation();
+
+    //Create new conversation
+    //http://localhost:3001/api/:idUser/Conversations
+    @POST("Conversations")
+    @FormUrlEncoded
+    Call<ArrayList<Conversation>> createConversation(
+            @Field("ConversationName") String Name,
+            @Field("ConversationMember") ArrayList<String> Member,
+            @Field("ConversationAdmin") ArrayList<String> Admin,
+            @Field("IsGroup") boolean IsGroup,
+            @Field("SenderShown") boolean SenderShown,
+            @Field("ReceiverShown") boolean ReceiverShown
+            );
 
     //Get all user friends
-    @GET("getAllListFriend/{id}")
+    @GET("{id}/ListFriends/")
     Call<ArrayList<User>> getAllListFriend(@Path("id") String id);
+
+    //Send friend request
+    @GET("{UserPhone}/SendAddFriendReQuest/{TargetPhone}")
+    Call<String> SendAddFriendReQuest(@Path("UserPhone") String UserPhone,@Path("TargetPhone") String TargetPhone);
+
+    //Remove friend request
+    @GET("{PhoneOfReceiver}/DeleteRequestAddFriend/{PhoneOfSender}")
+    Call<String> DeleteRequestAddFriend(@Path("PhoneOfReceiver") String PhoneOfReceiver,@Path("PhoneOfSender") String PhoneOfSender);
 
     //Get all message in conversation
     @GET("getMessages2/{Receiver}")

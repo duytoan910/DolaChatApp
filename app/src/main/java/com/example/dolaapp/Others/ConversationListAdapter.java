@@ -1,16 +1,23 @@
 package com.example.dolaapp.Others;
 
 import android.content.Context;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ConversationListAdapter extends BaseAdapter {
     private ArrayList<Conversation> list;
@@ -41,9 +48,33 @@ public class ConversationListAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.list_item_conversation, null);
 
-        ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getConversationName() + "");
+        Session sessionManagement = new Session(context);
+        ArrayList<String> userInfos = sessionManagement.getSession();
+
+        if(list.get(position).isGroup()) {
+            ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getConversationName() + "");
+        }else {
+            for (String s : list.get(position).getConversationMember()) {
+                if (s.equals(userInfos.get(1))) {
+                    continue;
+                } else {
+                    View finalConvertView = convertView;
+                    ApiService.api.getUserById(s).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            ((TextView) finalConvertView.findViewById(R.id.txtUserName)).setText(response.body().getUserName());
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
 //        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
 //        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
+        }
 
         return convertView;
     }

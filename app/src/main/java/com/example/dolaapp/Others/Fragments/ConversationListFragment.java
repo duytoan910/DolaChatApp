@@ -74,6 +74,12 @@ public class ConversationListFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
                 conversations = (ArrayList<Conversation>) response.body();
+//                ArrayList<Conversation> _Conv = new ArrayList<>();
+//                for (Conversation conversation : conversations) {
+//                    if(conversation.isReceiverShown() != false){
+//                        _Conv.add(conversation);
+//                    }
+//                }
                 ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
                 listView.setAdapter(adapter);
             }
@@ -92,7 +98,13 @@ public class ConversationListFragment extends Fragment {
                     @Override
                     public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
                         conversations = (ArrayList<Conversation>) response.body();
-                        ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
+                        ArrayList<Conversation> _Conv = new ArrayList<>();
+                        for (Conversation conversation : conversations) {
+                            if(conversation.isReceiverShown() != false){
+                                _Conv.add(conversation);
+                            }
+                        }
+                        ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
                         listView.setAdapter(adapter);
                     }
 
@@ -131,23 +143,5 @@ public class ConversationListFragment extends Fragment {
     }
     public void triggerSwipeRefresh(){
         swiperefresh.setRefreshing(true);
-    }
-
-    private void getAllConversation(){
-        ApiService.api.getAllConversation().enqueue(new Callback<ArrayList<Conversation>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                conversationArrayList = (ArrayList<Conversation>) response.body();
-                Log.e("Length: ", response.body().size() + "");
-                for(Conversation conversation : conversationArrayList){
-                    Log.e("ID: ",conversation.getConversationID().toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage() + "", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 }

@@ -1,11 +1,15 @@
 package com.example.dolaapp.Others;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -17,7 +21,9 @@ import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.FindFriendActivity;
 import com.example.dolaapp.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,12 +33,15 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
     private ArrayList<User> list;
     private ArrayList<User> mDisplayedValues;
     private Context context;
+    ArrayList<String> userInfos;
 
     public FindFriendListAdapter(
             ArrayList<User> list, Context context) {
         this.list = list;
         this.mDisplayedValues = list;
         this.context = context;
+        Session sessionManagement = new Session(context);
+        userInfos = sessionManagement.getSession();
     }
 
     @Override
@@ -57,8 +66,6 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
 
         Button btnAdd = ((Button) convertView.findViewById(R.id.btnAdd));
 
-        Session sessionManagement = new Session(context);
-        ArrayList<String> userInfos = sessionManagement.getSession();
         ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -82,9 +89,67 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View v) {
                 if(btnAdd.getText().toString().equals("Kết bạn")){
-                    Toast.makeText(context, "Đã gửi lời mời kết bạn!", Toast.LENGTH_SHORT).show();
-                    btnAdd.setText("Hủy lời mời");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Gửi lời mời kết bạn");
+                    final EditText input = new EditText(context);
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    builder.setView(input);
+                    input.setText("Xin chào! Mình kết bạn nha.");
+                    builder.setPositiveButton("Gửi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //m_Text = input.getText().toString();
+                            ArrayList<String> arr = new ArrayList<String>(){{add(userInfos.get(1));add(list.get(position).getUserPhone());}};
+                            ArrayList<String> arrAd = new ArrayList<String>();
+                            ApiService.api.createConversation(
+                                    "",
+                                    arr,
+                                    arrAd,
+                                    false,
+                                    false,
+                                    false
+                            ).enqueue(new Callback<ArrayList<Conversation>>() {
+                                @Override
+                                public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+
+                                }
+                            });
+
+                            Toast.makeText(context, "Đã gửi lời mời kết bạn!", Toast.LENGTH_SHORT).show();
+                            btnAdd.setText("Hủy lời mời");
+                            ApiService.api.SendAddFriendReQuest(userInfos.get(1),list.get(position).getUserPhone()).enqueue(new Callback<String>() {
+                                @Override
+                                public void onResponse(Call<String> call, Response<String> response) {
+                                }
+
+                                @Override
+                                public void onFailure(Call<String> call, Throwable t) {
+                                }
+                            });
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
                 }else{
+                    ApiService.api.DeleteRequestAddFriend(list.get(position).getUserPhone(),userInfos.get(1)).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                        }
+                    });
                     Toast.makeText(context, "Đã hủy lời mời kết bạn!", Toast.LENGTH_SHORT).show();
                     btnAdd.setText("Kết bạn");
                 }
