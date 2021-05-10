@@ -66,7 +66,6 @@ public class FriendListFragment extends Fragment {
         ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                Log.e("res",response.message());
                 UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
                 listViewFriendList.setAdapter(adapter);
             }

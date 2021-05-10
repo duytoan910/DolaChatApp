@@ -1,6 +1,7 @@
 package com.example.dolaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.FindFriendListAdapter;
+import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
 
 import java.util.ArrayList;
@@ -28,12 +30,14 @@ public class FindFriendActivity extends AppCompatActivity {
     ListView listView_FindFriend;
     FindFriendListAdapter findFriendListAdapter;
     EditText txtSearchUser;
+    SwipeRefreshLayout swiperefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friend);
 
+        swiperefresh = findViewById(R.id.swiperefresh);
         txtSearchUser = findViewById(R.id.txtSearchUser);
         listView_FindFriend = (ListView) findViewById(R.id.listView_FindFriend);
 
@@ -85,6 +89,32 @@ public class FindFriendActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                        Session sessionManagement = new Session(FindFriendActivity.this);
+                        ArrayList<String> userInfos = sessionManagement.getSession();
+                        for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
+                            if(response.body().get(i).getUserPhone().equals(userInfos.get(1))){
+                                response.body().remove(i);
+                            }
+                        }
+                        FindFriendListAdapter findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                        listView_FindFriend.setAdapter(findFriendListAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                        Toast.makeText(FindFriendActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                swiperefresh.setRefreshing(false);
             }
         });
     }

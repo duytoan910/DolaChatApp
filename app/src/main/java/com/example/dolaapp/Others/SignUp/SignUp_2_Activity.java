@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
 
 public class SignUp_2_Activity extends AppCompatActivity {
@@ -24,10 +25,19 @@ public class SignUp_2_Activity extends AppCompatActivity {
         passwordCheck = findViewById(R.id.passwordCheck);
 
         nextStep.setOnClickListener(new View.OnClickListener() {
-            @Override
+
             public void onClick(View v) {
                 if(password.getText().toString().equals(passwordCheck.getText().toString())){
                     Intent intent = new Intent(SignUp_2_Activity.this, SignUp_3_Activity.class);
+                    intent.putExtra("userOBJ",
+                            new User(
+                                    "",
+                                    password.getText().toString().trim(),
+                                    getIntent().getStringExtra("userName"),
+                                    "",
+                                    ""
+                            )
+                    );
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }else{

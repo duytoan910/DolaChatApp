@@ -65,27 +65,27 @@ public class RequestMessageActivity extends AppCompatActivity {
 
             }
         });
-        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
-            @Override
-            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                Session sessionManagement = new Session(RequestMessageActivity.this);
-                ArrayList<String> userInfos = sessionManagement.getSession();
-                ArrayList<User> _tmpList = new ArrayList<User>();
-                for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
-                    for (String s : listRequestCurrentUser) {
-                        if(response.body().get(i).getUserPhone().equals(s)){
-                            _tmpList.add(response.body().get(i));
-                        }
-                    }
-                }
-                RequestListAdapter findFriendListAdapter = new RequestListAdapter((ArrayList<User>) _tmpList,RequestMessageActivity.this);
-                listView_RequestMessage.setAdapter(findFriendListAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-            }
-        });
+//        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+//                Session sessionManagement = new Session(RequestMessageActivity.this);
+//                ArrayList<String> userInfos = sessionManagement.getSession();
+//                ArrayList<User> _tmpList = new ArrayList<User>();
+//                for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
+//                    for (String s : listRequestCurrentUser) {
+//                        if(response.body().get(i).getUserPhone().equals(s)){
+//                            _tmpList.add(response.body().get(i));
+//                        }
+//                    }
+//                }
+//                RequestListAdapter findFriendListAdapter = new RequestListAdapter((ArrayList<User>) _tmpList,RequestMessageActivity.this);
+//                listView_RequestMessage.setAdapter(findFriendListAdapter);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+//            }
+//        });
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
