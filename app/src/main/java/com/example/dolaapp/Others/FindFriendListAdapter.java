@@ -106,8 +106,10 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                                     arr,
                                     arrAd,
                                     false,
+                                    true,
                                     false,
-                                    false
+                                    userInfos.get(1),
+                                    mDisplayedValues.get(position).getUserPhone()
                             ).enqueue(new Callback<ArrayList<Conversation>>() {
                                 @Override
                                 public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {

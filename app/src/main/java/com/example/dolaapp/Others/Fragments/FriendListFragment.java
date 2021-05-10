@@ -20,9 +20,11 @@ import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.ConversationListAdapter;
+import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.Others.UserListAdapter;
 import com.example.dolaapp.R;
+import com.example.dolaapp.RequestMessageActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,8 +68,12 @@ public class FriendListFragment extends Fragment {
         ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
-                listViewFriendList.setAdapter(adapter);
+                if(response.body()!=null){
+                    if(response.body().size()>0){
+                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
+                        listViewFriendList.setAdapter(adapter);
+                    }
+                }
             }
 
             @Override
@@ -79,15 +85,17 @@ public class FriendListFragment extends Fragment {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 Session sessionManagement = new Session(getContext());
                 ArrayList<String> userInfos = sessionManagement.getSession();
                 ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
                     @Override
                     public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                        Log.e("res",response.message());
-                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
-                        listViewFriendList.setAdapter(adapter);
+                        if(response.body()!=null){
+                            if(response.body().size()>0){
+                                UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
+                                listViewFriendList.setAdapter(adapter);
+                            }
+                        }
                     }
 
                     @Override

@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -36,7 +37,8 @@ public class RequestMessageActivity extends AppCompatActivity {
     private ArrayList<Conversation> conversations;
     ListView listView_RequestMessage;
     SwipeRefreshLayout swiperefresh;
-    ArrayList<String> listRequestCurrentUser;
+    ArrayList<User> listRequestCurrentUser;
+    RequestListAdapter findFriendListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,70 +53,96 @@ public class RequestMessageActivity extends AppCompatActivity {
         Session sessionManagement = new Session(RequestMessageActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
 
-        listRequestCurrentUser = new ArrayList<String>();
-        ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
+        listRequestCurrentUser = new ArrayList<User>();
+        ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                if (response.body().getListRequest().size() > 0) {
-                    listRequestCurrentUser = (ArrayList<String>) response.body().getListRequest();
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                if(response.body()!=null){
+                    if(response.body().size()>0){
+                        listRequestCurrentUser = (ArrayList<User>) response.body();
+                        findFriendListAdapter = new RequestListAdapter(listRequestCurrentUser,RequestMessageActivity.this);
+                        listView_RequestMessage.setAdapter(findFriendListAdapter);
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<List<User>> call, Throwable t) {
 
             }
         });
-//        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-//                Session sessionManagement = new Session(RequestMessageActivity.this);
-//                ArrayList<String> userInfos = sessionManagement.getSession();
-//                ArrayList<User> _tmpList = new ArrayList<User>();
-//                for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
-//                    for (String s : listRequestCurrentUser) {
-//                        if(response.body().get(i).getUserPhone().equals(s)){
-//                            _tmpList.add(response.body().get(i));
-//                        }
-//                    }
-//                }
-//                RequestListAdapter findFriendListAdapter = new RequestListAdapter((ArrayList<User>) _tmpList,RequestMessageActivity.this);
-//                listView_RequestMessage.setAdapter(findFriendListAdapter);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-//            }
-//        });
-
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Session sessionManagement = new Session(RequestMessageActivity.this);
                 ArrayList<String> userInfos = sessionManagement.getSession();
-                ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
+
+                ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<List<User>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                        Session sessionManagement = new Session(RequestMessageActivity.this);
-                        ArrayList<String> userInfos = sessionManagement.getSession();
-                        ArrayList<User> _tmpList = new ArrayList<User>();
-                        for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
-                            for (String s : listRequestCurrentUser) {
-                                if(response.body().get(i).getUserPhone().equals(s)){
-                                    _tmpList.add(response.body().get(i));
-                                }
+                    public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                        if(response.body()!=null){
+                            if(response.body().size()>0){
+                                listRequestCurrentUser = (ArrayList<User>) response.body();
+                                findFriendListAdapter = new RequestListAdapter(listRequestCurrentUser,RequestMessageActivity.this);
+                                listView_RequestMessage.setAdapter(findFriendListAdapter);
                             }
                         }
-                        RequestListAdapter findFriendListAdapter = new RequestListAdapter((ArrayList<User>) _tmpList,RequestMessageActivity.this);
-                        listView_RequestMessage.setAdapter(findFriendListAdapter);
-                        swiperefresh.setRefreshing(false);
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                    public void onFailure(Call<List<User>> call, Throwable t) {
+
                     }
                 });
                 swiperefresh.setRefreshing(false);
+            }
+        });
+
+        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                new AlertDialog.Builder(RequestMessageActivity.this)
+                        .setTitle("Chấp nhận " + listRequestCurrentUser.get(position).getUserName() + "?")
+                        .setMessage("Gay")
+                        .setCancelable(false)
+                        .setPositiveButton("Chấp nhận", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ApiService.api.AcceptFriendRequest(userInfos.get(1),listRequestCurrentUser.get(position).getUserPhone()).enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        findFriendListAdapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                    }
+                                });
+                                dialog.cancel();
+                            }
+                        })
+                        .setNegativeButton("Từ chối", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ApiService.api.AcceptFriendRequest(userInfos.get(1),listRequestCurrentUser.get(position).getUserPhone()).enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        findFriendListAdapter.notifyDataSetChanged();
+                                        listRequestCurrentUser.remove(position);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                    }
+                                });
+                                dialog.cancel();
+                            }
+                        })
+                        .setNeutralButton("Trở về", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
     }

@@ -74,13 +74,19 @@ public class ConversationListFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
                 conversations = (ArrayList<Conversation>) response.body();
-//                ArrayList<Conversation> _Conv = new ArrayList<>();
-//                for (Conversation conversation : conversations) {
-//                    if(conversation.isReceiverShown() != false){
-//                        _Conv.add(conversation);
-//                    }
-//                }
-                ConversationListAdapter adapter = new ConversationListAdapter(conversations, getContext());
+                ArrayList<Conversation> _Conv = new ArrayList<>();
+                for (Conversation conversation : conversations) {
+                    if(conversation.getReceiver().equals(userInfos.get(1))){
+                        if(conversation.isReceiverShown() != false){
+                            _Conv.add(conversation);
+                        }
+                    }else{
+                        if(conversation.isSenderShown() != false){
+                            _Conv.add(conversation);
+                        }
+                    }
+                }
+                ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
                 listView.setAdapter(adapter);
             }
 
@@ -91,28 +97,31 @@ public class ConversationListFragment extends Fragment {
         });
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() {
-                Session sessionManagement = new Session(getContext());
-                ArrayList<String> userInfos = sessionManagement.getSession();
-                ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                        conversations = (ArrayList<Conversation>) response.body();
-                        ArrayList<Conversation> _Conv = new ArrayList<>();
-                        for (Conversation conversation : conversations) {
+            public void onRefresh() {ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
+                @Override
+                public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                    conversations = (ArrayList<Conversation>) response.body();
+                    ArrayList<Conversation> _Conv = new ArrayList<>();
+                    for (Conversation conversation : conversations) {
+                        if(conversation.getReceiver().equals(userInfos.get(1))){
                             if(conversation.isReceiverShown() != false){
                                 _Conv.add(conversation);
                             }
+                        }else{
+                            if(conversation.isSenderShown() != false){
+                                _Conv.add(conversation);
+                            }
                         }
-                        ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
-                        listView.setAdapter(adapter);
                     }
+                    ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
+                    listView.setAdapter(adapter);
+                }
 
-                    @Override
-                    public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
 
-                    }
-                });
+                }
+            });
                 swiperefresh.setRefreshing(false);
             }
         });
@@ -120,7 +129,7 @@ public class ConversationListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent result = new Intent(getContext(), ChatScreenActivity.class);
-                result.putExtra("userObject", conversations.get(position));
+                result.putExtra("conversationObject", conversations.get(position));
                 startActivity(result);
             }
         });
