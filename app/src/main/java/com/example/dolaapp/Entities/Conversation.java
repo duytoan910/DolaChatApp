@@ -11,6 +11,32 @@ public class Conversation implements Serializable{
     protected boolean IsGroupChat;
     protected boolean SenderShown;
     protected boolean ReceiverShown;
+    protected String Sender;
+    protected String Receiver;
+
+    public boolean isGroupChat() {
+        return IsGroupChat;
+    }
+
+    public void setGroupChat(boolean groupChat) {
+        IsGroupChat = groupChat;
+    }
+
+    public String getSender() {
+        return Sender;
+    }
+
+    public void setSender(String sender) {
+        Sender = sender;
+    }
+
+    public String getReceiver() {
+        return Receiver;
+    }
+
+    public void setReceiver(String receiver) {
+        Receiver = receiver;
+    }
 
     public Conversation(String ConversationID, String ConversationName, ArrayList<String> ConversationMember) {
         this.ConversationID = ConversationID;

@@ -27,11 +27,16 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.9:3000/api/")
+            .baseUrl("http://192.168.1.3:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
+
+    //Get all user
+    @POST("CheckLogIn/{PhoneOfUser}")
+    @FormUrlEncoded
+    Call<User> CheckLogIn(@Path("PhoneOfUser") String PhoneOfUser, @Field("PasswordOfUser") String PasswordOfUser);
 
     //Get all user
     @GET("users")
@@ -42,6 +47,10 @@ public interface ApiService {
     Call<User> getUserById(@Path("id") String id);
 
     //Get user by id
+    @GET("{id}/ListRequests")
+    Call<List<User>> getAllListRequest(@Path("id") String id);
+
+    //Send password to user
     @GET("Users/{id}/SendPassword")
     Call<String> sendPassword(@Path("id") String id);
 
@@ -49,6 +58,10 @@ public interface ApiService {
     @PUT("users")
     @FormUrlEncoded
     Call<User> createNewUser(@Field("phone") String phone, @Field("name") String name, @Field("Dob") String Dob, @Field("mail") String mail, @Field("password") String password);
+
+    //Get conversation detail
+    @GET("Conversations/{ConversationId}")
+    Call<Conversation> getDetailConversationById(@Path("ConversationId") String ConversationId);
 
     //Get all conversation of user
     //http://localhost:3001/api/:idUser/Conversations
@@ -65,7 +78,9 @@ public interface ApiService {
             @Field("ConversationAdmin") ArrayList<String> Admin,
             @Field("IsGroup") boolean IsGroup,
             @Field("SenderShown") boolean SenderShown,
-            @Field("ReceiverShown") boolean ReceiverShown
+            @Field("ReceiverShown") boolean ReceiverShown,
+            @Field("Sender") String Sender,
+            @Field("Receiver") String Receiver
             );
 
     //Get all user friends
@@ -80,12 +95,16 @@ public interface ApiService {
     @GET("{PhoneOfReceiver}/DeleteRequestAddFriend/{PhoneOfSender}")
     Call<String> DeleteRequestAddFriend(@Path("PhoneOfReceiver") String PhoneOfReceiver,@Path("PhoneOfSender") String PhoneOfSender);
 
+    //Remove friend request
+    @GET("{PhoneOfReceiver}/AcceptFriendRequest/{PhoneOfSender}")
+    Call<String> AcceptFriendRequest(@Path("PhoneOfReceiver") String PhoneOfReceiver,@Path("PhoneOfSender") String PhoneOfSender);
+
     //Get all message in conversation
-    @GET("getMessages2/{Receiver}")
-    Call<ArrayList<Message>> getMessages2(@Path("Receiver") String Receiver);
+    @GET("{ConversationId}/Messages")
+    Call<ArrayList<Message>> getAllMessageByGroupId(@Path("ConversationId") String ConversationId);
 
     //Create new message
-    @POST("Messages")
+    @PUT("Messages")
     @FormUrlEncoded
     Call<Message> createMessage(
             @Field("Message") String Message,

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -65,30 +66,32 @@ public class ChatScreenActivity extends AppCompatActivity {
         messageListView.setAdapter(messageAdapter);
 
         Intent i = getIntent();
-        ArrayList<User> userlist = new ArrayList<User>();
         Session sessionManagement = new Session(ChatScreenActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
-        for (String userObject : ((Conversation) i.getSerializableExtra("userObject")).getConversationMember()) {
-            if(((Conversation) i.getSerializableExtra("userObject")).getConversationMember().size() == 2){
-                if(userObject.equals(userInfos.get(1)))
+        Conversation conv = ((Conversation)i.getSerializableExtra("conversationObject"));
+        if(conv.isGroup()) {
+            chatUserName.setText(conv.getConversationName() + "");
+        }else {
+            for (String s : conv.getConversationMember()) {
+                if (s.equals(userInfos.get(1))) {
                     continue;
+                } else {
+                    ApiService.api.getUserById(s).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            chatUserName.setText(response.body().getUserName());
+                        }
 
-                ApiService.api.getUserById(userObject).enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        chatUserName.setText(response.body().getUserName());
-                    }
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
 
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-
-                    }
-                });
+                        }
+                    });
+                }
             }
         }
 
-
-        ApiService.api.getMessages2(((Conversation) i.getSerializableExtra("userObject")).getConversationID()).enqueue(new Callback<ArrayList<Message>>() {
+        ApiService.api.getAllMessageByGroupId(conv.getConversationID()).enqueue(new Callback<ArrayList<Message>>() {
             @Override
             public void onResponse(Call<ArrayList<Message>> call, Response<ArrayList<Message>> response) {
                 for (Message message : response.body()) {
@@ -132,7 +135,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                             txtMessageContent.getText().toString().trim(),
                             "message.getMessageId()",
                             userInfos.get(0),
-                            ((Conversation) i.getSerializableExtra("userObject")).getConversationID(),
+                            conv.getConversationID(),
                             userInfos.get(1),
                             ((Date)Calendar.getInstance().getTime()).toString(),
                             true
@@ -151,7 +154,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                     ApiService.api.createMessage(
                             txtMessageContent.getText().toString().trim(),
                             userInfos.get(1),
-                            ((Conversation) i.getSerializableExtra("userObject")).getConversationID(),
+                            conv.getConversationID(),
                             userInfos.get(0),
                             ((Date)Calendar.getInstance().getTime()).toString()
                     ).enqueue(new Callback<Message>() {
@@ -170,7 +173,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                             txtMessageContent.getText().toString().trim(),
                             "message.getMessageId()",
                             userInfos.get(0),
-                            ((Conversation) i.getSerializableExtra("userObject")).getConversationID(),
+                            conv.getConversationID(),
                             userInfos.get(1),
                             myFormat.format(Calendar.getInstance().getTime()),
                             true
