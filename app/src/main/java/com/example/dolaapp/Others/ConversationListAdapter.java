@@ -51,7 +51,7 @@ public class ConversationListAdapter extends BaseAdapter {
         Session sessionManagement = new Session(context);
         ArrayList<String> userInfos = sessionManagement.getSession();
 
-        if(list.get(position).isGroup()) {
+        if(list.get(position).isGroupChat()) {
             ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getConversationName() + "");
         }else {
             for (String s : list.get(position).getConversationMember()) {

@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -120,5 +122,42 @@ public class ConversationScreenActivity extends AppCompatActivity {
 
         imgBtnConversation.setImageResource(R.drawable.message_blur_40);
         imgBtnContact.setImageResource(R.drawable.contact_focus_40);
+    }
+
+    public void newGroup(View view) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ConversationScreenActivity.this);
+        alertDialog.setTitle("AlertDialog");
+        String[] items = {"java","android","Data Structures","HTML","CSS","HTML","CSS","HTML","CSS","HTML","CSS","HTML","CSS","HTML","CSS"};
+        boolean[] checkedItems = {false, false, false, false, false,false, false,false, false,false, false,false, false,false};
+        alertDialog.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                switch (which) {
+                    case 0:
+                        if(isChecked)
+                            Toast.makeText(ConversationScreenActivity.this, "Clicked on java", Toast.LENGTH_LONG).show();
+                        break;
+                    case 1:
+                        if(isChecked)
+                            Toast.makeText(ConversationScreenActivity.this, "Clicked on android", Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        if(isChecked)
+                            Toast.makeText(ConversationScreenActivity.this, "Clicked on Data Structures", Toast.LENGTH_LONG).show();
+                        break;
+                    case 3:
+                        if(isChecked)
+                            Toast.makeText(ConversationScreenActivity.this, "Clicked on HTML", Toast.LENGTH_LONG).show();
+                        break;
+                    case 4:
+                        if(isChecked)
+                            Toast.makeText(ConversationScreenActivity.this, "Clicked on CSS", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        });
+        AlertDialog alert = alertDialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.show();
     }
 }

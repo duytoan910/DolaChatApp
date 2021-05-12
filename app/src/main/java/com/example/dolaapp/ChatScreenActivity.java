@@ -4,16 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,16 +15,15 @@ import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.Others.ConversationListAdapter;
+import com.example.dolaapp.Others.Conversaion_Group_BottomSheet;
+import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
 import com.example.dolaapp.Others.MessageAdapter;
 import com.example.dolaapp.Others.Session;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
@@ -46,6 +39,9 @@ public class ChatScreenActivity extends AppCompatActivity {
 
     MessageAdapter messageAdapter;
     Intent i;
+    Conversation conv;
+    ArrayList<String> userInfos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +53,9 @@ public class ChatScreenActivity extends AppCompatActivity {
         txtMessageContent = findViewById(R.id.txtMessageContent);
         messageListView = findViewById(R.id.messageListView);
 
+        Session sessionManagement = new Session(ChatScreenActivity.this);
+        userInfos = sessionManagement.getSession();
+
         EmojIconActions emojIcon=new EmojIconActions(this,findViewById(R.id.rootView),txtMessageContent,findViewById(R.id.emojicon_icon),
                 "#495C66",
                 "#DCE1E2",
@@ -66,10 +65,8 @@ public class ChatScreenActivity extends AppCompatActivity {
         messageListView.setAdapter(messageAdapter);
 
         Intent i = getIntent();
-        Session sessionManagement = new Session(ChatScreenActivity.this);
-        ArrayList<String> userInfos = sessionManagement.getSession();
-        Conversation conv = ((Conversation)i.getSerializableExtra("conversationObject"));
-        if(conv.isGroup()) {
+        conv = ((Conversation)i.getSerializableExtra("conversationObject"));
+        if(conv.isGroupChat()) {
             chatUserName.setText(conv.getConversationName() + "");
         }else {
             for (String s : conv.getConversationMember()) {
@@ -95,28 +92,18 @@ public class ChatScreenActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<Message>> call, Response<ArrayList<Message>> response) {
                 for (Message message : response.body()) {
-                    ApiService.api.getUserById(message.getSender()).enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> callUser, Response<User> responseUser) {
-                            String[] parts = responseUser.body().getUserName().split(" ");
-                            String lastWord = parts[parts.length - 1];
-                            messageAdapter.add(new Message(
-                                    message.getMessage(),
-                                    message.getMessageId(),
-                                    lastWord,
-                                    message.getReceiver(),
-                                    message.getSender(),
-                                    message.getTimeStamp(),
-                                    message.getSender().equals(userInfos.get(1))?true:false
-                            ));
-                        }
 
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-
-                        }
-                    });
-
+                    String[] parts = message.getNameSender().split(" ");
+                    String lastWord = parts[parts.length - 1];
+                    messageAdapter.add(new Message(
+                            message.getMessage(),
+                            message.getMessageId(),
+                            lastWord,
+                            message.getReceiver(),
+                            message.getSender(),
+                            message.getTimeStamp(),
+                            message.getSender().equals(userInfos.get(1))?true:false
+                    ));
                 }
             }
 
@@ -193,5 +180,30 @@ public class ChatScreenActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    public void convInfo(View view) {
+        if(conv.isGroupChat()){
+            Conversaion_Group_BottomSheet modal = new Conversaion_Group_BottomSheet(conv);
+            modal.show(getSupportFragmentManager(), "info_group_Modal");
+        }else{
+            for (String s : conv.getConversationMember()) {
+                if(!s.equals(userInfos.get(1))){
+                    ApiService.api.getUserById(s).enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(response.body());
+                            modal.show(getSupportFragmentManager(), "info_u2u_Modal");
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+        }
     }
 }
