@@ -73,6 +73,7 @@ public class ConversationListFragment extends Fragment {
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                if(response.body().size()==0) return;
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {

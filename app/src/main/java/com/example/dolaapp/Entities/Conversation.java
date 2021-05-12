@@ -75,14 +75,6 @@ public class Conversation implements Serializable{
         ConversationAdmin = conversationAdmin;
     }
 
-    public boolean isGroup() {
-        return IsGroupChat;
-    }
-
-    public void setGroup(boolean group) {
-        IsGroupChat = group;
-    }
-
     public boolean isSenderShown() {
         return SenderShown;
     }

@@ -36,18 +36,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="3"
+                android:layout_weight="3.5"
                 android:orientation="horizontal"
                 android:background="@color/transparent"
                 android:weightSum="10">
 
                 <ImageView
-                    android:id="@+id/imgUserSetting"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/transparent"
                     android:layout_weight="8"
-                    android:src="@drawable/images"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_baseline_settings_24"
                     android:onClick="userSetting"/>
 
                 <TextView
@@ -55,7 +54,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
                     android:layout_weight="2"
                     android:text="Các đoạn hội thoại"
                     android:textColor="@color/dola_control_white"
@@ -65,7 +63,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="7"
+                android:layout_weight="6.5"
                 android:orientation="vertical"
                 android:layout_gravity="center"
                 android:weightSum="20"
@@ -82,11 +80,20 @@
                         android:id="@+id/btnNewMessage"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginRight="5dp"
                         android:background="@drawable/border_radius"
                         android:backgroundTint="@color/dola_control_white"
                         android:src="@drawable/add"
                         android:onClick="addNewFriend"/>
+                    <ImageButton
+                    android:id="@+id/btnNewGroup"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/border_radius"
+                    android:backgroundTint="@color/dola_control_white"
+                    android:src="@drawable/ic_baseline_group_add_24"
+                    android:onClick="newGroup" />
                     <ImageButton
                         android:id="@+id/btnWaitMessage"
                         android:layout_width="32dp"
