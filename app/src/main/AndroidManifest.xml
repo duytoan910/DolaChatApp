@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DolaApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ConversationInfoActivity"></activity>
+        <activity android:name=".MemberGroupActivity"></activity>
+        <activity android:name=".ConversationInfoActivity" />
         <activity android:name=".RequestMessageActivity" />
         <activity android:name=".FindFriendActivity" />
         <activity android:name=".ReportErrorActivity" />

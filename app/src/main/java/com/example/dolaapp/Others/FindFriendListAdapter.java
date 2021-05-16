@@ -160,6 +160,7 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
 
         return convertView;
     }
+
     @Override
     public Filter getFilter() {
         Filter filter = new Filter() {
@@ -184,13 +185,13 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                 /********
                  *
                  *  If constraint(CharSequence that is received) is null returns the list(Original) values
-                 *  else does the Filtering and returns FilteredArrList(Filtered)  
+                 *  else does the Filtering and returns FilteredArrList(Filtered)
                  *
                  ********/
                 if (constraint == null || constraint.length() == 0) {
 
 
-                    // set the Original result to return  
+                    // set the Original result to return
                     results.count = list.size();
                     results.values = list;
                 } else {

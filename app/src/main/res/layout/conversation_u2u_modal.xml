@@ -46,7 +46,7 @@
 
 
             <LinearLayout
-                android:id="@+id/loUnfriendAMember"
+                android:id="@+id/createGroupWith"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="10"
@@ -66,7 +66,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/createGroupWith"
+                        android:id="@+id/createGroupWithText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="5"

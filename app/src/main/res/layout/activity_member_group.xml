@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <ListView
-                android:id="@+id/listView_FindFriend"
+                android:id="@+id/listView_GroupMember"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="#FFFFFF"

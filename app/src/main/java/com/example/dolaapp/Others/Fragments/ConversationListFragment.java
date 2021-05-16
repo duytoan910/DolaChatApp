@@ -77,13 +77,17 @@ public class ConversationListFragment extends Fragment {
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {
-                    if(conversation.getReceiver().equals(userInfos.get(1))){
-                        if(conversation.isReceiverShown() != false){
-                            _Conv.add(conversation);
-                        }
+                    if(conversation.isGroupChat() == Boolean.parseBoolean("true")){
+                        
                     }else{
-                        if(conversation.isSenderShown() != false){
-                            _Conv.add(conversation);
+                        if(conversation.getReceiver().equals(userInfos.get(1))){
+                            if(conversation.isReceiverShown() != false){
+                                _Conv.add(conversation);
+                            }
+                        }else{
+                            if(conversation.isSenderShown() != false){
+                                _Conv.add(conversation);
+                            }
                         }
                     }
                 }

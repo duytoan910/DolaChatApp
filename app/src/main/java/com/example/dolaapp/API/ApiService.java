@@ -12,6 +12,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Retrofit;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -27,7 +28,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.6:3000/api/")
+            .baseUrl("http://192.168.1.8:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -59,6 +60,10 @@ public interface ApiService {
     @FormUrlEncoded
     Call<User> createNewUser(@Field("phone") String phone, @Field("name") String name, @Field("Dob") String Dob, @Field("mail") String mail, @Field("password") String password);
 
+    //Get conversation member
+    @GET("Conversations/{ConversationId}/Members")
+    Call<ArrayList<User>> getAllConversationMember(@Path("ConversationId") String ConversationId);
+
     //Get conversation detail
     @GET("Conversations/{ConversationId}")
     Call<Conversation> getDetailConversationById(@Path("ConversationId") String ConversationId);
@@ -67,6 +72,11 @@ public interface ApiService {
     //http://localhost:3001/api/:idUser/Conversations
     @GET("{id}/Conversations")
     Call<ArrayList<Conversation>> getAllConversationByUserID(@Path("id") String id);
+
+    //Get all conversation of user
+    //http://localhost:3001/api/:idUser/Conversations
+    @DELETE("Conversations/{ConversationId}/{UserId}")
+    Call<String> deleteMemberFromConversation(@Path("ConversationId") String ConversationId,@Path("UserId") String UserId);
 
     //Create new conversation
     //http://localhost:3001/api/:idUser/Conversations
@@ -94,6 +104,10 @@ public interface ApiService {
     //Remove friend request
     @GET("{PhoneOfReceiver}/DeleteRequestAddFriend/{PhoneOfSender}")
     Call<String> DeleteRequestAddFriend(@Path("PhoneOfReceiver") String PhoneOfReceiver,@Path("PhoneOfSender") String PhoneOfSender);
+
+    //Remove friend
+    @GET("{PhoneOfUser}/DeleteFriend/{PhoneOfFriend}")
+    Call<String> DeleteFriend(@Path("PhoneOfUser") String PhoneOfUser,@Path("PhoneOfFriend") String PhoneOfFriend);
 
     //Remove friend request
     @GET("{PhoneOfReceiver}/AcceptFriendRequest/{PhoneOfSender}")
