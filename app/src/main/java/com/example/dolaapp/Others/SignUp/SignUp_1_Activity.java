@@ -48,6 +48,7 @@ public class SignUp_1_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean isReturn = false;
+                if(list.size()<1) return;
                 for (User user : list) {
                     if(user.getUserPhone().equals(username.getText().toString().trim()))
                     {

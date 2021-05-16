@@ -51,7 +51,7 @@ public class FindFriendActivity extends AppCompatActivity {
                         response.body().remove(i);
                     }
                 }
-                FindFriendListAdapter findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                 listView_FindFriend.setAdapter(findFriendListAdapter);
             }
 
@@ -73,6 +73,7 @@ public class FindFriendActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         txtSearchUser.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

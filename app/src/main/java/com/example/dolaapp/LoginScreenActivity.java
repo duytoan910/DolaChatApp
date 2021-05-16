@@ -41,6 +41,10 @@ public class LoginScreenActivity extends AppCompatActivity {
                 ApiService.api.CheckLogIn(usernameEditText.getText().toString(),passwordEditText.getText().toString()).enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
+                        if(response.body() == null){
+                            Toast.makeText(LoginScreenActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         Session sessionManagement = new Session(LoginScreenActivity.this);
                         sessionManagement.saveSession(response.body());
 
@@ -51,7 +55,7 @@ public class LoginScreenActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(LoginScreenActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginScreenActivity.this, "Không kết nối được đến máy chủ!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
