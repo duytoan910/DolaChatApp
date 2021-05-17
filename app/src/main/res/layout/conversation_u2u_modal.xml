@@ -141,7 +141,7 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/loLeaveGroup"
+                android:id="@+id/loRequestMessage"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:weightSum="10"
