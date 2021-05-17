@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
@@ -26,7 +27,7 @@ import retrofit2.Response;
 public class LoginScreenActivity extends AppCompatActivity {
     EditText usernameEditText, passwordEditText;
     Button loginButton,forgotPassword,signUp;
-    ImageButton info;
+    ImageView info;
 
     List<User> list;
     @Override
