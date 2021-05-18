@@ -31,6 +31,7 @@ public class FindFriendActivity extends AppCompatActivity {
     FindFriendListAdapter findFriendListAdapter;
     EditText txtSearchUser;
     SwipeRefreshLayout swiperefresh;
+    Session sessionManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,34 +42,78 @@ public class FindFriendActivity extends AppCompatActivity {
         txtSearchUser = findViewById(R.id.txtSearchUser);
         listView_FindFriend = (ListView) findViewById(R.id.listView_FindFriend);
 
-        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
+        sessionManagement = new Session(FindFriendActivity.this);
+        ArrayList<String> userInfos = sessionManagement.getSession();
+
+//        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
+//            @Override
+//            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+//                Session sessionManagement = new Session(FindFriendActivity.this);
+//                ArrayList<String> userInfos = sessionManagement.getSession();
+//                for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
+//                    if(response.body().get(i).getUserPhone().equals(userInfos.get(1))){
+//                        response.body().remove(i);
+//                    }
+//                }
+//                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+//                listView_FindFriend.setAdapter(findFriendListAdapter);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+//                Toast.makeText(FindFriendActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+
+        ApiService.api.SearchAccountByName(userInfos.get(1)," ").enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                Session sessionManagement = new Session(FindFriendActivity.this);
-                ArrayList<String> userInfos = sessionManagement.getSession();
-                for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
-                    if(response.body().get(i).getUserPhone().equals(userInfos.get(1))){
-                        response.body().remove(i);
-                    }
-                }
+                if(response.body().size()<=0) return;
                 findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                 listView_FindFriend.setAdapter(findFriendListAdapter);
             }
 
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                Toast.makeText(FindFriendActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+
             }
         });
-
 
         txtSearchUser.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_DEL){
                     if(txtSearchUser.getText().toString() == ""){
-                        findFriendListAdapter.getFilter().filter(" ");
-                    }else findFriendListAdapter.getFilter().filter(txtSearchUser.getText().toString());
+                        ApiService.api.SearchAccountByName(userInfos.get(1)," ")
+                                .enqueue(new Callback<ArrayList<User>>() {
+                                    @Override
+                                    public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                                        if(response.body().size()<=0) return;
+                                        findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                                        listView_FindFriend.setAdapter(findFriendListAdapter);
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+
+                                    }
+                        });
+                    }else {
+                        ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString())
+                            .enqueue(new Callback<ArrayList<User>>() {
+                            @Override
+                            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                                if(response.body().size()<=0) return;
+                                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                                listView_FindFriend.setAdapter(findFriendListAdapter);
+                            }
+
+                            @Override
+                            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+
+                            }
+                        });
+                    }
                 }
                 return false;
             }
@@ -78,8 +123,37 @@ public class FindFriendActivity extends AppCompatActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 if(s.toString() == ""){
-                    findFriendListAdapter.getFilter().filter(" ");
-                }else findFriendListAdapter.getFilter().filter(s.toString());
+                    ApiService.api.SearchAccountByName(userInfos.get(1)," ")
+                        .enqueue(new Callback<ArrayList<User>>() {
+                            @Override
+                            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                                if(response.body().size()<=0) return;
+                                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                                listView_FindFriend.setAdapter(findFriendListAdapter);
+                            }
+
+                            @Override
+                            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+
+                            }
+
+                    });
+                }else{
+                    ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString())
+                        .enqueue(new Callback<ArrayList<User>>() {
+                            @Override
+                            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                                if(response.body().size()<=0) return;
+                                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                                listView_FindFriend.setAdapter(findFriendListAdapter);
+                            }
+
+                            @Override
+                            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+
+                            }
+                    });
+                }
             }
 
             @Override
@@ -96,23 +170,17 @@ public class FindFriendActivity extends AppCompatActivity {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
+                ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString()).enqueue(new Callback<ArrayList<User>>() {
                     @Override
                     public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                        Session sessionManagement = new Session(FindFriendActivity.this);
-                        ArrayList<String> userInfos = sessionManagement.getSession();
-                        for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
-                            if(response.body().get(i).getUserPhone().equals(userInfos.get(1))){
-                                response.body().remove(i);
-                            }
-                        }
-                        FindFriendListAdapter findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                        if(response.body().size()<=0) return;
+                        findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                         listView_FindFriend.setAdapter(findFriendListAdapter);
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                        Toast.makeText(FindFriendActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
+
                     }
                 });
                 swiperefresh.setRefreshing(false);

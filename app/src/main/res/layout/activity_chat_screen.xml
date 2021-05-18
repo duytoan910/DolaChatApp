@@ -69,6 +69,8 @@
                     android:text=""
                     android:textColor="@color/dola_control_white"
                     android:textSize="18sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textStyle="bold" />
             </LinearLayout>
 

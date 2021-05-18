@@ -143,7 +143,8 @@ public class ChatScreenActivity extends AppCompatActivity {
                             userInfos.get(1),
                             conv.getConversationID(),
                             userInfos.get(0),
-                            ((Date)Calendar.getInstance().getTime()).toString()
+                            ((Date)Calendar.getInstance().getTime()).toString(),
+                            userInfos.get(0)
                     ).enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {

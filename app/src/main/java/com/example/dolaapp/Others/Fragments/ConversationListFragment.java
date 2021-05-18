@@ -73,21 +73,16 @@ public class ConversationListFragment extends Fragment {
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                if(response.body().size()==0) return;
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {
-                    if(conversation.isGroupChat() == Boolean.parseBoolean("true")){
-                        
+                    if(conversation.getReceiver().equals(userInfos.get(1))){
+                        if(conversation.isReceiverShown() != false){
+                            _Conv.add(conversation);
+                        }
                     }else{
-                        if(conversation.getReceiver().equals(userInfos.get(1))){
-                            if(conversation.isReceiverShown() != false){
-                                _Conv.add(conversation);
-                            }
-                        }else{
-                            if(conversation.isSenderShown() != false){
-                                _Conv.add(conversation);
-                            }
+                        if(conversation.isSenderShown() != false){
+                            _Conv.add(conversation);
                         }
                     }
                 }
@@ -102,31 +97,32 @@ public class ConversationListFragment extends Fragment {
         });
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() {ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-                @Override
-                public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                    conversations = (ArrayList<Conversation>) response.body();
-                    ArrayList<Conversation> _Conv = new ArrayList<>();
-                    for (Conversation conversation : conversations) {
-                        if(conversation.getReceiver().equals(userInfos.get(1))){
-                            if(conversation.isReceiverShown() != false){
-                                _Conv.add(conversation);
-                            }
-                        }else{
-                            if(conversation.isSenderShown() != false){
-                                _Conv.add(conversation);
+            public void onRefresh() {
+                ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                        conversations = (ArrayList<Conversation>) response.body();
+                        ArrayList<Conversation> _Conv = new ArrayList<>();
+                        for (Conversation conversation : conversations) {
+                            if(conversation.getReceiver().equals(userInfos.get(1))){
+                                if(conversation.isReceiverShown() != false){
+                                    _Conv.add(conversation);
+                                }
+                            }else{
+                                if(conversation.isSenderShown() != false){
+                                    _Conv.add(conversation);
+                                }
                             }
                         }
+                        ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
+                        listView.setAdapter(adapter);
                     }
-                    ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
-                    listView.setAdapter(adapter);
-                }
 
-                @Override
-                public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
 
-                }
-            });
+                    }
+                });
                 swiperefresh.setRefreshing(false);
             }
         });

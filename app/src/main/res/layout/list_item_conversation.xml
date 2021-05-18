@@ -51,6 +51,8 @@
             android:paddingTop="10dp"
             android:textSize="18sp"
             android:textColor="@color/white"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textStyle="normal" />
 
         <LinearLayout
@@ -60,29 +62,33 @@
             android:paddingBottom="15dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtUserMessage"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="fill"
-                android:textColor="@color/dola_control_gray"
-                android:textSize="14sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="fill"
-                android:text=" - "
-                android:textColor="@color/dola_control_gray"
-                android:textSize="14sp" />
+                android:layout_weight="1.5">
+                <TextView
+                    android:id="@+id/txtUserMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/dola_control_gray"
+                    android:textSize="14sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text=""/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtUserMessageTime"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="fill"
+                android:layout_weight="4.5"
+                android:gravity="center"
                 android:textColor="@color/dola_control_gray"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text=""/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

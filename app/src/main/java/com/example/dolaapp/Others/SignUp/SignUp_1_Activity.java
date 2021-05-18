@@ -48,7 +48,13 @@ public class SignUp_1_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 boolean isReturn = false;
-                if(list.size()<1) return;
+                if(list.size()<1){
+                    Intent intent = new Intent(SignUp_1_Activity.this, SignUp_2_Activity.class);
+                    intent.putExtra("userName", username.getText().toString().trim());
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    return;
+                }
                 for (User user : list) {
                     if(user.getUserPhone().equals(username.getText().toString().trim()))
                     {

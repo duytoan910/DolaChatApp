@@ -53,6 +53,8 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:hint="Tìm kiếm"
+                android:ellipsize="end"
+                android:maxLines="1"
                 />
         </LinearLayout>
     </LinearLayout>

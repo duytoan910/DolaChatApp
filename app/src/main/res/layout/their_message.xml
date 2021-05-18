@@ -25,7 +25,7 @@
         android:paddingBottom="4dp"
         android:text="Rose"/>
 
-    <TextView
+    <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/message_body"

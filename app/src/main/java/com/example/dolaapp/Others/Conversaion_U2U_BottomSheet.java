@@ -42,7 +42,7 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
         LinearLayout createGroupWith = v.findViewById(R.id.createGroupWith);
         LinearLayout loUserList = v.findViewById(R.id.loUserList);
         LinearLayout loUnfriendAMember = v.findViewById(R.id.loUnfriendAMember);
-        LinearLayout loLeaveGroup = v.findViewById(R.id.loLeaveGroup);
+        LinearLayout loRequestMessage = v.findViewById(R.id.loRequestMessage);
 
         userSettingName.setText(currUser.getUserName());
 
@@ -81,11 +81,11 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                         }).show();
             }
         });
-        loLeaveGroup.setOnClickListener(new View.OnClickListener() {
+        loRequestMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getContext()).setTitle("Thoát khỏi nhóm?").setMessage("Bạn có muốn thoát khỏi nhóm chat này?")
-                        .setPositiveButton("Thoát nhóm", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getContext()).setTitle("Đưa vào tin nhắn chờ?").setMessage("Bạn có muốn đưa người này vào tin nhắn chờ?")
+                        .setPositiveButton("Đưa vào tin nhắn chờ", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 

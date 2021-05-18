@@ -28,7 +28,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.41:3000/api/")
+            .baseUrl("http://192.168.1.7:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -49,7 +49,7 @@ public interface ApiService {
 
     //Get user by id
     @GET("{id}/ListRequests")
-    Call<List<User>> getAllListRequest(@Path("id") String id);
+    Call<List<Conversation>> getAllListRequest(@Path("id") String id);
 
     //Send password to user
     @GET("Users/{id}/SendPassword")
@@ -79,10 +79,9 @@ public interface ApiService {
     Call<String> deleteMemberFromConversation(@Path("ConversationId") String ConversationId,@Path("UserId") String UserId);
 
     //Create new conversation
-    //http://localhost:3001/api/:idUser/Conversations
-    @POST("Conversations")
+    @PUT("Conversations")
     @FormUrlEncoded
-    Call<ArrayList<Conversation>> createConversation(
+    Call<ArrayList<String>> createConversation(
             @Field("ConversationName") String Name,
             @Field("ConversationMember") ArrayList<String> Member,
             @Field("ConversationAdmin") ArrayList<String> Admin,
@@ -96,6 +95,10 @@ public interface ApiService {
     //Get all user friends
     @GET("{id}/ListFriends/")
     Call<ArrayList<User>> getAllListFriend(@Path("id") String id);
+
+    //Get all user stranger
+    @GET("{idUser}/SearchAccountByName/{name}")
+    Call<ArrayList<User>> SearchAccountByName(@Path("idUser") String idUser,@Path("name") String name);
 
     //Send friend request
     @GET("{UserPhone}/SendAddFriendReQuest/{TargetPhone}")
@@ -125,6 +128,7 @@ public interface ApiService {
             @Field("Sender") String Sender,
             @Field("Receiver") String Receiver,
             @Field("NameSender") String NameSender,
-            @Field("Time") String Time
+            @Field("Time") String Time,
+            @Field("NewestSenderName") String NewestSenderName
     );
 }
