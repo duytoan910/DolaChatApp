@@ -17,7 +17,6 @@ import androidx.annotation.Nullable;
 import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.ConversationScreenActivity;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.LoginScreenActivity;
 import com.example.dolaapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -27,31 +26,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
-    User currUser;
-    public Conversaion_U2U_BottomSheet(User user){
+public class MemberListSelect_BottomSheet extends BottomSheetDialogFragment {
+    private User currUser;
+    public MemberListSelect_BottomSheet(User user){
         this.currUser = user;
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.conversation_u2u_modal,container, false);
+        View v = inflater.inflate(R.layout.conversation_group_member_modal,container, false);
 
-        TextView userSettingName = v.findViewById(R.id.userSettingName);
-        TextView createGroupWithText = v.findViewById(R.id.createGroupWithText);
-        LinearLayout createGroupWith = v.findViewById(R.id.createGroupWith);
-        LinearLayout loUserList = v.findViewById(R.id.loUserList);
-        LinearLayout loUnfriendAMember = v.findViewById(R.id.loUnfriendAMember);
-        LinearLayout loRequestMessage = v.findViewById(R.id.loRequestMessage);
-
-        userSettingName.setText(currUser.getUserName());
-
+        LinearLayout unFriend = v.findViewById(R.id.unFriend);
+        LinearLayout loLeaveConv = v.findViewById(R.id.loLeaveConv);
         Session sessionManagement = new Session(getContext());
         ArrayList<String> userInfos = sessionManagement.getSession();
 
         String[] parts = currUser.getUserName().split(" ");
-        createGroupWithText.setText("Tạo nhóm chat với " + parts[parts.length - 1]);
-        loUnfriendAMember.setOnClickListener(new View.OnClickListener() {
+        unFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new AlertDialog.Builder(getContext()).setTitle("Hủy kết bạn?")
@@ -81,16 +72,19 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                         }).show();
             }
         });
-        loRequestMessage.setOnClickListener(new View.OnClickListener() {
+
+        loLeaveConv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(getContext()).setTitle("Thoát khỏi nhóm?").setMessage("Bạn có muốn thoát khỏi nhóm chat này?")
-                        .setPositiveButton("Thoát nhóm", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(getContext()).setTitle("Đưa vào tin nhắn chờ?")
+                        .setMessage("Bạn có muốn đưa \n" + parts[parts.length - 1] + "\n vào tin nhắn chờ?")
+                        .setPositiveButton("Đưa vào tin nhắn chờ", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
                             }
-                        }).setNegativeButton("Trở về", new DialogInterface.OnClickListener() {
+                        })
+                        .setNegativeButton("Trở về", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -98,8 +92,6 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                         }).show();
             }
         });
-
         return v;
-        //return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

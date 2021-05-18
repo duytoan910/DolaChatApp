@@ -39,7 +39,6 @@ public class Conversaion_Group_BottomSheet extends BottomSheetDialogFragment {
 
         TextView userSettingName = v.findViewById(R.id.userSettingName);
         LinearLayout loUserList = v.findViewById(R.id.loUserList);
-        LinearLayout loUnfriendAMember = v.findViewById(R.id.loUnfriendAMember);
         LinearLayout loLeaveGroup = v.findViewById(R.id.loLeaveGroup);
 
         Session sessionManagement = new Session(getContext());
