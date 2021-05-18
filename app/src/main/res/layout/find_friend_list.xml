@@ -54,6 +54,8 @@
                 android:text="Châu Nguyễn Duy Toàn"
                 android:textSize="15sp"
                 android:textColor="@color/white"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:textStyle="normal" />
 
             <Button

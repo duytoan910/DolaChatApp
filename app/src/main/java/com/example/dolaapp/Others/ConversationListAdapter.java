@@ -13,7 +13,10 @@ import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,8 +75,12 @@ public class ConversationListAdapter extends BaseAdapter {
                     });
                 }
             }
-//        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
-//        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
+        }
+        DateFormat format = new SimpleDateFormat("HH:mm");
+        if(list.get(position).getNewestSenderName() != null && list.get(position).getNewestMessage() != null && list.get(position).getNewestTime()!=null) {
+            String[] parts = list.get(position).getNewestSenderName().split(" ");
+            ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(parts[parts.length - 1] + ": " +list.get(position).getNewestMessage());
+            ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(format.format(new Date(list.get(position).getNewestTime())));
         }
 
         return convertView;

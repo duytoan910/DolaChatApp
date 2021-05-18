@@ -13,6 +13,38 @@ public class Conversation implements Serializable{
     protected boolean ReceiverShown;
     protected String Sender;
     protected String Receiver;
+    protected String NewestMessage;
+    protected String NewestSenderName;
+    protected String NewestTime;
+
+    public Conversation(String ConversationID, String ConversationName, ArrayList<String> ConversationMember) {
+        this.ConversationID = ConversationID;
+        this.ConversationName = ConversationName;
+        this.ConversationMember = ConversationMember;
+    }
+    public String getNewestMessage() {
+        return NewestMessage;
+    }
+
+    public void setNewestMessage(String newestMessage) {
+        NewestMessage = newestMessage;
+    }
+
+    public String getNewestSenderName() {
+        return NewestSenderName;
+    }
+
+    public void setNewestSenderName(String newestSenderName) {
+        NewestSenderName = newestSenderName;
+    }
+
+    public String getNewestTime() {
+        return NewestTime;
+    }
+
+    public void setNewestTime(String newestTime) {
+        NewestTime = newestTime;
+    }
 
     public boolean isGroupChat() {
         return IsGroupChat;
@@ -38,11 +70,6 @@ public class Conversation implements Serializable{
         Receiver = receiver;
     }
 
-    public Conversation(String ConversationID, String ConversationName, ArrayList<String> ConversationMember) {
-        this.ConversationID = ConversationID;
-        this.ConversationName = ConversationName;
-        this.ConversationMember = ConversationMember;
-    }
     public String getConversationID() {
         return ConversationID;
     }

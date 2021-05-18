@@ -21,11 +21,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class RequestListAdapter extends BaseAdapter {
-    private ArrayList<User> list;
+    private ArrayList<Conversation> list;
     private Context context;
     ArrayList<String> userInfos;
-
-    public RequestListAdapter(ArrayList<User> list, Context context) {
+    User otherUser;
+    public RequestListAdapter(ArrayList<Conversation> list, Context context) {
         this.list = list;
         this.context = context;
         Session sessionManagement = new Session(context);
@@ -53,14 +53,34 @@ public class RequestListAdapter extends BaseAdapter {
 
         TextView btnReject = convertView.findViewById(R.id.btnReject);
 
-        ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getUserName() + "");
+        for (String s : list.get(position).getConversationMember()) {
+            if (s.equals(userInfos.get(1))) {
+                continue;
+            } else {
+                View finalConvertView = convertView;
+                ApiService.api.getUserById(s).enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        otherUser = response.body();
+                        ((TextView) finalConvertView.findViewById(R.id.txtUserName)).setText(otherUser.getUserName());
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+
+                    }
+                });
+            }
+        }
+
+        ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getConversationName() + "");
 //        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
 //        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
 
         btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiService.api.DeleteRequestAddFriend(userInfos.get(1),list.get(position).getUserPhone()).enqueue(new Callback<String>() {
+                ApiService.api.DeleteRequestAddFriend(otherUser.getUserPhone(),userInfos.get(1)).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                     }

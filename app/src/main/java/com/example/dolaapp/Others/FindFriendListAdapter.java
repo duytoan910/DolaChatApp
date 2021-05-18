@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.FindFriendActivity;
 import com.example.dolaapp.R;
@@ -24,6 +25,8 @@ import com.example.dolaapp.R;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +92,7 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View v) {
                 if(btnAdd.getText().toString().equals("Kết bạn")){
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Gửi lời mời kết bạn");
                     final EditText input = new EditText(context);
@@ -101,6 +105,7 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                             //m_Text = input.getText().toString();
                             ArrayList<String> arr = new ArrayList<String>(){{add(userInfos.get(1));add(list.get(position).getUserPhone());}};
                             ArrayList<String> arrAd = new ArrayList<String>();
+
                             ApiService.api.createConversation(
                                     "",
                                     arr,
@@ -110,14 +115,31 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                                     false,
                                     userInfos.get(1),
                                     mDisplayedValues.get(position).getUserPhone()
-                            ).enqueue(new Callback<ArrayList<Conversation>>() {
+                            ).enqueue(new Callback<ArrayList<String>>() {
                                 @Override
-                                public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                                public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                                    ApiService.api.createMessage(
+                                            input.getText().toString().trim(),
+                                            userInfos.get(1),
+                                            response.body().get(0),
+                                            userInfos.get(0),
+                                            ((Date) Calendar.getInstance().getTime()).toString(),
+                                            userInfos.get(0)
+                                    ).enqueue(new Callback<Message>() {
+                                        @Override
+                                        public void onResponse(Call<Message> call, Response<Message> response) {
 
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Message> call, Throwable t) {
+
+                                        }
+                                    });
                                 }
 
                                 @Override
-                                public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+                                public void onFailure(Call<ArrayList<String>> call, Throwable t) {
 
                                 }
                             });
