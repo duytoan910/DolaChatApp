@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.5">
-                <TextView
+                <hani.momanii.supernova_emoji_library.Helper.EmojiconTextView
                     android:id="@+id/txtUserMessage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

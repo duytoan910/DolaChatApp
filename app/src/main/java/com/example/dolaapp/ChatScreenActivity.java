@@ -65,6 +65,11 @@ public class ChatScreenActivity extends AppCompatActivity {
         messageListView.setAdapter(messageAdapter);
 
         Intent i = getIntent();
+
+        if(i.getBooleanExtra("isRequest", false)){
+            ((ImageButton) findViewById(R.id.btnWaitMessage)).setVisibility(View.GONE);
+        }
+
         conv = ((Conversation)i.getSerializableExtra("conversationObject"));
         if(conv.isGroupChat()) {
             chatUserName.setText(conv.getConversationName() + "");

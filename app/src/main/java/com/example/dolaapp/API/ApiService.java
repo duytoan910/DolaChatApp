@@ -97,8 +97,8 @@ public interface ApiService {
     Call<ArrayList<User>> getAllListFriend(@Path("id") String id);
 
     //Get all user stranger
-    @GET("{idUser}/SearchAccountByName/{name}")
-    Call<ArrayList<User>> SearchAccountByName(@Path("idUser") String idUser,@Path("name") String name);
+    @GET("{idUser}/SearchAccountByName")
+    Call<ArrayList<User>> SearchAccountByName(@Path("idUser") String idUser,@Query("name") String name);
 
     //Send friend request
     @GET("{UserPhone}/SendAddFriendReQuest/{TargetPhone}")

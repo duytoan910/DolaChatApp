@@ -25,6 +25,7 @@ import com.example.dolaapp.LoginScreenActivity;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.R;
+import com.gk.emon.lovelyLoading.LoadingPopup;
 
 import java.io.Console;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,7 @@ public class ConversationListFragment extends Fragment {
     ArrayList<Conversation> conversationArrayList;
     List<User> list;
     User currentUser;
+    ArrayList<String> userInfos;
 
     private String userID;
 
@@ -69,7 +71,8 @@ public class ConversationListFragment extends Fragment {
         swiperefresh = view.findViewById(R.id.swiperefresh);
 
         Session sessionManagement = new Session(getContext());
-        ArrayList<String> userInfos = sessionManagement.getSession();
+        userInfos = sessionManagement.getSession();
+
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
@@ -153,5 +156,37 @@ public class ConversationListFragment extends Fragment {
     }
     public void triggerSwipeRefresh(){
         swiperefresh.setRefreshing(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        swiperefresh.setRefreshing(true);
+        ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                conversations = (ArrayList<Conversation>) response.body();
+                ArrayList<Conversation> _Conv = new ArrayList<>();
+                for (Conversation conversation : conversations) {
+                    if(conversation.getReceiver().equals(userInfos.get(1))){
+                        if(conversation.isReceiverShown() != false){
+                            _Conv.add(conversation);
+                        }
+                    }else{
+                        if(conversation.isSenderShown() != false){
+                            _Conv.add(conversation);
+                        }
+                    }
+                }
+                ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+
+            }
+        });
+        swiperefresh.setRefreshing(false);
     }
 }

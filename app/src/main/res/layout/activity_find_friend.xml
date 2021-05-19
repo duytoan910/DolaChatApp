@@ -42,22 +42,38 @@
                 android:src="@drawable/go_left"
                 android:onClick="pressBack"/>
 
-            <EditText
-                android:id="@+id/txtSearchUser"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="@color/dola_control_white"
-                android:drawableLeft="@drawable/search_40"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:hint="Tìm kiếm"
-                android:ellipsize="end"
-                android:maxLines="1"
-                />
+                android:weightSum="10">
+
+                <EditText
+                    android:id="@+id/txtSearchUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:background="@drawable/border_radius"
+                    android:backgroundTint="@color/dola_control_white"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="10dp"
+                    android:hint="Tìm kiếm"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    />
+                <ImageButton
+                    android:id="@+id/btnSeach"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:background="@color/transparent"
+                    android:src="@drawable/search_40"
+                    android:onClick="pressBack"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

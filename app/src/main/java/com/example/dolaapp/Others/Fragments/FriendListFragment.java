@@ -42,6 +42,8 @@ public class FriendListFragment extends Fragment {
     ListView listViewFriendList;
     SwipeRefreshLayout swiperefresh;
 
+    ArrayList<String> userInfos;
+
     private String userID;
 
     public FriendListFragment() {
@@ -60,11 +62,12 @@ public class FriendListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_friend_list, container, false);
 
+        Session sessionManagement = new Session(getContext());
+        userInfos = sessionManagement.getSession();
+
         listViewFriendList = view.findViewById(R.id.listViewFriendList);
         swiperefresh = view.findViewById(R.id.swiperefresh);
 
-        Session sessionManagement = new Session(getContext());
-        ArrayList<String> userInfos = sessionManagement.getSession();
         ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
@@ -85,8 +88,6 @@ public class FriendListFragment extends Fragment {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Session sessionManagement = new Session(getContext());
-                ArrayList<String> userInfos = sessionManagement.getSession();
                 ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
                     @Override
                     public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
@@ -130,5 +131,27 @@ public class FriendListFragment extends Fragment {
             }
         });
         return view;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        swiperefresh.setRefreshing(true);
+        ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                if(response.body()!=null){
+                    if(response.body().size()>0){
+                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
+                        listViewFriendList.setAdapter(adapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
+            }
+        });
+        swiperefresh.setRefreshing(false);
     }
 }

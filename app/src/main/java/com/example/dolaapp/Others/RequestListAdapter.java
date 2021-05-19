@@ -1,6 +1,8 @@
 package com.example.dolaapp.Others;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +64,10 @@ public class RequestListAdapter extends BaseAdapter {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         otherUser = response.body();
-                        ((TextView) finalConvertView.findViewById(R.id.txtUserName)).setText(otherUser.getUserName());
+                        ((TextView) finalConvertView.findViewById(R.id.txtUserName)).setText(response.body().getUserName());
+//        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
+//        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
+
                     }
 
                     @Override
@@ -72,30 +77,56 @@ public class RequestListAdapter extends BaseAdapter {
                 });
             }
         }
-
-        ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getConversationName() + "");
-//        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
-//        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
-
         btnReject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiService.api.DeleteRequestAddFriend(otherUser.getUserPhone(),userInfos.get(1)).enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                    }
+                new AlertDialog.Builder(context)
+                        .setTitle("Chấp nhận tin nhắn?")
+                        .setMessage("Bạn có muốn chấp nhận tin nhắn từ " + otherUser.getUserName() + "?")
+                        .setCancelable(false)
+                        .setPositiveButton("Chấp nhận", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ApiService.api.AcceptFriendRequest(userInfos.get(1),otherUser.getUserPhone()).enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        notifyDataSetChanged();
+                                        list.remove(position);
+                                        Toast.makeText(context, "Chấp nhận thành công!", Toast.LENGTH_SHORT).show();
+                                    }
 
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                    }
-                });
-                Toast.makeText(context, "Đã từ chối!", Toast.LENGTH_SHORT).show();
-                notifyDataSetChanged();
-                list.remove(position);
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                    }
+                                });
+                                dialog.cancel();
+                            }
+                        })
+                        .setNegativeButton("Từ chối", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ApiService.api.DeleteRequestAddFriend(userInfos.get(1),otherUser.getUserPhone()).enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+                                        notifyDataSetChanged();
+                                        list.remove(position);
+                                        Toast.makeText(context, "Từ chối thành công!", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+                                    }
+                                });
+                                dialog.cancel();
+                            }
+                        })
+                        .setNeutralButton("Trở về", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
-
-
         return convertView;
     }
 }

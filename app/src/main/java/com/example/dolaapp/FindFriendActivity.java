@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class FindFriendActivity extends AppCompatActivity {
     ListView listView_FindFriend;
     FindFriendListAdapter findFriendListAdapter;
     EditText txtSearchUser;
+    ImageButton btnSeach;
     SwipeRefreshLayout swiperefresh;
     Session sessionManagement;
 
@@ -40,6 +42,7 @@ public class FindFriendActivity extends AppCompatActivity {
 
         swiperefresh = findViewById(R.id.swiperefresh);
         txtSearchUser = findViewById(R.id.txtSearchUser);
+        btnSeach = findViewById(R.id.btnSeach);
         listView_FindFriend = (ListView) findViewById(R.id.listView_FindFriend);
 
         sessionManagement = new Session(FindFriendActivity.this);
@@ -65,9 +68,10 @@ public class FindFriendActivity extends AppCompatActivity {
 //            }
 //        });
 
-        ApiService.api.SearchAccountByName(userInfos.get(1)," ").enqueue(new Callback<ArrayList<User>>() {
+        ApiService.api.SearchAccountByName(userInfos.get(1),"").enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                if(response.body()==null) return;
                 if(response.body().size()<=0) return;
                 findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                 listView_FindFriend.setAdapter(findFriendListAdapter);
@@ -78,101 +82,32 @@ public class FindFriendActivity extends AppCompatActivity {
 
             }
         });
-
-        txtSearchUser.setOnKeyListener(new View.OnKeyListener() {
+        btnSeach.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if(keyCode == KeyEvent.KEYCODE_DEL){
-                    if(txtSearchUser.getText().toString() == ""){
-                        ApiService.api.SearchAccountByName(userInfos.get(1)," ")
-                                .enqueue(new Callback<ArrayList<User>>() {
-                                    @Override
-                                    public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                                        if(response.body().size()<=0) return;
-                                        findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
-                                        listView_FindFriend.setAdapter(findFriendListAdapter);
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
-                                    }
-                        });
-                    }else {
-                        ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString())
-                            .enqueue(new Callback<ArrayList<User>>() {
-                            @Override
-                            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                                if(response.body().size()<=0) return;
-                                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
-                                listView_FindFriend.setAdapter(findFriendListAdapter);
-                            }
-
-                            @Override
-                            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
-                            }
-                        });
+            public void onClick(View v) {
+                ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString()).enqueue(new Callback<ArrayList<User>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                        if(response.body()==null) return;
+                        if(response.body().size()<=0) return;
+                        findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
+                        listView_FindFriend.setAdapter(findFriendListAdapter);
                     }
-                }
-                return false;
+
+                    @Override
+                    public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+
+                    }
+                });
             }
         });
-
-        txtSearchUser.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(s.toString() == ""){
-                    ApiService.api.SearchAccountByName(userInfos.get(1)," ")
-                        .enqueue(new Callback<ArrayList<User>>() {
-                            @Override
-                            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                                if(response.body().size()<=0) return;
-                                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
-                                listView_FindFriend.setAdapter(findFriendListAdapter);
-                            }
-
-                            @Override
-                            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
-                            }
-
-                    });
-                }else{
-                    ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString())
-                        .enqueue(new Callback<ArrayList<User>>() {
-                            @Override
-                            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                                if(response.body().size()<=0) return;
-                                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
-                                listView_FindFriend.setAdapter(findFriendListAdapter);
-                            }
-
-                            @Override
-                            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
-                            }
-                    });
-                }
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString()).enqueue(new Callback<ArrayList<User>>() {
                     @Override
                     public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                        if(response.body()==null) return;
                         if(response.body().size()<=0) return;
                         findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                         listView_FindFriend.setAdapter(findFriendListAdapter);
