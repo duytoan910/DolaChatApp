@@ -53,7 +53,7 @@
                     android:id="@+id/txtSearchUser"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="1.1"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:background="@drawable/border_radius"
@@ -68,9 +68,10 @@
                     android:id="@+id/btnSeach"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="8"
+                    android:layout_weight="8.9"
                     android:background="@color/transparent"
                     android:src="@drawable/search_40"
+                    android:layout_marginLeft="5dp"
                     android:onClick="pressBack"
                     />
             </LinearLayout>
