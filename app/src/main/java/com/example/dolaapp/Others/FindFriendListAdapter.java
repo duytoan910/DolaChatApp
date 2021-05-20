@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,6 +99,12 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                     final EditText input = new EditText(context);
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
                     builder.setView(input);
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(10, 10, 10, 0);
+                    input.setLayoutParams(params);
                     input.setText("Xin chào! Mình kết bạn nha.");
                     builder.setPositiveButton("Gửi", new DialogInterface.OnClickListener() {
                         @Override

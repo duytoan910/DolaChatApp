@@ -17,6 +17,7 @@ import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.FindFriendListAdapter;
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
 
@@ -34,6 +35,7 @@ public class FindFriendActivity extends AppCompatActivity {
     ImageButton btnSeach;
     SwipeRefreshLayout swiperefresh;
     Session sessionManagement;
+    Loading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class FindFriendActivity extends AppCompatActivity {
         txtSearchUser = findViewById(R.id.txtSearchUser);
         btnSeach = findViewById(R.id.btnSeach);
         listView_FindFriend = (ListView) findViewById(R.id.listView_FindFriend);
+        loading = new Loading(FindFriendActivity.this);
 
         sessionManagement = new Session(FindFriendActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
@@ -85,6 +88,7 @@ public class FindFriendActivity extends AppCompatActivity {
         btnSeach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loading.startLoading();
                 ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString()).enqueue(new Callback<ArrayList<User>>() {
                     @Override
                     public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
@@ -92,6 +96,7 @@ public class FindFriendActivity extends AppCompatActivity {
                         if(response.body().size()<=0) return;
                         findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                         listView_FindFriend.setAdapter(findFriendListAdapter);
+                        loading.stopLoading();
                     }
 
                     @Override

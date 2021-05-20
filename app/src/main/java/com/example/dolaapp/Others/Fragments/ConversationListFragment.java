@@ -25,7 +25,6 @@ import com.example.dolaapp.LoginScreenActivity;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.R;
-import com.gk.emon.lovelyLoading.LoadingPopup;
 
 import java.io.Console;
 import java.text.SimpleDateFormat;
@@ -76,6 +75,7 @@ public class ConversationListFragment extends Fragment {
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                if(response.body()== null ||response.body().size()==0) return;
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {
@@ -104,6 +104,7 @@ public class ConversationListFragment extends Fragment {
                 ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                        if(response.body()== null ||response.body().size()==0) return;
                         conversations = (ArrayList<Conversation>) response.body();
                         ArrayList<Conversation> _Conv = new ArrayList<>();
                         for (Conversation conversation : conversations) {
@@ -165,6 +166,7 @@ public class ConversationListFragment extends Fragment {
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                if(response.body()== null ||response.body().size()==0) return;
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {

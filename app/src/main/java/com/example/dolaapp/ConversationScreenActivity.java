@@ -26,7 +26,6 @@ import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Fragments.ConversationListFragment;
 import com.example.dolaapp.Others.Fragments.FriendListFragment;
 import com.example.dolaapp.Others.Session;
-import com.gk.emon.lovelyLoading.LoadingPopup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,9 +74,6 @@ public class ConversationScreenActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
 
-        LoadingPopup.getInstance(this)
-                .defaultLovelyLoading()
-                .build();
     }
 
     @Override
