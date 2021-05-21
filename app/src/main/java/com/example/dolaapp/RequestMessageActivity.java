@@ -18,6 +18,7 @@ import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.FindFriendListAdapter;
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
 
@@ -39,6 +40,7 @@ public class RequestMessageActivity extends AppCompatActivity {
     SwipeRefreshLayout swiperefresh;
     ArrayList<Conversation> listRequestCurrentUser;
     RequestListAdapter findFriendListAdapter;
+    Loading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class RequestMessageActivity extends AppCompatActivity {
 
         listView_RequestMessage = findViewById(R.id.listView_RequestMessage);
         swiperefresh = findViewById(R.id.swiperefresh);
+        loading = new Loading(RequestMessageActivity.this);
 
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
 
@@ -54,10 +57,14 @@ public class RequestMessageActivity extends AppCompatActivity {
         ArrayList<String> userInfos = sessionManagement.getSession();
 
         listRequestCurrentUser = new ArrayList<Conversation>();
+        loading.startLoading();
         ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<List<Conversation>>() {
             @Override
             public void onResponse(Call<List<Conversation>> call, Response<List<Conversation>> response) {
-                if(response.body().size()==0) return;
+                if(response.body().size()==0){
+                    loading.stopLoading();
+                    return;
+                }
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {
@@ -75,6 +82,7 @@ public class RequestMessageActivity extends AppCompatActivity {
                 listView_RequestMessage.setAdapter(findFriendListAdapter);
 
                 conversations = _Conv;
+                loading.stopLoading();
             }
 
             @Override
@@ -85,6 +93,7 @@ public class RequestMessageActivity extends AppCompatActivity {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                loading.startLoading();
                 Session sessionManagement = new Session(RequestMessageActivity.this);
                 ArrayList<String> userInfos = sessionManagement.getSession();
 
@@ -100,7 +109,11 @@ public class RequestMessageActivity extends AppCompatActivity {
                                 }
                                 findFriendListAdapter = new RequestListAdapter(listRequestCurrentUser,RequestMessageActivity.this);
                                 listView_RequestMessage.setAdapter(findFriendListAdapter);
+                            }else{
+                                loading.stopLoading();
                             }
+                        }else{
+                            loading.stopLoading();
                         }
                     }
 
@@ -110,6 +123,7 @@ public class RequestMessageActivity extends AppCompatActivity {
                     }
                 });
                 swiperefresh.setRefreshing(false);
+                loading.stopLoading();
             }
         });
 

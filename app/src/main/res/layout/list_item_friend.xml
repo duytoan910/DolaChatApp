@@ -50,7 +50,6 @@
                 android:layout_weight="5"
                 android:gravity="fill"
                 android:paddingTop="10dp"
-                android:text="Châu Nguyễn Duy Toàn"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textSize="18sp"

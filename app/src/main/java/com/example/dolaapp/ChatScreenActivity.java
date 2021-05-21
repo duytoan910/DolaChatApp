@@ -17,6 +17,7 @@ import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.Conversaion_Group_BottomSheet;
 import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.MessageAdapter;
 import com.example.dolaapp.Others.Session;
 
@@ -41,6 +42,7 @@ public class ChatScreenActivity extends AppCompatActivity {
     Intent i;
     Conversation conv;
     ArrayList<String> userInfos;
+    Loading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,8 @@ public class ChatScreenActivity extends AppCompatActivity {
 
         Session sessionManagement = new Session(ChatScreenActivity.this);
         userInfos = sessionManagement.getSession();
+        loading = new Loading(ChatScreenActivity.this);
+        loading.startLoading();
 
         EmojIconActions emojIcon=new EmojIconActions(this,findViewById(R.id.rootView),txtMessageContent,findViewById(R.id.emojicon_icon),
                 "#495C66",
@@ -110,6 +114,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                             message.getSender().equals(userInfos.get(1))?true:false
                     ));
                 }
+                loading.stopLoading();
             }
 
             @Override
