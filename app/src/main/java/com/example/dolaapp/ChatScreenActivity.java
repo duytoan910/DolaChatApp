@@ -101,7 +101,6 @@ public class ChatScreenActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<Message>> call, Response<ArrayList<Message>> response) {
                 for (Message message : response.body()) {
-
                     String[] parts = message.getNameSender().split(" ");
                     String lastWord = parts[parts.length - 1];
                     messageAdapter.add(new Message(

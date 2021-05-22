@@ -28,7 +28,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.1.41:3000/api/")
+            .baseUrl("http://192.168.0.67:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -43,13 +43,25 @@ public interface ApiService {
     @GET("users")
     Call<ArrayList<User>> getAllUser();
 
+    //check is friend
+    @GET("{UserId}/IsFriend/{UserTarget}")
+    Call<String> isFriend(@Path("UserId") String UserId, @Path("UserTarget") String UserTarget);
+
     //Get user by id
     @GET("Users/{id}")
     Call<User> getUserById(@Path("id") String id);
 
     //Get user by id
     @GET("{id}/ListRequests")
-    Call<List<Conversation>> getAllListRequest(@Path("id") String id);
+    Call<ArrayList<User>> getAllListRequest(@Path("id") String id);
+
+    //Get user denied list
+    @GET("{id}/DeniedList")
+    Call<ArrayList<Conversation>> getDeniedList(@Path("id") String id);
+
+    //Get conv of 2 user
+    @GET("{UserId}/GetConversationOf2Users/{UserId_}")
+    Call<Conversation> GetConversationOf2Users(@Path("UserId") String UserId, @Path("UserId_") String UserId_);
 
     //Send password to user
     @GET("Users/{id}/SendPassword")
@@ -92,6 +104,10 @@ public interface ApiService {
             @Field("Receiver") String Receiver
             );
 
+    // Switch Conversation State Show
+    @GET("{ConversationsId}/SwitchConversationStateShow/{UserId}")
+    Call<String> SwitchConversationStateShow(@Path("ConversationsId") String ConversationsId, @Path("UserId") String UserId);
+
     //Get all user friends
     @GET("{id}/ListFriends/")
     Call<ArrayList<User>> getAllListFriend(@Path("id") String id);
@@ -119,6 +135,10 @@ public interface ApiService {
     //Get all message in conversation
     @GET("{ConversationId}/Messages")
     Call<ArrayList<Message>> getAllMessageByGroupId(@Path("ConversationId") String ConversationId);
+
+    //Get all message in conversation
+    @DELETE("Messages/{messageId}")
+    Call<String> deleteMessage(@Path("messageId") String messageId);
 
     //Create new message
     @PUT("Messages")

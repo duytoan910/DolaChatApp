@@ -141,6 +141,53 @@
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/loAddfriendAMember"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:paddingTop="0dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:background="@drawable/border_shadow"
+                android:layout_height="wrap_content"
+                android:onClick="userChangePassword">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:weightSum="10"
+                    android:paddingLeft="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:gravity="fill"
+                        android:text="Hủy lời mời kết bạn"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="8.5">
+
+                    <ImageView
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/user_minus_block" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/loRequestMessage"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"

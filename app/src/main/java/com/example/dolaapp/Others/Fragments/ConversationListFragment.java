@@ -22,6 +22,8 @@ import com.example.dolaapp.ConversationScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.LoginScreenActivity;
+import com.example.dolaapp.Others.Conversaion_Group_BottomSheet;
+import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.R;
@@ -79,17 +81,14 @@ public class ConversationListFragment extends Fragment {
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {
-                    if(conversation.getReceiver().equals(userInfos.get(1))){
-                        if(conversation.isReceiverShown() != false){
-                            _Conv.add(conversation);
-                        }
-                    }else{
-                        if(conversation.isSenderShown() != false){
-                            _Conv.add(conversation);
-                        }
+                    if(conversation.isGroupChat() ||
+                            (conversation.getReceiver().equals(userInfos.get(1)) && conversation.isReceiverShown() != false) ||
+                            (conversation.getSender().equals(userInfos.get(1)) && conversation.isSenderShown() != false)){
+                        _Conv.add(conversation);
                     }
                 }
                 ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
+                conversations = _Conv;
                 listView.setAdapter(adapter);
             }
 
@@ -108,17 +107,14 @@ public class ConversationListFragment extends Fragment {
                         conversations = (ArrayList<Conversation>) response.body();
                         ArrayList<Conversation> _Conv = new ArrayList<>();
                         for (Conversation conversation : conversations) {
-                            if(conversation.getReceiver().equals(userInfos.get(1))){
-                                if(conversation.isReceiverShown() != false){
-                                    _Conv.add(conversation);
-                                }
-                            }else{
-                                if(conversation.isSenderShown() != false){
-                                    _Conv.add(conversation);
-                                }
+                            if(conversation.isGroupChat() ||
+                                    (conversation.getReceiver().equals(userInfos.get(1)) && conversation.isReceiverShown() != false) ||
+                                    (conversation.getSender().equals(userInfos.get(1)) && conversation.isSenderShown() != false)){
+                                _Conv.add(conversation);
                             }
                         }
                         ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
+                        conversations = _Conv;
                         listView.setAdapter(adapter);
                     }
 
@@ -141,54 +137,34 @@ public class ConversationListFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                new AlertDialog.Builder(getContext()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                Conversation longClickedConv = conversations.get(position);
+                if(longClickedConv.isGroupChat()){
+                    Conversaion_Group_BottomSheet modal = new Conversaion_Group_BottomSheet(longClickedConv);
+                    modal.show(getFragmentManager(),"info_group_Modal");
+                }else{
+                    for (String s : longClickedConv.getConversationMember()) {
+                        if(!s.equals(userInfos.get(1))){
+                            ApiService.api.getUserById(s).enqueue(new Callback<User>() {
+                                @Override
+                                public void onResponse(Call<User> call, Response<User> response) {
+                                    Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(response.body());
+                                    modal.show(getFragmentManager(),"info_u2u_Modal");
+                                }
 
+                                @Override
+                                public void onFailure(Call<User> call, Throwable t) {
+
+                                }
+                            });
+                        }
                     }
-                }).create().show();
-
-                Log.e("Long click: ","Long press at " + position);
-
-                return false;
+                }
+                return true;
             }
         });
         return view;
     }
     public void triggerSwipeRefresh(){
         swiperefresh.setRefreshing(true);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        swiperefresh.setRefreshing(true);
-        ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                if(response.body()== null ||response.body().size()==0) return;
-                conversations = (ArrayList<Conversation>) response.body();
-                ArrayList<Conversation> _Conv = new ArrayList<>();
-                for (Conversation conversation : conversations) {
-                    if(conversation.getReceiver().equals(userInfos.get(1))){
-                        if(conversation.isReceiverShown() != false){
-                            _Conv.add(conversation);
-                        }
-                    }else{
-                        if(conversation.isSenderShown() != false){
-                            _Conv.add(conversation);
-                        }
-                    }
-                }
-                ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
-                listView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
-            }
-        });
-        swiperefresh.setRefreshing(false);
     }
 }

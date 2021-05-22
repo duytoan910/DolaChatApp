@@ -131,39 +131,8 @@ public class ConversationScreenActivity extends AppCompatActivity {
     }
 
     public void newGroup(View view) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ConversationScreenActivity.this);
-        alertDialog.setTitle("AlertDialog");
-        String[] items = {"java","android","Data Structures","HTML","CSS","HTML","CSS","HTML","CSS","HTML","CSS","HTML","CSS","HTML","CSS"};
-        boolean[] checkedItems = {false, false, false, false, false,false, false,false, false,false, false,false, false,false};
-        alertDialog.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                switch (which) {
-                    case 0:
-                        if(isChecked)
-                            Toast.makeText(ConversationScreenActivity.this, "Clicked on java", Toast.LENGTH_LONG).show();
-                        break;
-                    case 1:
-                        if(isChecked)
-                            Toast.makeText(ConversationScreenActivity.this, "Clicked on android", Toast.LENGTH_LONG).show();
-                        break;
-                    case 2:
-                        if(isChecked)
-                            Toast.makeText(ConversationScreenActivity.this, "Clicked on Data Structures", Toast.LENGTH_LONG).show();
-                        break;
-                    case 3:
-                        if(isChecked)
-                            Toast.makeText(ConversationScreenActivity.this, "Clicked on HTML", Toast.LENGTH_LONG).show();
-                        break;
-                    case 4:
-                        if(isChecked)
-                            Toast.makeText(ConversationScreenActivity.this, "Clicked on CSS", Toast.LENGTH_LONG).show();
-                        break;
-                }
-            }
-        });
-        AlertDialog alert = alertDialog.create();
-        alert.setCanceledOnTouchOutside(false);
-        alert.show();
+        Intent intent = new Intent(ConversationScreenActivity.this, NewGroupActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

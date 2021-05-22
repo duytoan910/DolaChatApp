@@ -130,28 +130,7 @@ public class FriendListFragment extends Fragment {
                 return false;
             }
         });
-        return view;
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-        swiperefresh.setRefreshing(true);
-        ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
-            @Override
-            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                if(response.body()!=null){
-                    if(response.body().size()>0){
-                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
-                        listViewFriendList.setAdapter(adapter);
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
-            }
-        });
-        swiperefresh.setRefreshing(false);
+        return view;
     }
 }

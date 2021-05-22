@@ -1,6 +1,8 @@
 package com.example.dolaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,6 +21,10 @@ import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.FindFriendListAdapter;
+import com.example.dolaapp.Others.Fragments.ConversationListFragment;
+import com.example.dolaapp.Others.Fragments.DeniedListFragment;
+import com.example.dolaapp.Others.Fragments.FriendListFragment;
+import com.example.dolaapp.Others.Fragments.RequestListFragment;
 import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
@@ -40,102 +47,53 @@ public class RequestMessageActivity extends AppCompatActivity {
     SwipeRefreshLayout swiperefresh;
     ArrayList<Conversation> listRequestCurrentUser;
     RequestListAdapter findFriendListAdapter;
-    Loading loading;
+    ImageButton imgBtnRequest;
+    ImageButton imgBtnDenied;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_message);
 
-        listView_RequestMessage = findViewById(R.id.listView_RequestMessage);
         swiperefresh = findViewById(R.id.swiperefresh);
-        loading = new Loading(RequestMessageActivity.this);
-
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+
+
+        imgBtnRequest = (ImageButton)findViewById(R.id.imgBtnConversation);
+        imgBtnDenied = (ImageButton)findViewById(R.id.imgBtnContact);
 
         Session sessionManagement = new Session(RequestMessageActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
-
         listRequestCurrentUser = new ArrayList<Conversation>();
-        loading.startLoading();
-        ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<List<Conversation>>() {
-            @Override
-            public void onResponse(Call<List<Conversation>> call, Response<List<Conversation>> response) {
-                if(response.body().size()==0){
-                    loading.stopLoading();
-                    return;
-                }
-                conversations = (ArrayList<Conversation>) response.body();
-                ArrayList<Conversation> _Conv = new ArrayList<>();
-                for (Conversation conversation : conversations) {
-                    if(conversation.getReceiver().equals(userInfos.get(1))){
-                        if(conversation.isReceiverShown() == false){
-                            _Conv.add(conversation);
-                        }
-                    }else{
-                        if(conversation.isSenderShown() == false){
-                            _Conv.add(conversation);
-                        }
-                    }
-                }
-                findFriendListAdapter = new RequestListAdapter(_Conv, RequestMessageActivity.this);
-                listView_RequestMessage.setAdapter(findFriendListAdapter);
 
-                conversations = _Conv;
-                loading.stopLoading();
-            }
+        RequestListFragment fragment = new RequestListFragment("asdasd");
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragmentRequestList, fragment);
+        transaction.commit();
 
-            @Override
-            public void onFailure(Call<List<Conversation>> call, Throwable t) {
+    }
 
-            }
-        });
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                loading.startLoading();
-                Session sessionManagement = new Session(RequestMessageActivity.this);
-                ArrayList<String> userInfos = sessionManagement.getSession();
+    public void requestMessage(View view) {
+        RequestListFragment fragment = new RequestListFragment("asdasd");
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragmentRequestList, fragment);
+        transaction.commit();
 
-                ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<List<Conversation>>() {
-                    @Override
-                    public void onResponse(Call<List<Conversation>> call, Response<List<Conversation>> response) {
-                        if(response.body()!=null){
-                            if(response.body().size()>0){
-                                listRequestCurrentUser = (ArrayList<Conversation>) response.body();
-                                for (Conversation conversation : listRequestCurrentUser) {
-                                    if(conversation.isGroupChat())
-                                        listRequestCurrentUser.remove(conversation);
-                                }
-                                findFriendListAdapter = new RequestListAdapter(listRequestCurrentUser,RequestMessageActivity.this);
-                                listView_RequestMessage.setAdapter(findFriendListAdapter);
-                            }else{
-                                loading.stopLoading();
-                            }
-                        }else{
-                            loading.stopLoading();
-                        }
-                    }
+        //imgBtnRequest.setImageResource(R.drawable.message_focus_40);
+        //imgBtnDenied.setImageResource(R.drawable.contact_blur_40);
+    }
 
-                    @Override
-                    public void onFailure(Call<List<Conversation>> call, Throwable t) {
+    public void deniedMessage(View view) {
+        DeniedListFragment fragment = new DeniedListFragment("asdasd");
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragmentRequestList, fragment);
+        transaction.commit();
 
-                    }
-                });
-                swiperefresh.setRefreshing(false);
-                loading.stopLoading();
-            }
-        });
-
-        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent result = new Intent(RequestMessageActivity.this, ChatScreenActivity.class);
-                result.putExtra("conversationObject", conversations.get(position));
-                result.putExtra("isRequest", true);
-                startActivity(result);
-            }
-        });
+        //imgBtnRequest.setImageResource(R.drawable.message_blur_40);
+        //imgBtnDenied.setImageResource(R.drawable.contact_focus_40);
     }
     public void pressBack(View view) {
         finish();

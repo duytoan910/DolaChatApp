@@ -15,9 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.ConversationScreenActivity;
+import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.LoginScreenActivity;
+import com.example.dolaapp.NewGroupActivity;
 import com.example.dolaapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -43,6 +46,7 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
         LinearLayout loUserList = v.findViewById(R.id.loUserList);
         LinearLayout loUnfriendAMember = v.findViewById(R.id.loUnfriendAMember);
         LinearLayout loRequestMessage = v.findViewById(R.id.loRequestMessage);
+        LinearLayout loAddfriendAMember = v.findViewById(R.id.loAddfriendAMember);
 
         userSettingName.setText(currUser.getUserName());
 
@@ -64,6 +68,7 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                                     public void onResponse(Call<String> call, Response<String> response) {
                                         Intent intent = new Intent(getContext(), ConversationScreenActivity.class);
                                         startActivity(intent);
+                                        dismiss();
                                     }
 
                                     @Override
@@ -88,7 +93,28 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                         .setPositiveButton("Đưa vào tin nhắn chờ", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                ApiService.api.GetConversationOf2Users(userInfos.get(1),currUser.getUserPhone()).enqueue(new Callback<Conversation>() {
+                                    @Override
+                                    public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                                        ApiService.api.SwitchConversationStateShow(response.body().getConversationID(),userInfos.get(1)).enqueue(new Callback<String>() {
+                                            @Override
+                                            public void onResponse(Call<String> call, Response<String> response) {
 
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<String> call, Throwable t) {
+
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Conversation> call, Throwable t) {
+
+                                    }
+                                });
+                                dismiss();
                             }
                         }).setNegativeButton("Trở về", new DialogInterface.OnClickListener() {
                             @Override
@@ -96,6 +122,49 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                                 dialog.dismiss();
                             }
                         }).show();
+            }
+        });
+        createGroupWith.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), NewGroupActivity.class);
+                intent.putExtra("withUser", currUser.getUserPhone());
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                dismiss();
+            }
+        });
+        loAddfriendAMember.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiService.api.DeleteRequestAddFriend(currUser.getUserPhone(), userInfos.get(1)).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                    }
+                });
+                dismiss();
+            }
+        });
+
+        ApiService.api.isFriend(userInfos.get(1),currUser.getUserPhone()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.body()=="true"){
+                    loAddfriendAMember.setVisibility(View.GONE);
+                }else{
+                    loUnfriendAMember.setVisibility(View.GONE);
+                    loRequestMessage.setVisibility(View.GONE);
+                    createGroupWith.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
             }
         });
 

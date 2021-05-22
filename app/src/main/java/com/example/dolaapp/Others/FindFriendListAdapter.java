@@ -98,11 +98,11 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                     builder.setTitle("Gửi lời mời kết bạn");
                     final EditText input = new EditText(context);
                     input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    builder.setView(input);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     );
+                    builder.setView(input);
                     params.setMargins(10, 10, 10, 0);
                     input.setLayoutParams(params);
                     input.setText("Xin chào! Mình kết bạn nha.");
@@ -164,7 +164,7 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                             });
                         }
                     });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Trở về", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();

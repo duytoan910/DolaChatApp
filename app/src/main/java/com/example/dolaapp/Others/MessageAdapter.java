@@ -1,7 +1,9 @@
 package com.example.dolaapp.Others;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -10,12 +12,17 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MessageAdapter extends BaseAdapter {
 
@@ -69,6 +76,39 @@ public class MessageAdapter extends BaseAdapter {
             holder.messageBody.setText(message.getMessage());
         }
 
+        holder.messageBody.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Xóa tin nhắn")
+                        .setMessage("Bạn có muốn xóa tin nhắn này?")
+                        .setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ApiService.api.deleteMessage(message.getMessageId()).enqueue(new Callback<String>() {
+                                    @Override
+                                    public void onResponse(Call<String> call, Response<String> response) {
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<String> call, Throwable t) {
+
+                                    }
+                                });
+                                messages.remove(message);
+                                notifyDataSetChanged();
+                            }
+                        })
+                        .setNeutralButton("Trở về", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                return false;
+            }
+        });
         return convertView;
     }
 
