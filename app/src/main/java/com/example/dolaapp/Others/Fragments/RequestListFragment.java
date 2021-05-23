@@ -87,6 +87,7 @@ public class RequestListFragment extends Fragment {
                 ApiService.api.GetConversationOf2Users(userInfos.get(1),conversations.get(position).getUserPhone()).enqueue(new Callback<Conversation>() {
                     @Override
                     public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                        if(response.body()==null) return;
                         Intent result = new Intent(getContext(), ChatScreenActivity.class);
                         result.putExtra("conversationObject", response.body());
                         result.putExtra("isRequest", true);

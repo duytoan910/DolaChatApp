@@ -25,6 +25,7 @@ public class UserSettingActivity extends AppCompatActivity {
             ((TextView) findViewById(R.id.userSettingPhone)).setText(userInfos.get(1));
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -37,7 +38,9 @@ public class UserSettingActivity extends AppCompatActivity {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
+
     public void userChangePassword(View view) {
+
     }
 
     public void userLogout(View view) {

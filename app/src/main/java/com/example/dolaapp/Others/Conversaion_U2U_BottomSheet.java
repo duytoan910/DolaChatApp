@@ -32,8 +32,14 @@ import retrofit2.Response;
 
 public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
     User currUser;
+    boolean isConversationScreen;
     public Conversaion_U2U_BottomSheet(User user){
         this.currUser = user;
+        this.isConversationScreen = false;
+    }
+    public Conversaion_U2U_BottomSheet(User user, @Nullable boolean isConversationScreen){
+        this.currUser = user;
+        this.isConversationScreen = isConversationScreen;
     }
     @Nullable
     @Override
@@ -53,6 +59,24 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
         Session sessionManagement = new Session(getContext());
         ArrayList<String> userInfos = sessionManagement.getSession();
 
+        ApiService.api.isFriend(userInfos.get(1),currUser.getUserPhone()).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.body()=="true"){
+                    loAddfriendAMember.setVisibility(View.GONE);
+                }else{
+                    loUnfriendAMember.setVisibility(View.GONE);
+                    loRequestMessage.setVisibility(View.GONE);
+                    createGroupWith.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
         String[] parts = currUser.getUserName().split(" ");
         createGroupWithText.setText("Tạo nhóm chat với " + parts[parts.length - 1]);
         loUnfriendAMember.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +90,10 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                                 ApiService.api.DeleteFriend(userInfos.get(1), currUser.getUserPhone()).enqueue(new Callback<String>() {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
-                                        Intent intent = new Intent(getContext(), ConversationScreenActivity.class);
-                                        startActivity(intent);
+                                        if(!isConversationScreen){
+                                            Intent intent = new Intent(getContext(), ConversationScreenActivity.class);
+                                            startActivity(intent);
+                                        }
                                         dismiss();
                                     }
 
@@ -147,24 +173,6 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                     }
                 });
                 dismiss();
-            }
-        });
-
-        ApiService.api.isFriend(userInfos.get(1),currUser.getUserPhone()).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if(response.body()=="true"){
-                    loAddfriendAMember.setVisibility(View.GONE);
-                }else{
-                    loUnfriendAMember.setVisibility(View.GONE);
-                    loRequestMessage.setVisibility(View.GONE);
-                    createGroupWith.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
             }
         });
 

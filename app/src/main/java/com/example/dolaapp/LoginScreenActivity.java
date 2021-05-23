@@ -80,14 +80,6 @@ public class LoginScreenActivity extends AppCompatActivity {
             }
         });
 
-        info.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginScreenActivity.this, AppInfoActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
     }
 
     @Override
@@ -112,7 +104,6 @@ public class LoginScreenActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.login);
         forgotPassword = findViewById(R.id.forgotPassword);
         signUp = findViewById(R.id.signUp);
-        info = findViewById(R.id.info);
     }
 
     @Override

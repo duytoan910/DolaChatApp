@@ -73,7 +73,6 @@ public class Conversaion_Group_BottomSheet extends BottomSheetDialogFragment {
 
                                     }
                                 });
-
                                 Intent intent = new Intent(getContext(), ConversationScreenActivity.class);
                                 startActivity(intent);
                                 getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

@@ -1,83 +1,335 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dola_gradient"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".LoginScreenActivity">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".Others.SignUp.SignUp_1_Activity">
 
-
-    <ImageButton
-        android:id="@+id/info"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_gravity="right"
-        android:layout_margin="10dp"
-        android:background="@android:drawable/ic_dialog_info"
-        android:backgroundTint="@color/dola_control_white"/>
     <LinearLayout
+        android:id="@+id/navBar_head"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="#4d000000"
+        android:fitsSystemWindows="true"
         android:orientation="vertical"
-        android:gravity="center">
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:layout_alignParentStart="true"
+        android:weightSum="10">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:paddingBottom="20dp">
+            android:layout_height="match_parent"
+            android:layout_weight="5.5"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:text="Số điện thoại"
-                android:textColor="@color/dola_control_white" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-            <EditText
-                android:id="@+id/username"
+                <ImageButton
+                    android:id="@+id/btnReturn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left|center"
+                    android:layout_weight="9"
+                    android:background="@color/transparent"
+                    android:src="@drawable/go_left"
+                    android:onClick="pressBack"/>
+
+                <TextView
+                    android:id="@+id/chatUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="Đăng ký tài khoản"
+                    android:textColor="@color/dola_control_white"
+                    android:textSize="18sp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="#4DFFFFFF"
-                android:ems="10"
-                android:inputType="number"
-                android:textColor="@color/dola_control_white"
-                android:paddingLeft="35dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
-                android:text="0947047314" />
-            <Button
-                android:id="@+id/nextStep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="@color/dola_green"
-                android:text="Tiếp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:paddingRight="30dp"
-                android:paddingLeft="65dp"
-                android:textColor="@color/dola_control_white"
-                android:drawableRight="@drawable/go_right"
-                android:scaleType="fitCenter"
-                app:backgroundTint="@color/dola_green" />
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="9"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="20">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:gravity="center|right"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnWaitMessage"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:background="@color/transparent"
+                        android:src="@drawable/info_32"
+                        android:onClick="convInfo"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
-    <ProgressBar
-        android:id="@+id/loading"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btnReg"
+        android:layout_below="@+id/navBar_head"
+        android:gravity="center">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="10dp"
+                    android:text="Tài khoản"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/fieldset"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Số điện thoại"
+                        android:textColorHint="@color/dola_control_white"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_phone_24"
+                        app:startIconTint="@color/dola_control_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtRegisPhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_radius"
+                            android:backgroundTint="#4DFFFFFF"
+                            android:inputType="number"
+                            android:paddingLeft="35dp"
+                            android:paddingTop="0dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="0dp"
+                            android:textColor="@color/dola_control_white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:hint="Mật khẩu"
+                        android:textColorHint="@color/dola_control_white"
+                        app:endIconTint="@color/dola_control_white"
+                        app:startIconDrawable="@drawable/ic_baseline_lock_24"
+                        app:startIconTint="@color/dola_control_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtRegisPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_radius"
+                            android:backgroundTint="#4DFFFFFF"
+                            android:inputType="textPassword"
+                            android:paddingLeft="35dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/dola_control_white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:hint="Xác nhận mật khẩu"
+                        android:textColorHint="@color/dola_control_white"
+                        app:endIconTint="@color/dola_control_white"
+                        app:startIconDrawable="@drawable/ic_baseline_lock_24"
+                        app:startIconTint="@color/dola_control_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtRegisPasswordRe"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_radius"
+                            android:backgroundTint="#4DFFFFFF"
+                            android:inputType="textPassword"
+                            android:paddingLeft="35dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/dola_control_white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Cá nhân"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/fieldset"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Họ và tên"
+                        android:textColorHint="@color/dola_control_white"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_account_circle_24"
+                        app:startIconTint="@color/dola_control_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtRegisName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_radius"
+                            android:backgroundTint="#4DFFFFFF"
+                            android:inputType="text"
+                            android:paddingLeft="35dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/dola_control_white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:hint="Email liên lạc"
+                        android:textColorHint="@color/dola_control_white"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/ic_baseline_email_24"
+                        app:startIconTint="@color/dola_control_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtRegisEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_radius"
+                            android:backgroundTint="#4DFFFFFF"
+                            android:inputType="textPersonName"
+                            android:paddingLeft="35dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/dola_control_white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/end"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:hint="Ngày sinh"
+                        android:textColorHint="@color/dola_control_white"
+                        app:startIconDrawable="@drawable/ic_baseline_cake_24"
+                        app:startIconTint="@color/dola_control_white">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txtRegisBoD"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border_radius"
+                            android:backgroundTint="#4DFFFFFF"
+                            android:editable="false"
+                            android:enabled="true"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:paddingLeft="35dp"
+                            android:paddingTop="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingBottom="5dp"
+                            android:textColor="@color/dola_control_white" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnReg"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border_radius"
+        android:backgroundTint="@color/dola_green"
+        android:drawableRight="@drawable/go_right"
+        android:onClick="register"
+        android:scaleType="fitCenter"
+        android:paddingLeft="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Đăng Ký"
+
+        android:textColor="@color/dola_control_white"
+        app:backgroundTint="@color/dola_green" />
+
+</RelativeLayout>

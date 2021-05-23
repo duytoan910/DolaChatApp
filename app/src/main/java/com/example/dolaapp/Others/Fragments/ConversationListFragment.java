@@ -147,7 +147,7 @@ public class ConversationListFragment extends Fragment {
                             ApiService.api.getUserById(s).enqueue(new Callback<User>() {
                                 @Override
                                 public void onResponse(Call<User> call, Response<User> response) {
-                                    Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(response.body());
+                                    Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(response.body(), true);
                                     modal.show(getFragmentManager(),"info_u2u_Modal");
                                 }
 
