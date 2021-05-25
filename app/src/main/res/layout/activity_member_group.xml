@@ -42,22 +42,32 @@
                 android:src="@drawable/go_left"
                 android:onClick="pressBack"/>
 
-            <EditText
-                android:id="@+id/txtSearchUser"
+            <TextView
+                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center_vertical"
                 android:layout_weight="1"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/border_radius"
-                android:backgroundTint="@color/dola_control_white"
-                android:drawableLeft="@drawable/search_40"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:hint="Tìm kiếm"
-                android:ellipsize="end"
-                android:maxLines="1"
-                />
+                android:text="Danh sách thành viên trong nhóm"
+                android:textColor="@color/dola_control_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+<!--            <EditText-->
+<!--                android:id="@+id/txtSearchUser"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:layout_marginTop="2dp"-->
+<!--                android:layout_marginBottom="2dp"-->
+<!--                android:background="@drawable/border_radius"-->
+<!--                android:backgroundTint="@color/dola_control_white"-->
+<!--                android:drawableLeft="@drawable/search_40"-->
+<!--                android:paddingLeft="10dp"-->
+<!--                android:paddingRight="10dp"-->
+<!--                android:hint="Tìm kiếm"-->
+<!--                android:ellipsize="end"-->
+<!--                android:maxLines="1"-->
+<!--                />-->
 
         </LinearLayout>
     </LinearLayout>

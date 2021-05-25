@@ -49,30 +49,40 @@
                 android:layout_weight="1"
                 android:weightSum="10">
 
-                <EditText
-                    android:id="@+id/txtSearchUser"
+                <TextView
+                    android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.1"
-                    android:layout_marginTop="2dp"
-                    android:layout_marginBottom="2dp"
-                    android:background="@drawable/border_radius"
-                    android:backgroundTint="@color/dola_control_white"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="10dp"
-                    android:hint="Tìm kiếm"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    />
-                <ImageButton
-                    android:id="@+id/btnSeach"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="8.9"
-                    android:background="@color/transparent"
-                    android:src="@drawable/search_40"
-                    android:layout_marginLeft="5dp"
-                    />
+                    android:gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:text="Tạo nhóm chat"
+                    android:textColor="@color/dola_control_white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+<!--                <EditText-->
+<!--                    android:id="@+id/txtSearchUser"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1.1"-->
+<!--                    android:layout_marginTop="2dp"-->
+<!--                    android:layout_marginBottom="2dp"-->
+<!--                    android:background="@drawable/border_radius"-->
+<!--                    android:backgroundTint="@color/dola_control_white"-->
+<!--                    android:paddingLeft="20dp"-->
+<!--                    android:paddingRight="10dp"-->
+<!--                    android:hint="Tìm kiếm"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:maxLines="1"-->
+<!--                    />-->
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btnSeach"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="8.9"-->
+<!--                    android:background="@color/transparent"-->
+<!--                    android:src="@drawable/search_40"-->
+<!--                    android:layout_marginLeft="5dp"-->
+<!--                    />-->
             </LinearLayout>
 
         </LinearLayout>

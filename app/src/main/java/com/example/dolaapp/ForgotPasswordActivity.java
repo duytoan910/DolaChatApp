@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp.Others.SignUp.SignUp_1_Activity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +47,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         Toast.makeText(ForgotPasswordActivity.this, "Yêu cầu cấp lại mật khẩu thành công! Mật khẩu sẽ được gửi vào email nếu số điện thoại chính xác.", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, LoginScreenActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    public void pressBack(View view) {
+        finish();
+    }
+
+    public void convInfo(View view) {
+        Intent intent = new Intent(ForgotPasswordActivity.this, AppInfoActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
