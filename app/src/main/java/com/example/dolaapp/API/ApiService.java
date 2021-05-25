@@ -9,6 +9,8 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Retrofit;
@@ -16,6 +18,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
@@ -28,7 +31,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.67:3000/api/")
+            .baseUrl("http://192.168.1.41:3000/api/")
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -46,6 +49,10 @@ public interface ApiService {
     //check is friend
     @GET("{UserId}/IsFriend/{UserTarget}")
     Call<String> isFriend(@Path("UserId") String UserId, @Path("UserTarget") String UserTarget);
+
+    @POST("{UserId}/ChangeAvatarImage")
+    @Multipart
+    Call<ResponseBody> uploadFile(@Path("UserId") String UserId, @Part MultipartBody.Part file);
 
     //Get user by id
     @GET("Users/{id}")

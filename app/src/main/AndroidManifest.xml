@@ -3,6 +3,7 @@
     package="com.example.dolaapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -13,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DolaApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".NewGroupActivity"></activity>
+        <activity android:name=".NewConversationActivity"></activity>
+        <activity android:name=".NewGroupActivity" />
         <activity android:name=".MemberGroupActivity" />
-        <activity android:name=".ConversationInfoActivity" />
         <activity android:name=".RequestMessageActivity" />
         <activity android:name=".FindFriendActivity" />
         <activity android:name=".ReportErrorActivity" />

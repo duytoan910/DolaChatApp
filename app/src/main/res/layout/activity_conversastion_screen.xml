@@ -133,7 +133,19 @@
         <FrameLayout
             android:id="@+id/fragmentConversationList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="15dp"
+                app:backgroundTint="@color/dola_control_white"
+                app:srcCompat="@drawable/ic_baseline_add_comment_24"
+                tools:ignore="VectorDrawableCompat" />
+        </FrameLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -167,4 +179,6 @@
             android:onClick="contactListClick" />
 
     </LinearLayout>
+
+
 </RelativeLayout>
