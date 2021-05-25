@@ -7,20 +7,19 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class SocketIo {
-    // đường dẫn tới Server  socket
-    public static final String ServerUrl="http://192.168.1.10:4000";
-    private static SocketIo instance; // ins Class
+    public static final String ServerUrl="http://192.168.1.6:4000";
+    private static SocketIo instance;
     private Socket mSocket;
     private SocketIo() {
         {
             try {
                 mSocket = IO.socket(ServerUrl);
-
+                mSocket.connect();
 
             } catch (URISyntaxException e) {}
         }
     }
-    // pattern
+
     public synchronized static SocketIo getInstance() {
         if (instance==null) {
             instance=new SocketIo();
@@ -31,8 +30,4 @@ public class SocketIo {
     public Socket getmSocket(){
         return mSocket;
     }
-    public  void connect(){
-        mSocket.connect();
-    }
-
 }

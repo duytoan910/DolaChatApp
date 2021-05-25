@@ -40,7 +40,6 @@ public class ConversationScreenActivity extends AppCompatActivity {
     ImageButton imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
     EditText txtSearchConversation;
     ImageView imgUserSetting;
-    public Socket mSocket= SocketIo.getInstance().getmSocket();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +52,6 @@ public class ConversationScreenActivity extends AppCompatActivity {
         btnWaitMessage = findViewById(R.id.btnWaitMessage);
         imgBtnConversation = (ImageButton)findViewById(R.id.imgBtnConversation);
         imgBtnContact = (ImageButton)findViewById(R.id.imgBtnContact);
-        mSocket.connect();
-
-        // craete json
-
-        // emit
-        //mSocket.emit("giveme-json",);
 
         ConversationListFragment fragment = new ConversationListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
