@@ -21,6 +21,8 @@ import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.MessageAdapter;
 import com.example.dolaapp.Others.Session;
 
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +30,8 @@ import java.util.Date;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,17 +41,27 @@ public class ChatScreenActivity extends AppCompatActivity {
     ImageButton btnSend,btnReturn;
     EmojiconEditText txtMessageContent;
     ListView messageListView;
-
+    SimpleDateFormat myFormat;
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
     MessageAdapter messageAdapter;
     Intent i;
     Conversation conv;
     ArrayList<String> userInfos;
     Loading loading;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_screen);
+
+
+        mSocket.emit("new-connection","0981986242");
+
+        mSocket.emit("join-conversation","ConversationID098");
+
+        mSocket.emit("leave-conversation","ConversationID098");
 
         chatUserName = findViewById(R.id.chatUserName);
         btnSend = findViewById(R.id.btnSend);
@@ -59,6 +73,8 @@ public class ChatScreenActivity extends AppCompatActivity {
         userInfos = sessionManagement.getSession();
         loading = new Loading(ChatScreenActivity.this);
         loading.startLoading();
+
+        myFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
 
         EmojIconActions emojIcon=new EmojIconActions(this,findViewById(R.id.rootView),txtMessageContent,findViewById(R.id.emojicon_icon),
                 "#495C66",
@@ -74,6 +90,7 @@ public class ChatScreenActivity extends AppCompatActivity {
             ((ImageButton) findViewById(R.id.btnWaitMessage)).setVisibility(View.GONE);
         }
 
+        mSocket.on("GroupMessage", receivermessage);
         conv = ((Conversation)i.getSerializableExtra("conversationObject"));
         if(conv.isGroupChat()) {
             chatUserName.setText(conv.getConversationName() + "");
@@ -96,6 +113,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                 }
             }
         }
+
 
         ApiService.api.getAllMessageByGroupId(conv.getConversationID()).enqueue(new Callback<ArrayList<Message>>() {
             @Override
@@ -165,7 +183,6 @@ public class ChatScreenActivity extends AppCompatActivity {
 
                         }
                     });
-                    SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
                     messageAdapter.add(new Message(
                             txtMessageContent.getText().toString().trim(),
                             "message.getMessageId()",
@@ -175,6 +192,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                             myFormat.format(Calendar.getInstance().getTime()),
                             true
                     ));
+
                     txtMessageContent.getText().clear();
                 }
             }
@@ -216,4 +234,27 @@ public class ChatScreenActivity extends AppCompatActivity {
 
         }
     }
+
+    private Emitter.Listener receivermessage = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    String message = data.optString("data");
+
+                    messageAdapter.add(new Message(
+                            message,
+                            "message.getMessageId()",
+                            userInfos.get(0),
+                            conv.getConversationID(),
+                            userInfos.get(1),
+                            myFormat.format(Calendar.getInstance().getTime()),
+                            true
+                    ));
+                }
+            });
+        }
+    };
 }

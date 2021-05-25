@@ -104,77 +104,8 @@ public class UserSettingActivity extends AppCompatActivity {
     }
 
     public void userPersonalSetting(View view) {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            pickImage();
-            return;
-        }
-        // Các bạn nhớ request permison cho các máy M trở lên nhé, k là crash ngay đấy.
-        int result = ContextCompat.checkSelfPermission(this,
-                READ_EXTERNAL_STORAGE);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            pickImage();
-        } else {
-            requestPermissions(new String[]{
-                    READ_EXTERNAL_STORAGE}, READ_EXTERNAL_REQUEST);
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[],
-                                           int[] grantResults) {
-        if (requestCode != READ_EXTERNAL_REQUEST) return;
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            pickImage();
-        } else {
-            Toast.makeText(getApplicationContext(), "R.string.permission_denied",
-                    Toast.LENGTH_LONG).show();
-        }
-    }
-    public void pickImage() {
-        // Gọi intent của hệ thống để chọn ảnh nhé.
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"),
-                PICK_IMAGE_REQUEST);
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null &&
-                data.getData() != null) {
-            Uri uri = data.getData();
-            uploadFiles(uri);
-        }
-    }
-    public void uploadFiles(Uri uri) {
-        if (uri == null) return;
-        File file = new File(uri.getPath());
-        RequestBody requestBody = RequestBody.create(
-                MediaType.parse(getContentResolver().getType(uri)),
-                file);
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("uploaded_file", file.getName(), requestBody);
-        ApiService.api.uploadFile(userInfos.get(1), filePart).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-    }
-    public String getRealPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if(cursor.moveToFirst()){;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
+        Intent intent = new Intent(UserSettingActivity.this, UserPersonalSettingActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

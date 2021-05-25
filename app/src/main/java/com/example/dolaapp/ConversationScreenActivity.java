@@ -31,6 +31,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,7 +40,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
     ImageButton imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
     EditText txtSearchConversation;
     ImageView imgUserSetting;
-
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,12 @@ public class ConversationScreenActivity extends AppCompatActivity {
         btnWaitMessage = findViewById(R.id.btnWaitMessage);
         imgBtnConversation = (ImageButton)findViewById(R.id.imgBtnConversation);
         imgBtnContact = (ImageButton)findViewById(R.id.imgBtnContact);
+        mSocket.connect();
+
+        // craete json
+
+        // emit
+        //mSocket.emit("giveme-json",);
 
         ConversationListFragment fragment = new ConversationListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
@@ -62,6 +69,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         Session sessionManagement = new Session(ConversationScreenActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
         if(userInfos.get(0) == ""){
