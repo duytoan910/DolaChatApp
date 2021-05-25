@@ -76,6 +76,13 @@ public interface ApiService {
     @GET("Users/{id}/SendPassword")
     Call<String> sendPassword(@Path("id") String id);
 
+    @POST("Users/ChangePassword")
+    @FormUrlEncoded
+    Call<String> ChangePassword(
+            @Field("UserId") String UserId,
+            @Field("oldPassword") String oldPassword,
+            @Field("newPassword") String newPassword);
+
     //Create new user
     @PUT("users")
     @FormUrlEncoded

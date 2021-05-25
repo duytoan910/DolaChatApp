@@ -13,6 +13,7 @@ public class Session {
     String SHARED_PREF_NAME = "Dola_Login";
     String SESSION_KEY_NAME = "session_userName";
     String SESSION_KEY_PHONE = "session_userPhone";
+    String SESSION_KEY_PASSWORD = "session_userPassword";
 
     public Session(Context context){
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -23,20 +24,29 @@ public class Session {
         //save session of user whenever user is logged in
         String userName = user.getUserName();
         String userPhone = user.getUserPhone();
+        String userPassword = user.getUserPassword();
 
         editor.putString(SESSION_KEY_NAME,userName).commit();
         editor.putString(SESSION_KEY_PHONE,userPhone).commit();
+        editor.putString(SESSION_KEY_PASSWORD,userPassword).commit();
+    }
+
+
+    public  void savePassword ( String pass){
+        editor.putString(SESSION_KEY_PASSWORD,pass).commit();
     }
 
     public ArrayList<String> getSession(){
         ArrayList<String> list = new ArrayList<>();
         list.add(sharedPreferences.getString(SESSION_KEY_NAME, ""));
         list.add(sharedPreferences.getString(SESSION_KEY_PHONE, ""));
+        list.add(sharedPreferences.getString(SESSION_KEY_PASSWORD, ""));
         return list;
     }
 
     public void removeSession(){
         editor.putString(SESSION_KEY_NAME,"").commit();
         editor.putString(SESSION_KEY_PHONE,"").commit();
+        editor.putString(SESSION_KEY_PASSWORD,"").commit();
     }
 }
