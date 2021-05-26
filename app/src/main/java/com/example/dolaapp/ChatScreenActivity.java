@@ -109,7 +109,6 @@ public class ChatScreenActivity extends AppCompatActivity {
             }
         }
 
-
         ApiService.api.getAllMessageByGroupId(conv.getConversationID()).enqueue(new Callback<ArrayList<Message>>() {
             @Override
             public void onResponse(Call<ArrayList<Message>> call, Response<ArrayList<Message>> response) {
@@ -128,7 +127,6 @@ public class ChatScreenActivity extends AppCompatActivity {
                 }
                 loading.stopLoading();
             }
-
             @Override
             public void onFailure(Call<ArrayList<Message>> call, Throwable t) {
 
@@ -230,6 +228,7 @@ public class ChatScreenActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
+        mSocket.emit("leave-conversation",conv.getConversationID());
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
