@@ -2,7 +2,12 @@ package com.example.dolaapp.Entities;
 
 import com.example.dolaapp.Others.Session;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Message {
     private String Message; // message body
@@ -79,6 +84,24 @@ public class Message {
         this.belongsToCurrentUser = belongsToCurrentUser;
     }
 
+    public JSONObject ConvertToJson (){
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+        JSONObject jsonObject= new JSONObject();
+        try {
+            jsonObject.put("Id", getMessageId());
+            jsonObject.put("Message", getMessage());
+            jsonObject.put("NameSender", getNameSender());
+            jsonObject.put("Sender", getSender());
+            jsonObject.put("Receiver", getReceiver());
+            jsonObject.put("Time", myFormat.format(Calendar.getInstance().getTime()));
+            jsonObject.put("belongtocurrentuser", false);
+
+            return jsonObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     private boolean belongsToCurrentUser;
 
 }

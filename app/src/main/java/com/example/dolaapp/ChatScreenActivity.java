@@ -2,6 +2,7 @@ package com.example.dolaapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -21,6 +22,9 @@ import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.MessageAdapter;
 import com.example.dolaapp.Others.Session;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +33,7 @@ import java.util.Date;
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -174,6 +179,15 @@ public class ChatScreenActivity extends AppCompatActivity {
 
                         }
                     });
+                    SocketEmitChatMessage(
+                            "12",
+                            userInfos.get(0),
+                            userInfos.get(1),
+                            conv.getConversationID(),
+                            txtMessageContent.getText().toString().trim(),
+                            myFormat.format(Calendar.getInstance().getTime()),
+                            false
+                            );
                     messageAdapter.add(new Message(
                             txtMessageContent.getText().toString().trim(),
                             "message.getMessageId()",
@@ -183,7 +197,6 @@ public class ChatScreenActivity extends AppCompatActivity {
                             myFormat.format(Calendar.getInstance().getTime()),
                             true
                     ));
-
                     txtMessageContent.getText().clear();
                 }
             }
@@ -199,8 +212,10 @@ public class ChatScreenActivity extends AppCompatActivity {
     private void SocketIOSetting() {
         String GroupId = conv.getConversationID();
         mSocket.emit("join-conversation",GroupId);
+        mSocket.on("Add-Message-To-Screen",receivermessage);
     }
     private void SocketEmitChatMessage (
+            String MessId,
             String NameSender,
             String Sender,
             String Receiver,
@@ -208,8 +223,8 @@ public class ChatScreenActivity extends AppCompatActivity {
             String time,
             boolean belog)
     {
-        Message data = new Message(Message,"12",NameSender,Receiver,Sender,time,false);
-
+        Message data = new Message(Message,MessId,NameSender,Receiver,Sender,time,false);
+        mSocket.emit("Send-Message-To-Conversation",data.ConvertToJson());
     }
 
     @Override
@@ -243,26 +258,28 @@ public class ChatScreenActivity extends AppCompatActivity {
         }
     }
 
-//    private Emitter.Listener receivermessage = new Emitter.Listener() {
-//        @Override
-//        public void call(Object... args) {
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    JSONObject data = (JSONObject)args[0];
-//                    String message = data.optString("data");
-//
-//                    messageAdapter.add(new Message(
-//                            message,
-//                            "message.getMessageId()",
-//                            userInfos.get(0),
-//                            conv.getConversationID(),
-//                            userInfos.get(1),
-//                            myFormat.format(Calendar.getInstance().getTime()),
-//                            true
-//                    ));
-//                }
-//            });
-//        }
-//    };
+    private Emitter.Listener receivermessage = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    try {
+                        messageAdapter.add(new Message(
+                                data.getString("Message"),
+                                data.getString("Id"),
+                                data.getString("NameSender"),
+                                data.getString("Receiver"),
+                                data.getString("Sender"),
+                                data.getString("Time"),
+                                data.getBoolean("belongtocurrentuser")
+                        ));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    };
 }
