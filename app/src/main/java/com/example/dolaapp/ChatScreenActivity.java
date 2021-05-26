@@ -28,6 +28,7 @@ import java.util.Date;
 
 import hani.momanii.supernova_emoji_library.Actions.EmojIconActions;
 import hani.momanii.supernova_emoji_library.Helper.EmojiconEditText;
+import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +44,10 @@ public class ChatScreenActivity extends AppCompatActivity {
     Conversation conv;
     ArrayList<String> userInfos;
     Loading loading;
+    Session sessionManagement;
+
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +59,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         txtMessageContent = findViewById(R.id.txtMessageContent);
         messageListView = findViewById(R.id.messageListView);
 
-        Session sessionManagement = new Session(ChatScreenActivity.this);
+        sessionManagement = new Session(ChatScreenActivity.this);
         userInfos = sessionManagement.getSession();
         loading = new Loading(ChatScreenActivity.this);
         loading.startLoading();
@@ -76,6 +81,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         }
 
         conv = ((Conversation)i.getSerializableExtra("conversationObject"));
+        SocketIOSetting();
         if(conv.isGroupChat()) {
             chatUserName.setText(conv.getConversationName() + "");
         }else {
@@ -188,6 +194,12 @@ public class ChatScreenActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void SocketIOSetting() {
+        String GroupId = conv.getConversationID();
+        mSocket.emit("join-conversation",GroupId);
+    }
+
     @Override
     public void finish() {
         super.finish();

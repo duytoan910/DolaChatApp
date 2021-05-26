@@ -40,6 +40,9 @@ public class ConversationScreenActivity extends AppCompatActivity {
     ImageButton imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
     EditText txtSearchConversation;
     ImageView imgUserSetting;
+    Session sessionManagement;
+
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,17 +56,25 @@ public class ConversationScreenActivity extends AppCompatActivity {
         imgBtnConversation = (ImageButton)findViewById(R.id.imgBtnConversation);
         imgBtnContact = (ImageButton)findViewById(R.id.imgBtnContact);
 
+        sessionManagement = new Session(ConversationScreenActivity.this);
+        SocketIOSetting();
+
         ConversationListFragment fragment = new ConversationListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentConversationList, fragment);
         transaction.commit();
     }
+
+    private void SocketIOSetting() {
+        String UserPhone = sessionManagement.getSession().get(1);
+        mSocket.emit("new-connection",UserPhone);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-
-        Session sessionManagement = new Session(ConversationScreenActivity.this);
+        sessionManagement = new Session(ConversationScreenActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
         if(userInfos.get(0) == ""){
             Intent intent = new Intent(ConversationScreenActivity.this, LoginScreenActivity.class);
