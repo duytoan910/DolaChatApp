@@ -155,6 +155,7 @@ public class ChatScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String message = txtMessageContent.getText().toString().trim();
                 if (message.length() > 0) {
+
                     ApiService.api.createMessage(
                             txtMessageContent.getText().toString().trim(),
                             userInfos.get(1),
@@ -198,6 +199,17 @@ public class ChatScreenActivity extends AppCompatActivity {
     private void SocketIOSetting() {
         String GroupId = conv.getConversationID();
         mSocket.emit("join-conversation",GroupId);
+    }
+    private void SocketEmitChatMessage (
+            String NameSender,
+            String Sender,
+            String Receiver,
+            String Message,
+            String time,
+            boolean belog)
+    {
+        Message data = new Message(Message,"12",NameSender,Receiver,Sender,time,false);
+
     }
 
     @Override

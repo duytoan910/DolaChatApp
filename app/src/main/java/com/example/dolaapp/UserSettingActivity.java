@@ -28,6 +28,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.io.File;
 import java.util.ArrayList;
 
+import io.socket.client.Socket;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -44,7 +45,7 @@ public class UserSettingActivity extends AppCompatActivity {
     ArrayList<String> userInfos;
     Session sessionManagement;
     TextInputEditText txtDialog_OldPass,txtDialog_NewPass,txtDialog_ReEnter;
-
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +125,7 @@ public class UserSettingActivity extends AppCompatActivity {
     public void userLogout(View view) {
         Session sessionManagement = new Session(UserSettingActivity.this);
         sessionManagement.removeSession();
-
+        SocketIo.getInstance().Destroy();
         finish();
     }
 

@@ -30,4 +30,8 @@ public class SocketIo {
     public Socket getmSocket(){
         return mSocket;
     }
+    public void Destroy(){
+        mSocket.disconnect();
+        instance=null;
+    }
 }
