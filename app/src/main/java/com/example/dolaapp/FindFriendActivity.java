@@ -92,8 +92,13 @@ public class FindFriendActivity extends AppCompatActivity {
                 ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString()).enqueue(new Callback<ArrayList<User>>() {
                     @Override
                     public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                        if(response.body()==null) return;
-                        if(response.body().size()<=0) return;
+                        if(response.body()==null) {
+                            loading.stopLoading();
+                        };
+                        if(response.body().size()<=0) {
+                            loading.stopLoading();
+                            return;
+                        }
                         findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                         listView_FindFriend.setAdapter(findFriendListAdapter);
                         loading.stopLoading();
