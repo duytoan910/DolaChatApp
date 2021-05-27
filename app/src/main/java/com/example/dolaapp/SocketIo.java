@@ -7,7 +7,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 
 public class SocketIo {
-    public static final String ServerUrl="http://10.200.0.84:4000";
+    public static final String ServerUrl="http://192.168.1.4:3000";
     private static SocketIo instance;
     private Socket mSocket;
     private SocketIo() {

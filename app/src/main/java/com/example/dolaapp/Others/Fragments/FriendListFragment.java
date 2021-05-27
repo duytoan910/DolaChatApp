@@ -54,6 +54,11 @@ public class FriendListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        reloadList();
+    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -68,42 +73,11 @@ public class FriendListFragment extends Fragment {
         listViewFriendList = view.findViewById(R.id.listViewFriendList);
         swiperefresh = view.findViewById(R.id.swiperefresh);
 
-        ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
-            @Override
-            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                if(response.body()!=null){
-                    if(response.body().size()>0){
-                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
-                        listViewFriendList.setAdapter(adapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        reloadList();
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                        if(response.body()!=null){
-                            if(response.body().size()>0){
-                                UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
-                                listViewFriendList.setAdapter(adapter);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                        Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                reloadList();
                 swiperefresh.setRefreshing(false);
             }
         });
@@ -132,5 +106,24 @@ public class FriendListFragment extends Fragment {
         });
 
         return view;
+    }
+    public void reloadList(){
+
+        ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                if(response.body()!=null){
+                    if(response.body().size()>0){
+                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
+                        listViewFriendList.setAdapter(adapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

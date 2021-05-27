@@ -56,6 +56,12 @@ public class DeniedListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        reloadList();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_request_list, container, false);
 
@@ -66,6 +72,28 @@ public class DeniedListFragment extends Fragment {
         Session sessionManagement = new Session(getContext());
         userInfos = sessionManagement.getSession();
 
+        reloadList();
+
+        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent result = new Intent(getContext(), ChatScreenActivity.class);
+                result.putExtra("conversationObject", conversations.get(position));
+                result.putExtra("isRequest", true);
+                startActivity(result);
+            }
+        });
+
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reloadList();
+                swiperefresh.setRefreshing(false);
+            }
+        });
+        return view;
+    }
+    private void reloadList(){
         ApiService.api.getDeniedList(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
@@ -96,54 +124,6 @@ public class DeniedListFragment extends Fragment {
 
             }
         });
-
-        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent result = new Intent(getContext(), ChatScreenActivity.class);
-                result.putExtra("conversationObject", conversations.get(position));
-                result.putExtra("isRequest", true);
-                startActivity(result);
-            }
-        });
-
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                ApiService.api.getDeniedList(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                        if(response.body().size()==0){
-                            return;
-                        }
-                        conversations = (ArrayList<Conversation>) response.body();
-                        ArrayList<Conversation> _Conv = new ArrayList<>();
-                        for (Conversation conversation : conversations) {
-                            if(conversation.getReceiver().equals(userInfos.get(1))){
-                                if(conversation.isReceiverShown() == false){
-                                    _Conv.add(conversation);
-                                }
-                            }else{
-                                if(conversation.isSenderShown() == false){
-                                    _Conv.add(conversation);
-                                }
-                            }
-                        }
-                        findFriendListAdapter = new DeniedListAdapter(_Conv, getContext());
-                        listView_RequestMessage.setAdapter(findFriendListAdapter);
-
-                        conversations = _Conv;
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
-                    }
-                });
-                swiperefresh.setRefreshing(false);
-            }
-        });
-        return view;
     }
 }
 class DeniedListAdapter extends BaseAdapter {

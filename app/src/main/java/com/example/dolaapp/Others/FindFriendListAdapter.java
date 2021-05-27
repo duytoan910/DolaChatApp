@@ -122,13 +122,13 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                                     false,
                                     userInfos.get(1),
                                     mDisplayedValues.get(position).getUserPhone()
-                            ).enqueue(new Callback<ArrayList<String>>() {
+                            ).enqueue(new Callback<Conversation>() {
                                 @Override
-                                public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                                public void onResponse(Call<Conversation> call, Response<Conversation> response) {
                                     ApiService.api.createMessage(
                                             input.getText().toString().trim(),
                                             userInfos.get(1),
-                                            response.body().get(0),
+                                            response.body().getReceiver(),
                                             userInfos.get(0),
                                             ((Date) Calendar.getInstance().getTime()).toString(),
                                             userInfos.get(0)
@@ -146,11 +146,10 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                                 }
 
                                 @Override
-                                public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+                                public void onFailure(Call<Conversation> call, Throwable t) {
 
                                 }
                             });
-
                             Toast.makeText(context, "Đã gửi lời mời kết bạn!", Toast.LENGTH_SHORT).show();
                             btnAdd.setText("Hủy lời mời");
                             ApiService.api.SendAddFriendReQuest(userInfos.get(1),list.get(position).getUserPhone()).enqueue(new Callback<String>() {

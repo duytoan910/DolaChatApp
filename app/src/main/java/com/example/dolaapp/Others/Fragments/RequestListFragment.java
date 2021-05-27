@@ -54,6 +54,12 @@ public class RequestListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        reloadList();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_request_list, container, false);
 
@@ -64,22 +70,7 @@ public class RequestListFragment extends Fragment {
         Session sessionManagement = new Session(getContext());
         userInfos = sessionManagement.getSession();
 
-        ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
-            @Override
-            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                if (response.body()==null || response.body().size() == 0) {
-                    return;
-                }
-                conversations = (ArrayList<User>) response.body();
-                findFriendListAdapter = new RequestListAdapter(conversations, getContext());
-                listView_RequestMessage.setAdapter(findFriendListAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
-            }
-        });
+        reloadList();
 
         listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -105,9 +96,28 @@ public class RequestListFragment extends Fragment {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                reloadList();
                 swiperefresh.setRefreshing(false);
             }
         });
         return view;
+    }
+    private void reloadList(){
+        ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                if (response.body()==null || response.body().size() == 0) {
+                    return;
+                }
+                conversations = (ArrayList<User>) response.body();
+                findFriendListAdapter = new RequestListAdapter(conversations, getContext());
+                listView_RequestMessage.setAdapter(findFriendListAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+
+            }
+        });
     }
 }

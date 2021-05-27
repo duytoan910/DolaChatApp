@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.Session;
@@ -50,6 +52,7 @@ public class NewGroupActivity extends AppCompatActivity {
     ArrayList<User> userList;
     ArrayList<User> selectedUser;
     Intent intent;
+    Button btnNewGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,7 @@ public class NewGroupActivity extends AppCompatActivity {
         listView_NewGroup = findViewById(R.id.listView_NewGroup);
         swiperefresh = findViewById(R.id.swiperefresh);
         chipGroupUser = findViewById(R.id.chipGroupUser);
+        btnNewGroup = findViewById(R.id.btnNewGroup);
 
         ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
@@ -117,6 +121,11 @@ public class NewGroupActivity extends AppCompatActivity {
                         selectedUser.remove(i);
                         check.setChecked(false);
 
+                        if(chipGroupUser.getChildCount() == 0 ){
+                            btnNewGroup.setText("Tạo nhóm chat");
+                        }else
+                            btnNewGroup.setText("Tạo nhóm chat (" + chipGroupUser.getChildCount() + ")");
+
                         returnFlag = true;
                         break;
                     }
@@ -126,6 +135,11 @@ public class NewGroupActivity extends AppCompatActivity {
                 addNewChip(userList.get(position));
                 selectedUser.add(userList.get(position));
                 check.setChecked(true);
+
+                if(chipGroupUser.getChildCount() == 0 ){
+                    btnNewGroup.setText("Tạo nhóm chat");
+                }else
+                    btnNewGroup.setText("Tạo nhóm chat (" + chipGroupUser.getChildCount() + ")");
             }
         });
     }
@@ -157,6 +171,18 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
     public void createGroup(View view) {
+        if(chipGroupUser.getChildCount() < 3 ){
+            new AlertDialog.Builder(NewGroupActivity.this)
+                    .setTitle("Thông báo")
+                    .setMessage("Vui lòng chọn ít nhất 2 người bạn")
+                    .setNeutralButton("Đã hiểu", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            }).show();
+            return;
+        }
         String groupName = "";
         ArrayList<String> createWithUserList = new ArrayList<String>();
         createWithUserList.add(userInfos.get(1));
@@ -191,14 +217,18 @@ public class NewGroupActivity extends AppCompatActivity {
                         false,
                         "",
                         ""
-                ).enqueue(new Callback<ArrayList<String>>() {
+                ).enqueue(new Callback<Conversation>() {
                     @Override
-                    public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                    public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                        if(response.body() == null) return;
 
+                        Intent result = new Intent(NewGroupActivity.this, ChatScreenActivity.class);
+                        result.putExtra("conversationObject", response.body());
+                        startActivity(result);
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+                    public void onFailure(Call<Conversation> call, Throwable t) {
 
                     }
                 });

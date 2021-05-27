@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Fragments.ConversationListFragment;
@@ -28,10 +29,14 @@ import com.example.dolaapp.Others.Fragments.FriendListFragment;
 import com.example.dolaapp.Others.Session;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,7 +46,8 @@ public class ConversationScreenActivity extends AppCompatActivity {
     EditText txtSearchConversation;
     ImageView imgUserSetting;
     Session sessionManagement;
-
+    ConversationListFragment fragment;
+    FloatingActionButton fab;
     public Socket mSocket= SocketIo.getInstance().getmSocket();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +61,12 @@ public class ConversationScreenActivity extends AppCompatActivity {
         btnWaitMessage = findViewById(R.id.btnWaitMessage);
         imgBtnConversation = (ImageButton)findViewById(R.id.imgBtnConversation);
         imgBtnContact = (ImageButton)findViewById(R.id.imgBtnContact);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         sessionManagement = new Session(ConversationScreenActivity.this);
         SocketIOSetting();
 
-        ConversationListFragment fragment = new ConversationListFragment("asdasd");
+        fragment = new ConversationListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentConversationList, fragment);
@@ -145,6 +152,25 @@ public class ConversationScreenActivity extends AppCompatActivity {
 
     public void newGroup(View view) {
         Intent intent = new Intent(ConversationScreenActivity.this, NewGroupActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    private Emitter.Listener receivermessage = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    fragment.reloadList();
+                }
+            });
+        }
+    };
+
+    public void newConversation(View view) {
+        Intent intent = new Intent(ConversationScreenActivity.this, NewConversationActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }

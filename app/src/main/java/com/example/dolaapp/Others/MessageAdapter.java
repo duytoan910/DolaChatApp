@@ -72,7 +72,9 @@ public class MessageAdapter extends BaseAdapter {
             holder.messageBody = convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
 
-            holder.name.setText(message.getNameSender());
+            String[] parts = message.getNameSender().split(" ");
+
+            holder.name.setText(parts[parts.length - 1]);
             holder.messageBody.setText(message.getMessage());
         }
 
@@ -85,7 +87,7 @@ public class MessageAdapter extends BaseAdapter {
                         .setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ApiService.api.deleteMessage(message.getMessageId()).enqueue(new Callback<String>() {
+                                ApiService.api.deleteMessage(message.getReceiver(), message.getMessageId()).enqueue(new Callback<String>() {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
 

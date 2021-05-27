@@ -169,7 +169,17 @@ public class ChatScreenActivity extends AppCompatActivity {
                     ).enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
+                            messageAdapter.add(new Message(
+                                    txtMessageContent.getText().toString().trim(),
+                                    response.body().getMessageId().toString(),
+                                    userInfos.get(0),
+                                    conv.getConversationID(),
+                                    userInfos.get(1),
+                                    myFormat.format(Calendar.getInstance().getTime()),
+                                    true
+                            ));
 
+                            txtMessageContent.getText().clear();
                         }
 
                         @Override
@@ -186,16 +196,6 @@ public class ChatScreenActivity extends AppCompatActivity {
                             myFormat.format(Calendar.getInstance().getTime()),
                             false
                             );
-                    messageAdapter.add(new Message(
-                            txtMessageContent.getText().toString().trim(),
-                            "message.getMessageId()",
-                            userInfos.get(0),
-                            conv.getConversationID(),
-                            userInfos.get(1),
-                            myFormat.format(Calendar.getInstance().getTime()),
-                            true
-                    ));
-                    txtMessageContent.getText().clear();
                 }
             }
         });
