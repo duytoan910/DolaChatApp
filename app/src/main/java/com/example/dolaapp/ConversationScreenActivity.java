@@ -1,52 +1,34 @@
 package com.example.dolaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
-import com.example.dolaapp.Entities.Conversation;
-import com.example.dolaapp.Entities.Message;
-import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Fragments.ConversationListFragment;
 import com.example.dolaapp.Others.Fragments.FriendListFragment;
 import com.example.dolaapp.Others.Session;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ConversationScreenActivity extends AppCompatActivity {
     ImageButton imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
@@ -199,4 +181,9 @@ public class ConversationScreenActivity extends AppCompatActivity {
         return  (int) new Date().getTime();
     }
 
+    public void newConversation(View view) {
+        Intent intent = new Intent(ConversationScreenActivity.this, NewConversationActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
 }

@@ -12,22 +12,19 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.AppServices;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.Others.ConversationListAdapter;
-import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +48,12 @@ public class DeniedListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        reloadList();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -65,7 +68,28 @@ public class DeniedListFragment extends Fragment {
 
         Session sessionManagement = new Session(getContext());
         userInfos = sessionManagement.getSession();
+        reloadList();
 
+        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent result = new Intent(getContext(), ChatScreenActivity.class);
+                result.putExtra("conversationObject", conversations.get(position));
+                result.putExtra("isRequest", true);
+                startActivity(result);
+            }
+        });
+
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reloadList();
+                swiperefresh.setRefreshing(false);
+            }
+        });
+        return view;
+    }
+    private void reloadList(){
         ApiService.api.getDeniedList(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
@@ -96,54 +120,6 @@ public class DeniedListFragment extends Fragment {
 
             }
         });
-
-        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent result = new Intent(getContext(), ChatScreenActivity.class);
-                result.putExtra("conversationObject", conversations.get(position));
-                result.putExtra("isRequest", true);
-                startActivity(result);
-            }
-        });
-
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                ApiService.api.getDeniedList(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                        if(response.body().size()==0){
-                            return;
-                        }
-                        conversations = (ArrayList<Conversation>) response.body();
-                        ArrayList<Conversation> _Conv = new ArrayList<>();
-                        for (Conversation conversation : conversations) {
-                            if(conversation.getReceiver().equals(userInfos.get(1))){
-                                if(conversation.isReceiverShown() == false){
-                                    _Conv.add(conversation);
-                                }
-                            }else{
-                                if(conversation.isSenderShown() == false){
-                                    _Conv.add(conversation);
-                                }
-                            }
-                        }
-                        findFriendListAdapter = new DeniedListAdapter(_Conv, getContext());
-                        listView_RequestMessage.setAdapter(findFriendListAdapter);
-
-                        conversations = _Conv;
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
-                    }
-                });
-                swiperefresh.setRefreshing(false);
-            }
-        });
-        return view;
     }
 }
 class DeniedListAdapter extends BaseAdapter {
@@ -168,6 +144,8 @@ class DeniedListAdapter extends BaseAdapter {
         return list.get(position);
     }
 
+
+
     @Override
     public long getItemId(int position) {
         return 0;
@@ -190,6 +168,11 @@ class DeniedListAdapter extends BaseAdapter {
                     public void onResponse(Call<User> call, Response<User> response) {
                         otherUser = response.body();
                         ((TextView) finalConvertView.findViewById(R.id.txtUserName)).setText(response.body().getUserName());
+                        new AppServices().setImageToImageView(
+                                context,
+                                response.body().getAvatar(),
+                                finalConvertView.findViewById(R.id.imgUserSetting)
+                        );
 //        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
 //        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
 

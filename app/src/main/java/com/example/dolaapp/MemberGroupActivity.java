@@ -2,17 +2,14 @@ package com.example.dolaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.Others.Conversaion_Group_BottomSheet;
 import com.example.dolaapp.Others.MemberListSelect_BottomSheet;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.Others.UserListAdapter;

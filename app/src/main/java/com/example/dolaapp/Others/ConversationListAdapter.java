@@ -1,14 +1,15 @@
 package com.example.dolaapp.Others;
 
 import android.content.Context;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp.UserSettingActivity;
+import com.example.dolaapp._AppConfig.AppServices;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
@@ -66,6 +67,11 @@ public class ConversationListAdapter extends BaseAdapter {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             ((TextView) finalConvertView.findViewById(R.id.txtUserName)).setText(response.body().getUserName());
+                            new AppServices().setImageToImageView(
+                                    context,
+                                    response.body().getAvatar(),
+                                    finalConvertView.findViewById(R.id.imgUserSetting)
+                            );
                         }
 
                         @Override

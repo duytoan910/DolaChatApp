@@ -64,7 +64,7 @@ public class RequestMessageActivity extends AppCompatActivity {
         transaction.replace(R.id.fragmentRequestList, fragment);
         transaction.commit();
 
-        imgBtnRequest.setImageResource(R.drawable.user_plus_block);
+        imgBtnRequest.setImageResource(R.drawable.user_plus_block_big);
         imgBtnDenied.setImageResource(R.drawable.user_denied_big_blur);
         textView.setText("Lời mời kết bạn");
     }

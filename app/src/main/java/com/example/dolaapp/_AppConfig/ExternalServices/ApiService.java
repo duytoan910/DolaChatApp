@@ -1,19 +1,17 @@
-package com.example.dolaapp.API;
+package com.example.dolaapp._AppConfig.ExternalServices;
 
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
+import com.example.dolaapp._AppConfig.AppServices;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Retrofit;
 import retrofit2.http.DELETE;
@@ -33,7 +31,7 @@ public interface ApiService {
             .create();
 
     ApiService api = new Retrofit.Builder()
-            .baseUrl("http://10.200.0.84:3000/api/")
+            .baseUrl(new AppServices().getRouteAPI())
 //            .baseUrl("http://192.168.0.168:3000/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -109,7 +107,7 @@ public interface ApiService {
     //Create new conversation
     @PUT("Conversations")
     @FormUrlEncoded
-    Call<ArrayList<String>> createConversation(
+    Call<Conversation> createConversation(
             @Field("ConversationName") String Name,
             @Field("ConversationMember") ArrayList<String> Member,
             @Field("ConversationAdmin") ArrayList<String> Admin,
@@ -153,8 +151,8 @@ public interface ApiService {
     Call<ArrayList<Message>> getAllMessageByGroupId(@Path("ConversationId") String ConversationId);
 
     //Get all message in conversation
-    @DELETE("Messages/{messageId}")
-    Call<String> deleteMessage(@Path("messageId") String messageId);
+    @DELETE("{ConversationId}/Messages/{messageId}")
+    Call<String> deleteMessage(@Path("ConversationId") String ConversationId, @Path("messageId") String messageId);
 
     //Create new message
     @PUT("Messages")

@@ -1,43 +1,31 @@
 package com.example.dolaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.loader.content.CursorLoader;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.User;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Others.Session;
+import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
+import com.example.dolaapp._AppConfig.AppServices;
 import com.google.android.material.textfield.TextInputEditText;
+import com.squareup.picasso.Picasso;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import io.socket.client.Socket;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class UserSettingActivity extends AppCompatActivity {
     public final static int PICK_IMAGE_REQUEST = 1;
@@ -54,9 +42,39 @@ public class UserSettingActivity extends AppCompatActivity {
         sessionManagement = new Session(UserSettingActivity.this);
         userInfos = sessionManagement.getSession();
         if(userInfos.get(0) != ""){
-            ((TextView) findViewById(R.id.userSettingName)).setText(userInfos.get(0));
-            ((TextView) findViewById(R.id.userSettingPhone)).setText(userInfos.get(1));
+            ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    ((TextView) findViewById(R.id.userSettingName)).setText(response.body().getUserName());
+                    ((TextView) findViewById(R.id.userSettingPhone)).setText(response.body().getUserPhone());
+                    new AppServices().setImageToImageView(UserSettingActivity.this, response.body().getAvatar(), findViewById(R.id.userAvt));
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+
+                }
+            });
         }
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                ((TextView) findViewById(R.id.userSettingName)).setText(response.body().getUserName());
+                ((TextView) findViewById(R.id.userSettingPhone)).setText(response.body().getUserPhone());
+                new AppServices().setImageToImageView(UserSettingActivity.this, response.body().getAvatar(), findViewById(R.id.userAvt));
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

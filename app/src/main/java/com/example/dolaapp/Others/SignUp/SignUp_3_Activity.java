@@ -13,18 +13,16 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.LoginScreenActivity;
 import com.example.dolaapp.R;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Field;
 
 public class SignUp_3_Activity extends AppCompatActivity {
     Button nextStep;

@@ -4,22 +4,23 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.dolaapp.API.ApiService;
-import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.User;
+import com.example.dolaapp._AppConfig.AppServices;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,13 +68,32 @@ public class MessageAdapter extends BaseAdapter {
             holder.messageBody.setText(message.getMessage());
         } else { // this message was sent by someone else so let's create an advanced chat bubble on the left
             convertView = messageInflater.inflate(R.layout.their_message, null);
-            holder.avatar = (View) convertView.findViewById(R.id.avatar);
+            holder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
             holder.messageBody = convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
 
-            holder.name.setText(message.getNameSender());
+            String[] parts = message.getNameSender().split(" ");
+
+            holder.name.setText(parts[parts.length - 1]);
+
             holder.messageBody.setText(message.getMessage());
+
+            ApiService.api.getUserById(message.getSender()).enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+                    new AppServices().setImageToImageView(
+                            context,
+                            response.body().getAvatar(),
+                            holder.avatar
+                    );
+                }
+
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+
+                }
+            });
         }
 
         holder.messageBody.setOnLongClickListener(new View.OnLongClickListener() {
@@ -85,7 +105,7 @@ public class MessageAdapter extends BaseAdapter {
                         .setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ApiService.api.deleteMessage(message.getMessageId()).enqueue(new Callback<String>() {
+                                ApiService.api.deleteMessage(message.getReceiver(), message.getMessageId()).enqueue(new Callback<String>() {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
 
@@ -115,7 +135,7 @@ public class MessageAdapter extends BaseAdapter {
 }
 
 class MessageViewHolder {
-    public View avatar;
+    public ImageView avatar;
     public TextView name;
     public TextView messageBody;
 }

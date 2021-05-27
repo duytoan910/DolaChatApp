@@ -2,7 +2,6 @@ package com.example.dolaapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
@@ -21,6 +20,7 @@ import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
 import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.MessageAdapter;
 import com.example.dolaapp.Others.Session;
+import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -169,7 +169,17 @@ public class ChatScreenActivity extends AppCompatActivity {
                     ).enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
+                            messageAdapter.add(new Message(
+                                    txtMessageContent.getText().toString().trim(),
+                                    response.body().getMessageId().toString(),
+                                    userInfos.get(0),
+                                    conv.getConversationID(),
+                                    userInfos.get(1),
+                                    myFormat.format(Calendar.getInstance().getTime()),
+                                    true
+                            ));
 
+                            txtMessageContent.getText().clear();
                         }
 
                         @Override

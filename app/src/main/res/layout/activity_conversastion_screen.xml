@@ -144,7 +144,8 @@
                 android:layout_margin="15dp"
                 app:backgroundTint="@color/dola_control_white"
                 app:srcCompat="@drawable/ic_baseline_add_comment_24"
-                tools:ignore="VectorDrawableCompat" />
+                tools:ignore="VectorDrawableCompat"
+                android:onClick="newConversation"/>
         </FrameLayout>
     </LinearLayout>
 

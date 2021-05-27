@@ -13,10 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ConversationScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
-import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.MemberGroupActivity;
 import com.example.dolaapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

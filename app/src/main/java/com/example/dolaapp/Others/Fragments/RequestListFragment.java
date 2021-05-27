@@ -1,10 +1,6 @@
 package com.example.dolaapp.Others.Fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +10,13 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.dolaapp.API.ApiService;
-import com.example.dolaapp.ChatScreenActivity;
-import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.R;
-import com.example.dolaapp.RequestMessageActivity;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -64,6 +55,25 @@ public class RequestListFragment extends Fragment {
         Session sessionManagement = new Session(getContext());
         userInfos = sessionManagement.getSession();
 
+        reloadList();
+
+        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                reloadList();
+            }
+        });
+
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                reloadList();
+                swiperefresh.setRefreshing(false);
+            }
+        });
+        return view;
+    }
+    public void reloadList(){
         ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
@@ -80,34 +90,5 @@ public class RequestListFragment extends Fragment {
 
             }
         });
-
-        listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ApiService.api.GetConversationOf2Users(userInfos.get(1),conversations.get(position).getUserPhone()).enqueue(new Callback<Conversation>() {
-                    @Override
-                    public void onResponse(Call<Conversation> call, Response<Conversation> response) {
-                        if(response.body()==null) return;
-                        Intent result = new Intent(getContext(), ChatScreenActivity.class);
-                        result.putExtra("conversationObject", response.body());
-                        result.putExtra("isRequest", true);
-                        getContext().startActivity(result);
-                    }
-
-                    @Override
-                    public void onFailure(Call<Conversation> call, Throwable t) {
-
-                    }
-                });
-            }
-        });
-
-        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swiperefresh.setRefreshing(false);
-            }
-        });
-        return view;
     }
 }

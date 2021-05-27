@@ -16,16 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.AppServices;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
-import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.FindFriendActivity;
 import com.example.dolaapp.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -89,6 +86,12 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
         });
 
         ((TextView) convertView.findViewById(R.id.txtUserName)).setText(mDisplayedValues.get(position).getUserName() + "");
+
+        new AppServices().setImageToImageView(
+                context,
+                mDisplayedValues.get(position).getAvatar(),
+                convertView.findViewById(R.id.imgUserSetting)
+        );
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,34 +125,22 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                                     false,
                                     userInfos.get(1),
                                     mDisplayedValues.get(position).getUserPhone()
-                            ).enqueue(new Callback<ArrayList<String>>() {
+                            ).enqueue(new Callback<Conversation>() {
                                 @Override
-                                public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                                public void onResponse(Call<Conversation> call, Response<Conversation> response) {
                                     ApiService.api.createMessage(
                                             input.getText().toString().trim(),
                                             userInfos.get(1),
-                                            response.body().get(0),
+                                            response.body().getReceiver(),
                                             userInfos.get(0),
                                             ((Date) Calendar.getInstance().getTime()).toString(),
-                                            userInfos.get(0)
-                                    ).enqueue(new Callback<Message>() {
-                                        @Override
-                                        public void onResponse(Call<Message> call, Response<Message> response) {
+                                            userInfos.get(0));
+                                    }
+                                    @Override
+                                    public void onFailure(Call<Conversation> call, Throwable t) {
 
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Message> call, Throwable t) {
-
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void onFailure(Call<ArrayList<String>> call, Throwable t) {
-
-                                }
-                            });
+                                    }
+                                });
 
                             Toast.makeText(context, "Đã gửi lời mời kết bạn!", Toast.LENGTH_SHORT).show();
                             btnAdd.setText("Hủy lời mời");

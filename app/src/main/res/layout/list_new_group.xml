@@ -28,10 +28,10 @@
             android:paddingBottom="10dp"
             android:layout_weight="8">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgUserSetting"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:background="@color/transparent"
                 android:layout_weight="8"
                 android:src="@drawable/images" />

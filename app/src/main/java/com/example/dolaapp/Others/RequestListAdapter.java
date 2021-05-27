@@ -8,11 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.AppServices;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
@@ -56,6 +56,11 @@ public class RequestListAdapter extends BaseAdapter {
 
         TextView btnReject = convertView.findViewById(R.id.btnReject);
         ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getUserName());
+        new AppServices().setImageToImageView(
+                context,
+                list.get(position).getAvatar(),
+                convertView.findViewById(R.id.imgUserSetting)
+        );
 //        for (String s : list.get(position).getConversationMember()) {
 //            if (s.equals(userInfos.get(1))) {
 //                continue;

@@ -11,6 +11,8 @@ public class User implements Serializable {
     protected String UserPhone;
     protected String UserName;
     protected String UserDoB;
+    protected String Avatar;
+
     protected ArrayList<String> UserConversation;
     protected ArrayList<String> listrequest;
     protected ArrayList<String> listfriend;
@@ -37,6 +39,30 @@ public class User implements Serializable {
         UserDoB = userDoB;
     }
 
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        Avatar = avatar;
+    }
+
+    public ArrayList<String> getListrequest() {
+        return listrequest;
+    }
+
+    public void setListrequest(ArrayList<String> listrequest) {
+        this.listrequest = listrequest;
+    }
+
+    public ArrayList<String> getListfriend() {
+        return listfriend;
+    }
+
+    public void setListfriend(ArrayList<String> listfriend) {
+        this.listfriend = listfriend;
+    }
     public User(){}
 
     public String getUserEmail() {

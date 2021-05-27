@@ -1,41 +1,29 @@
 package com.example.dolaapp.Others.Fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ChatScreenActivity;
-import com.example.dolaapp.ConversationScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.LoginScreenActivity;
 import com.example.dolaapp.Others.Conversaion_Group_BottomSheet;
 import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.R;
 
-import java.io.Console;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,6 +47,11 @@ public class ConversationListFragment extends Fragment {
         this.userID = userID;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        reloadList();
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -147,8 +140,20 @@ public class ConversationListFragment extends Fragment {
                             ApiService.api.getUserById(s).enqueue(new Callback<User>() {
                                 @Override
                                 public void onResponse(Call<User> call, Response<User> response) {
-                                    Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(response.body(), true);
-                                    modal.show(getFragmentManager(),"info_u2u_Modal");
+                                    ApiService.api.isFriend(userInfos.get(1),response.body().getUserPhone()).enqueue(new Callback<String>() {
+                                        @Override
+                                        public void onResponse(Call<String> call, Response<String> response1) {
+                                            if(response1.body()=="true"){
+                                                Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(response.body(), true);
+                                                modal.show(getFragmentManager(),"info_u2u_Modal");
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<String> call, Throwable t) {
+
+                                        }
+                                    });
                                 }
 
                                 @Override
@@ -169,6 +174,31 @@ public class ConversationListFragment extends Fragment {
     }
 
     public void reloadlist(){
+        ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                if(response.body()== null ||response.body().size()==0) return;
+                conversations = (ArrayList<Conversation>) response.body();
+                ArrayList<Conversation> _Conv = new ArrayList<>();
+                for (Conversation conversation : conversations) {
+                    if(conversation.isGroupChat() ||
+                            (conversation.getReceiver().equals(userInfos.get(1)) && conversation.isReceiverShown() != false) ||
+                            (conversation.getSender().equals(userInfos.get(1)) && conversation.isSenderShown() != false)){
+                        _Conv.add(conversation);
+                    }
+                }
+                ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
+                conversations = _Conv;
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+
+            }
+        });
+    }
+    public void reloadList(){
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {

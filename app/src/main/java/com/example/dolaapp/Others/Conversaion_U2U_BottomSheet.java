@@ -14,12 +14,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.dolaapp.API.ApiService;
-import com.example.dolaapp.ChatScreenActivity;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ConversationScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.LoginScreenActivity;
 import com.example.dolaapp.NewGroupActivity;
 import com.example.dolaapp.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;

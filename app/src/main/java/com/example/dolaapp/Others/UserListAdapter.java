@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
+import com.example.dolaapp._AppConfig.AppServices;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,11 @@ public class UserListAdapter extends BaseAdapter {
         convertView = inflater.inflate(R.layout.list_item_user, null);
 
         ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getUserName() + "");
+        new AppServices().setImageToImageView(
+                context,
+                list.get(position).getAvatar(),
+                convertView.findViewById(R.id.imgUserSetting)
+        );
 //        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
 //        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
 

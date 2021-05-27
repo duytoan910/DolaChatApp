@@ -14,6 +14,7 @@ public class Session {
     String SESSION_KEY_NAME = "session_userName";
     static String SESSION_KEY_PHONE = "session_userPhone";
     String SESSION_KEY_PASSWORD = "session_userPassword";
+    String SESSION_KEY_AVATAR = "session_userAvatar";
 
     public Session(Context context){
         sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -25,10 +26,12 @@ public class Session {
         String userName = user.getUserName();
         String userPhone = user.getUserPhone();
         String userPassword = user.getUserPassword();
+        String userAvatar = user.getAvatar();
 
         editor.putString(SESSION_KEY_NAME,userName).commit();
         editor.putString(SESSION_KEY_PHONE,userPhone).commit();
         editor.putString(SESSION_KEY_PASSWORD,userPassword).commit();
+        editor.putString(SESSION_KEY_AVATAR,userAvatar).commit();
     }
 
 
@@ -41,6 +44,7 @@ public class Session {
         list.add(sharedPreferences.getString(SESSION_KEY_NAME, ""));
         list.add(sharedPreferences.getString(SESSION_KEY_PHONE, ""));
         list.add(sharedPreferences.getString(SESSION_KEY_PASSWORD, ""));
+        list.add(sharedPreferences.getString(SESSION_KEY_AVATAR, ""));
         return list;
     }
 
@@ -48,6 +52,7 @@ public class Session {
         editor.putString(SESSION_KEY_NAME,"").commit();
         editor.putString(SESSION_KEY_PHONE,"").commit();
         editor.putString(SESSION_KEY_PASSWORD,"").commit();
+        editor.putString(SESSION_KEY_AVATAR,"").commit();
     }
     public static String GetUserPhone(){
         return sharedPreferences.getString(SESSION_KEY_PHONE, "");

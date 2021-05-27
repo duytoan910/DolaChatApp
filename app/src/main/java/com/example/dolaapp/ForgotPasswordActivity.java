@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.dolaapp.API.ApiService;
-import com.example.dolaapp.Others.SignUp.SignUp_1_Activity;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 
 import retrofit2.Call;
 import retrofit2.Callback;

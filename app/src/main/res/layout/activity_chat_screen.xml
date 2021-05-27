@@ -51,7 +51,7 @@
                     android:background="@color/transparent"
                     android:src="@drawable/go_left" />
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imgUserSetting"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

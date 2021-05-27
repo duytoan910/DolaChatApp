@@ -2,7 +2,6 @@ package com.example.dolaapp.Others.Fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,23 +14,14 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.dolaapp.API.ApiService;
-import com.example.dolaapp.ChatScreenActivity;
+import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
-import com.example.dolaapp.Others.ConversationListAdapter;
-import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.Others.UserListAdapter;
 import com.example.dolaapp.R;
-import com.example.dolaapp.RequestMessageActivity;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +44,12 @@ public class FriendListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        reloadList();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -68,42 +64,12 @@ public class FriendListFragment extends Fragment {
         listViewFriendList = view.findViewById(R.id.listViewFriendList);
         swiperefresh = view.findViewById(R.id.swiperefresh);
 
-        ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
-            @Override
-            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                if(response.body()!=null){
-                    if(response.body().size()>0){
-                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
-                        listViewFriendList.setAdapter(adapter);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
-            }
-        });
+        reloadList();
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                        if(response.body()!=null){
-                            if(response.body().size()>0){
-                                UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
-                                listViewFriendList.setAdapter(adapter);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                        Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                reloadList();
                 swiperefresh.setRefreshing(false);
             }
         });
@@ -132,5 +98,23 @@ public class FriendListFragment extends Fragment {
         });
 
         return view;
+    }
+    public void reloadList(){
+        ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                if(response.body()!=null){
+                    if(response.body().size()>0){
+                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
+                        listViewFriendList.setAdapter(adapter);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
