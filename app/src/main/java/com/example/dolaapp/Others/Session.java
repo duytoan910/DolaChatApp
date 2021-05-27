@@ -8,11 +8,11 @@ import com.example.dolaapp.Entities.User;
 import java.util.ArrayList;
 
 public class Session {
-    SharedPreferences sharedPreferences;
+    private static SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     String SHARED_PREF_NAME = "Dola_Login";
     String SESSION_KEY_NAME = "session_userName";
-    String SESSION_KEY_PHONE = "session_userPhone";
+    static String SESSION_KEY_PHONE = "session_userPhone";
     String SESSION_KEY_PASSWORD = "session_userPassword";
 
     public Session(Context context){
@@ -48,5 +48,8 @@ public class Session {
         editor.putString(SESSION_KEY_NAME,"").commit();
         editor.putString(SESSION_KEY_PHONE,"").commit();
         editor.putString(SESSION_KEY_PASSWORD,"").commit();
+    }
+    public static String GetUserPhone(){
+        return sharedPreferences.getString(SESSION_KEY_PHONE, "");
     }
 }

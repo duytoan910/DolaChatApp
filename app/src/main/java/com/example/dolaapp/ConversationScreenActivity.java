@@ -1,11 +1,16 @@
 package com.example.dolaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.dolaapp.API.ApiService;
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.ConversationListAdapter;
 import com.example.dolaapp.Others.Fragments.ConversationListFragment;
@@ -28,10 +34,16 @@ import com.example.dolaapp.Others.Fragments.FriendListFragment;
 import com.example.dolaapp.Others.Session;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +53,8 @@ public class ConversationScreenActivity extends AppCompatActivity {
     EditText txtSearchConversation;
     ImageView imgUserSetting;
     Session sessionManagement;
+    ConversationListFragment fragment;
+    final Random myRandom = new Random();
 
     public Socket mSocket= SocketIo.getInstance().getmSocket();
     @Override
@@ -59,16 +73,11 @@ public class ConversationScreenActivity extends AppCompatActivity {
         sessionManagement = new Session(ConversationScreenActivity.this);
         SocketIOSetting();
 
-        ConversationListFragment fragment = new ConversationListFragment("asdasd");
+        fragment = new ConversationListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentConversationList, fragment);
         transaction.commit();
-    }
-
-    private void SocketIOSetting() {
-        String UserPhone = sessionManagement.getSession().get(1);
-        mSocket.emit("new-connection",UserPhone);
     }
 
     @Override
@@ -148,4 +157,46 @@ public class ConversationScreenActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
+
+    private void SocketIOSetting() {
+        String UserPhone = sessionManagement.getSession().get(1);
+        mSocket.emit("new-connection",UserPhone);
+        mSocket.on("ReloadConversationScreen",ReloadConversationScreen);
+    }
+
+    private Emitter.Listener ReloadConversationScreen = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    try {
+                        Toast.makeText(ConversationScreenActivity.this, data.getString("Message"), Toast.LENGTH_SHORT).show();
+                        CreateNotification(data.getString("Receiver"), data.getString("Message"),data.getString("NameSender"));
+                        //fragment.reloadlist();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        }
+    };
+
+    private void CreateNotification(String title, String Message,String NameSender){
+        Message = NameSender + " : " + Message;
+        Notification notification =  new Notification.Builder(this)
+                .setContentTitle(title)
+                .setContentText(Message)
+                .setSmallIcon(R.drawable.logo_pic)
+                .build();
+        NotificationManager notificationManager = (NotificationManager)  getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(RamdomNotifyId(),notification);
+    }
+
+    private  int RamdomNotifyId(){
+        return  (int) new Date().getTime();
+    }
+
 }

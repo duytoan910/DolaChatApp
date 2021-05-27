@@ -167,4 +167,30 @@ public class ConversationListFragment extends Fragment {
     public void triggerSwipeRefresh(){
         swiperefresh.setRefreshing(true);
     }
+
+    public void reloadlist(){
+        ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                if(response.body()== null ||response.body().size()==0) return;
+                conversations = (ArrayList<Conversation>) response.body();
+                ArrayList<Conversation> _Conv = new ArrayList<>();
+                for (Conversation conversation : conversations) {
+                    if(conversation.isGroupChat() ||
+                            (conversation.getReceiver().equals(userInfos.get(1)) && conversation.isReceiverShown() != false) ||
+                            (conversation.getSender().equals(userInfos.get(1)) && conversation.isSenderShown() != false)){
+                        _Conv.add(conversation);
+                    }
+                }
+                ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
+                conversations = _Conv;
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+
+            }
+        });
+    }
 }

@@ -222,7 +222,7 @@ public class ChatScreenActivity extends AppCompatActivity {
             boolean belog)
     {
         Message data = new Message(Message,MessId,NameSender,Receiver,Sender,time,false);
-        mSocket.emit("Send-Message-To-Conversation",data.ConvertToJson());
+        mSocket.emit("Send-Message-To-Conversation",data.ConvertToJson(conv.getConversationMember()));
     }
 
     @Override
