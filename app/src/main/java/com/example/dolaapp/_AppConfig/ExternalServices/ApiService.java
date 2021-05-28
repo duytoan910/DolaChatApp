@@ -119,6 +119,10 @@ public interface ApiService {
             );
 
     // Switch Conversation State Show
+    @GET("{UserId}/HaveConversation/{TargetId}")
+    Call<ArrayList<Conversation>> HaveConversation(@Path("UserId") String UserId, @Path("TargetId") String TargetId);
+
+    // Switch Conversation State Show
     @GET("{ConversationsId}/SwitchConversationStateShow/{UserId}")
     Call<String> SwitchConversationStateShow(@Path("ConversationsId") String ConversationsId, @Path("UserId") String UserId);
 

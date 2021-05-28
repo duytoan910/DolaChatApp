@@ -124,7 +124,29 @@ public class ConversationListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent result = new Intent(getContext(), ChatScreenActivity.class);
                 result.putExtra("conversationObject", conversations.get(position));
-                startActivity(result);
+                if(!conversations.get(position).isGroupChat()){
+                    ApiService.api.isFriend(
+                            conversations.get(position).getConversationMember().get(0),
+                            conversations.get(position).getConversationMember().get(1))
+                            .enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if(response.body() == "false"){
+                                result.putExtra("isRequest", true);
+                                startActivity(result);
+                            }else{
+                                startActivity(result);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                }else{
+                    startActivity(result);
+                }
             }
         });
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

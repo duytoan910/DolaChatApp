@@ -49,13 +49,13 @@ public class MemberGroupActivity extends AppCompatActivity {
 
             }
         });
-        listView_GroupMember.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MemberListSelect_BottomSheet modal = new MemberListSelect_BottomSheet(userList.get(position));
-                modal.show(getSupportFragmentManager(), "info_group_member_Modal");
-            }
-        });
+//        listView_GroupMember.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                MemberListSelect_BottomSheet modal = new MemberListSelect_BottomSheet(userList.get(position));
+//                modal.show(getSupportFragmentManager(), "info_group_member_Modal");
+//            }
+//        });
     }
     @Override
     public void finish() {

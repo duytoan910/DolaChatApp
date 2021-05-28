@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dolaapp.Entities.Message;
 import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
@@ -124,31 +125,74 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                             ArrayList<String> arr = new ArrayList<String>(){{add(userInfos.get(1));add(list.get(position).getUserPhone());}};
                             ArrayList<String> arrAd = new ArrayList<String>();
 
-                            ApiService.api.createConversation(
-                                    "",
-                                    arr,
-                                    arrAd,
-                                    false,
-                                    true,
-                                    false,
-                                    userInfos.get(1),
-                                    mDisplayedValues.get(position).getUserPhone()
-                            ).enqueue(new Callback<Conversation>() {
+                            ApiService.api.HaveConversation(userInfos.get(1),list.get(position).getUserPhone()).enqueue(new Callback<ArrayList<Conversation>>() {
                                 @Override
-                                public void onResponse(Call<Conversation> call, Response<Conversation> response) {
-                                    ApiService.api.createMessage(
-                                            input.getText().toString().trim(),
-                                            userInfos.get(1),
-                                            response.body().getReceiver(),
-                                            userInfos.get(0),
-                                            ((Date) Calendar.getInstance().getTime()).toString(),
-                                            userInfos.get(0));
-                                    }
-                                    @Override
-                                    public void onFailure(Call<Conversation> call, Throwable t) {
+                                public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                                    if(response.body()== null || response.body().size()==0){
+                                        ApiService.api.createConversation(
+                                                "",
+                                                arr,
+                                                arrAd,
+                                                false,
+                                                true,
+                                                false,
+                                                userInfos.get(1),
+                                                mDisplayedValues.get(position).getUserPhone()
+                                        ).enqueue(new Callback<Conversation>() {
+                                            @Override
+                                            public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                                                ApiService.api.createMessage(
+                                                        input.getText().toString().trim(),
+                                                        userInfos.get(1),
+                                                        response.body().getConversationID(),
+                                                        userInfos.get(0),
+                                                        ((Date) Calendar.getInstance().getTime()).toString(),
+                                                        userInfos.get(0))
+                                                        .enqueue(new Callback<Message>() {
+                                                            @Override
+                                                            public void onResponse(Call<Message> call, Response<Message> response) {
 
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Call<Message> call, Throwable t) {
+
+                                                            }
+                                                        });
+                                            }
+                                            @Override
+                                            public void onFailure(Call<Conversation> call, Throwable t) {
+
+                                            }
+                                        });
+                                    }else{
+                                        ApiService.api.createMessage(
+                                                input.getText().toString().trim(),
+                                                userInfos.get(1),
+                                                response.body().get(0).getConversationID(),
+                                                userInfos.get(0),
+                                                ((Date) Calendar.getInstance().getTime()).toString(),
+                                                userInfos.get(0))
+                                                .enqueue(new Callback<Message>() {
+                                                    @Override
+                                                    public void onResponse(Call<Message> call, Response<Message> response) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Message> call, Throwable t) {
+
+                                                    }
+                                                });
                                     }
-                                });
+                                }
+
+                                @Override
+                                public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+
+                                }
+                            });
+
 
                             Toast.makeText(context, "Đã gửi lời mời kết bạn!", Toast.LENGTH_SHORT).show();
                             btnAdd.setText("Hủy lời mời");

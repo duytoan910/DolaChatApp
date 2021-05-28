@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Date;
 
 public class AppServices {
-    private String route = "http://10.200.0.84";
+    private String route = "http://192.168.1.9";
     private String port = "3000";
 
     public String getRouteAPI(){

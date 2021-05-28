@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Others.Fragments.ConversationListFragment;
 import com.example.dolaapp.Others.Fragments.DeniedListFragment;
 import com.example.dolaapp.Others.Fragments.RequestListFragment;
 import com.example.dolaapp.Others.RequestListAdapter;
@@ -58,7 +59,7 @@ public class RequestMessageActivity extends AppCompatActivity {
     }
 
     public void requestMessage(View view) {
-        RequestListFragment fragment = new RequestListFragment("asdasd");
+        ConversationListFragment fragment = new ConversationListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentRequestList, fragment);
@@ -70,7 +71,7 @@ public class RequestMessageActivity extends AppCompatActivity {
     }
 
     public void deniedMessage(View view) {
-        DeniedListFragment fragment = new DeniedListFragment("asdasd");
+        DeniedListFragment fragment = new DeniedListFragment("zxczxcas");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentRequestList, fragment);

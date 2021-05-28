@@ -125,7 +125,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
     }
 
     public void contactListClick(View view) {
-        FriendListFragment fragment = new FriendListFragment("asdasd");
+        FriendListFragment fragment = new FriendListFragment("zx13");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentConversationList, fragment);

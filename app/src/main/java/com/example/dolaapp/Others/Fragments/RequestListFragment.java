@@ -1,5 +1,6 @@
 package com.example.dolaapp.Others.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.dolaapp.ChatScreenActivity;
+import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.RequestListAdapter;
@@ -60,7 +63,21 @@ public class RequestListFragment extends Fragment {
         listView_RequestMessage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                reloadList();
+
+                ApiService.api.GetConversationOf2Users(userInfos.get(1),conversations.get(position).getUserPhone()).enqueue(new Callback<Conversation>() {
+                    @Override
+                    public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                        Intent result = new Intent(getContext(), ChatScreenActivity.class);
+                        result.putExtra("conversationObject", response.body());
+                        result.putExtra("isRequest", true);
+                        startActivity(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Conversation> call, Throwable t) {
+
+                    }
+                });
             }
         });
 

@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.Session;
@@ -33,20 +34,23 @@ public class LoginScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         initControls();
-
+        Loading loading = new Loading(LoginScreenActivity.this);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loading.startLoading();
                 ApiService.api.CheckLogIn(usernameEditText.getText().toString(),passwordEditText.getText().toString()).enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if(response.body() == null){
                             Toast.makeText(LoginScreenActivity.this, "Sai tài khoản hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
+                            loading.stopLoading();
                             return;
                         }
                         Session sessionManagement = new Session(LoginScreenActivity.this);
                         sessionManagement.saveSession(response.body());
 
+                        loading.stopLoading();
                         Intent intent = new Intent(LoginScreenActivity.this, ConversationScreenActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -55,6 +59,7 @@ public class LoginScreenActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         Toast.makeText(LoginScreenActivity.this, "Không kết nối được đến máy chủ!", Toast.LENGTH_SHORT).show();
+                        loading.stopLoading();
                     }
                 });
             }
