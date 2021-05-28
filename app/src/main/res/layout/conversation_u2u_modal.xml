@@ -27,7 +27,7 @@
                 android:background="@drawable/border_shadow"
                 android:gravity="center">
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/userAvt"
                     android:layout_width="140dp"
                     android:layout_height="140dp"

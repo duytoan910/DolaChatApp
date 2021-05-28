@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.dolaapp.ChatScreenActivity;
+import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ConversationScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
@@ -53,6 +55,7 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
         LinearLayout loAddfriendAMember = v.findViewById(R.id.loAddfriendAMember);
 
         userSettingName.setText(currUser.getUserName());
+        new AppServices().setImageToImageView(getContext(), currUser.getAvatar(), v.findViewById(R.id.userAvt));
 
         Session sessionManagement = new Session(getContext());
         ArrayList<String> userInfos = sessionManagement.getSession();

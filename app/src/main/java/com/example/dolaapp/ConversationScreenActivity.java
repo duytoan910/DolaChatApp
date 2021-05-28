@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.dolaapp.Others.Fragments.ConversationListFragment;
 import com.example.dolaapp.Others.Fragments.FriendListFragment;
 import com.example.dolaapp.Others.Session;
+import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
 
 import org.json.JSONException;
@@ -153,10 +154,15 @@ public class ConversationScreenActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject)args[0];
+                    String title = "Bạn có một tin nhắn mới";
                     try {
-                        Toast.makeText(ConversationScreenActivity.this, data.getString("Message"), Toast.LENGTH_SHORT).show();
-                        CreateNotification(data.getString("Receiver"), data.getString("Message"),data.getString("NameSender"));
-                        //fragment.reloadlist();
+                        new AppServices().createNotification(
+                                ConversationScreenActivity.this,
+                                title,
+                                data.getString("Message"),
+                                data.getString("NameSender")
+                        );
+                        fragment.reloadlist();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -165,21 +171,6 @@ public class ConversationScreenActivity extends AppCompatActivity {
             });
         }
     };
-
-    private void CreateNotification(String title, String Message,String NameSender){
-        Message = NameSender + " : " + Message;
-        Notification notification =  new Notification.Builder(this)
-                .setContentTitle(title)
-                .setContentText(Message)
-                .setSmallIcon(R.drawable.logo_pic)
-                .build();
-        NotificationManager notificationManager = (NotificationManager)  getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(RamdomNotifyId(),notification);
-    }
-
-    private  int RamdomNotifyId(){
-        return  (int) new Date().getTime();
-    }
 
     public void newConversation(View view) {
         Intent intent = new Intent(ConversationScreenActivity.this, NewConversationActivity.class);

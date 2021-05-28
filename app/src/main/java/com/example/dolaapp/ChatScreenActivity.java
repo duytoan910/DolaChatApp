@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.Message;
@@ -98,6 +99,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             chatUserName.setText(response.body().getUserName());
+                            new AppServices().setImageToImageView(ChatScreenActivity.this, response.body().getAvatar(), findViewById(R.id.imgUserSetting));
                         }
 
                         @Override
@@ -196,16 +198,6 @@ public class ChatScreenActivity extends AppCompatActivity {
                             myFormat.format(Calendar.getInstance().getTime()),
                             false
                             );
-                    messageAdapter.add(new Message(
-                            txtMessageContent.getText().toString().trim(),
-                            "message.getMessageId()",
-                            userInfos.get(0),
-                            conv.getConversationID(),
-                            userInfos.get(1),
-                            myFormat.format(Calendar.getInstance().getTime()),
-                            true
-                    ));
-                    txtMessageContent.getText().clear();
                 }
             }
         });
