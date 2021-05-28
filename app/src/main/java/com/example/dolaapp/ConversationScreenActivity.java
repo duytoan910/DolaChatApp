@@ -146,6 +146,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
         mSocket.emit("new-connection",UserPhone);
         mSocket.on("ReloadConversationScreen",ReloadConversationScreen);
         mSocket.on("Have-new-add-friendRequest",NotificationFriendRequest);
+        mSocket.on("TargetUser-Accepted-Request",NotificationFriendRequestAccepted);
     }
 
     private Emitter.Listener ReloadConversationScreen = new Emitter.Listener() {
@@ -186,6 +187,25 @@ public class ConversationScreenActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener NotificationFriendRequestAccepted = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    try {
+                        new AppServices().createAcceptFriendNotification(
+                                ConversationScreenActivity.this,
+                                data.getString("AcceptorName"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }

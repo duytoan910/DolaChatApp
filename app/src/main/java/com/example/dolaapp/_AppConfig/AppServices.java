@@ -71,4 +71,22 @@ public class AppServices {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify((int) new Date().getTime(),notification);
     }
+
+    public void createAcceptFriendNotification(Context context, String AcceptorName){
+        String title = "Chấp nhận yêu cầu kết bạn";
+        String message = AcceptorName+ " đã chấp nhận lời mời kết bạn của bạn";
+
+        Intent it = new Intent(context, ConversationScreenActivity.class);
+        PendingIntent pdIntent = PendingIntent.getActivity(context,1,it,PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification =  new Notification.Builder(context)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.logo_pic)
+                .setAutoCancel(true)
+                .setContentIntent(pdIntent)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify((int) new Date().getTime(),notification);
+    }
 }

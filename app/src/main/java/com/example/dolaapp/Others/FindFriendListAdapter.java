@@ -42,8 +42,8 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
     private ArrayList<User> mDisplayedValues;
     private Context context;
     ArrayList<String> userInfos;
-
     public Socket mSocket= SocketIo.getInstance().getmSocket();
+
     public FindFriendListAdapter(
             ArrayList<User> list, Context context) {
         this.list = list;

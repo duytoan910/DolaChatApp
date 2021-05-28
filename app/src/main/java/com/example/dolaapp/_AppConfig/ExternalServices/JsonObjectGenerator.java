@@ -46,4 +46,16 @@ public class JsonObjectGenerator {
             return null;
         }
     }
+
+    public static JSONObject AcceptFriendRequestJsonObject (String SenderId, String Myname) throws JSONException {
+        JSONObject jsonObject= new JSONObject();
+        try {
+            jsonObject.put("SenderId",SenderId );
+            jsonObject.put("AcceptorName", Myname);
+            return jsonObject;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -17,9 +17,15 @@ import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
+import com.example.dolaapp._AppConfig.ExternalServices.JsonObjectGenerator;
+import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +34,8 @@ public class RequestListAdapter extends BaseAdapter {
     private ArrayList<User> list;
     private Context context;
     ArrayList<String> userInfos;
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
+
     public RequestListAdapter(ArrayList<User> list, Context context) {
         this.list = list;
         this.context = context;
@@ -129,6 +137,13 @@ public class RequestListAdapter extends BaseAdapter {
 
                                     }
                                 });
+                                try {
+                                    JSONObject data = JsonObjectGenerator
+                                            .AcceptFriendRequestJsonObject(list.get(position).getUserPhone(),userInfos.get(0));
+                                    mSocket.emit("Accept-Add-Friend-Request",data);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 list.remove(position);
                                 notifyDataSetChanged();
                                 Toast.makeText(context, "Chấp nhận thành công!", Toast.LENGTH_SHORT).show();
@@ -137,7 +152,7 @@ public class RequestListAdapter extends BaseAdapter {
                         })
                         .setNegativeButton("Từ chối", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                ApiService.api.DeleteRequestAddFriend(list.get(position).getUserPhone(),userInfos.get(1)).enqueue(new Callback<String>() {
+                                ApiService.api.DeleteRequestAddFriend(userInfos.get(1),list.get(position).getUserPhone()).enqueue(new Callback<String>() {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
                                     }
