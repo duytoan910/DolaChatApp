@@ -35,7 +35,9 @@ public class AppServices {
                 .into(imgView);
     }
 
-    public void createNotification(Context context, String title, String Message,String NameSender){
+    public void createMessageNotification(Context context, String Message,String NameSender){
+        String title = "Bạn có một tin nhắn mới";
+
         Intent it = new Intent(context, ConversationScreenActivity.class);
         PendingIntent pdIntent = PendingIntent.getActivity(context,1,it,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -43,6 +45,24 @@ public class AppServices {
         Notification notification =  new Notification.Builder(context)
                 .setContentTitle(title)
                 .setContentText(Message)
+                .setSmallIcon(R.drawable.logo_pic)
+                .setAutoCancel(true)
+                .setContentIntent(pdIntent)
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify((int) new Date().getTime(),notification);
+    }
+
+    public void createNewFriendNotification(Context context, String SenderName){
+        String title = "Yêu cầu kết bạn";
+        String message = "Bạn nhận được lời mời kết bạn từ : " + SenderName;
+
+        Intent it = new Intent(context, ConversationScreenActivity.class);
+        PendingIntent pdIntent = PendingIntent.getActivity(context,1,it,PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification notification =  new Notification.Builder(context)
+                .setContentTitle(title)
+                .setContentText(message)
                 .setSmallIcon(R.drawable.logo_pic)
                 .setAutoCancel(true)
                 .setContentIntent(pdIntent)

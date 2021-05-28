@@ -85,26 +85,7 @@ public class Message {
         this.belongsToCurrentUser = belongsToCurrentUser;
     }
 
-    public JSONObject ConvertToJson (ArrayList<String> ListMember){
-        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-        JSONObject jsonObject= new JSONObject();
-        JSONArray array = new JSONArray(ListMember);
-        try {
-            jsonObject.put("Id", getMessageId());
-            jsonObject.put("Message", getMessage());
-            jsonObject.put("NameSender", getNameSender());
-            jsonObject.put("Sender", getSender());
-            jsonObject.put("Receiver", getReceiver());
-            jsonObject.put("Time", myFormat.format(Calendar.getInstance().getTime()));
-            jsonObject.put("belongtocurrentuser", false);
-            jsonObject.put("listmember", array);
 
-            return jsonObject;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
     private boolean belongsToCurrentUser;
 
 }

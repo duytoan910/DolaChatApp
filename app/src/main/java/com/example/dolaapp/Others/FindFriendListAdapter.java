@@ -21,11 +21,18 @@ import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
+import com.example.dolaapp._AppConfig.ExternalServices.JsonObjectGenerator;
+import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,6 +43,7 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
     private Context context;
     ArrayList<String> userInfos;
 
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
     public FindFriendListAdapter(
             ArrayList<User> list, Context context) {
         this.list = list;
@@ -146,13 +154,18 @@ public class FindFriendListAdapter extends BaseAdapter implements Filterable {
                             btnAdd.setText("Hủy lời mời");
                             ApiService.api.SendAddFriendReQuest(userInfos.get(1),list.get(position).getUserPhone()).enqueue(new Callback<String>() {
                                 @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
-                                }
-
+                                public void onResponse(Call<String> call, Response<String> response) {}
                                 @Override
-                                public void onFailure(Call<String> call, Throwable t) {
-                                }
+                                public void onFailure(Call<String> call, Throwable t) {}
                             });
+
+                            try {
+                                JSONObject jsonObj = JsonObjectGenerator
+                                        .AddFriendRequestJsonObject(list.get(position).getUserPhone(),userInfos.get(0));
+                                mSocket.emit("Send-Add-Friend-Request",jsonObj);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     builder.setNegativeButton("Trở về", new DialogInterface.OnClickListener() {

@@ -21,6 +21,7 @@ import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
 import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.MessageAdapter;
 import com.example.dolaapp.Others.Session;
+import com.example.dolaapp._AppConfig.ExternalServices.JsonObjectGenerator;
 import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
 
 import org.json.JSONException;
@@ -46,7 +47,6 @@ public class ChatScreenActivity extends AppCompatActivity {
     ListView messageListView;
     SimpleDateFormat myFormat;
     MessageAdapter messageAdapter;
-    Intent i;
     Conversation conv;
     ArrayList<String> userInfos;
     Loading loading;
@@ -173,7 +173,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                         public void onResponse(Call<Message> call, Response<Message> response) {
                             messageAdapter.add(new Message(
                                     txtMessageContent.getText().toString().trim(),
-                                    response.body().getMessageId().toString(),
+                                    response.body().getMessageId(),
                                     userInfos.get(0),
                                     conv.getConversationID(),
                                     userInfos.get(1),
@@ -195,8 +195,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                             userInfos.get(1),
                             conv.getConversationID(),
                             txtMessageContent.getText().toString().trim(),
-                            myFormat.format(Calendar.getInstance().getTime()),
-                            false
+                            myFormat.format(Calendar.getInstance().getTime())
                             );
                 }
             }
@@ -220,11 +219,10 @@ public class ChatScreenActivity extends AppCompatActivity {
             String Sender,
             String Receiver,
             String Message,
-            String time,
-            boolean belog)
+            String time)
     {
-        Message data = new Message(Message,MessId,NameSender,Receiver,Sender,time,false);
-        mSocket.emit("Send-Message-To-Conversation",data.ConvertToJson(conv.getConversationMember()));
+        Message messageObj = new Message(Message,MessId,NameSender,Receiver,Sender,time,false);
+        mSocket.emit("Send-Message-To-Conversation", JsonObjectGenerator.MessageJsonObject(messageObj, conv.getConversationMember()));
     }
 
     @Override

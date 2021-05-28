@@ -145,6 +145,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
         String UserPhone = sessionManagement.getSession().get(1);
         mSocket.emit("new-connection",UserPhone);
         mSocket.on("ReloadConversationScreen",ReloadConversationScreen);
+        mSocket.on("Have-new-add-friendRequest",NotificationFriendRequest);
     }
 
     private Emitter.Listener ReloadConversationScreen = new Emitter.Listener() {
@@ -154,15 +155,33 @@ public class ConversationScreenActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject)args[0];
-                    String title = "Bạn có một tin nhắn mới";
                     try {
-                        new AppServices().createNotification(
+                        new AppServices().createMessageNotification(
                                 ConversationScreenActivity.this,
-                                title,
                                 data.getString("Message"),
                                 data.getString("NameSender")
                         );
                         fragment.reloadlist();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener NotificationFriendRequest = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject)args[0];
+                    try {
+                        new AppServices().createNewFriendNotification(
+                                ConversationScreenActivity.this,
+                                data.getString("SenderName"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
