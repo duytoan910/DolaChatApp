@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
@@ -37,6 +39,7 @@ public class ConversationListFragment extends Fragment {
     List<User> list;
     User currentUser;
     ArrayList<String> userInfos;
+    Loading load;
 
     private String userID;
 
@@ -50,7 +53,7 @@ public class ConversationListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        reloadList();
+        reloadlist();
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,55 +70,12 @@ public class ConversationListFragment extends Fragment {
         Session sessionManagement = new Session(getContext());
         userInfos = sessionManagement.getSession();
 
-        ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                if(response.body()== null ||response.body().size()==0) return;
-                conversations = (ArrayList<Conversation>) response.body();
-                ArrayList<Conversation> _Conv = new ArrayList<>();
-                for (Conversation conversation : conversations) {
-                    if(conversation.isGroupChat() ||
-                            (conversation.getReceiver().equals(userInfos.get(1)) && conversation.isReceiverShown() != false) ||
-                            (conversation.getSender().equals(userInfos.get(1)) && conversation.isSenderShown() != false)){
-                        _Conv.add(conversation);
-                    }
-                }
-                ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
-                conversations = _Conv;
-                listView.setAdapter(adapter);
-            }
+        load = new Loading(getActivity());
 
-            @Override
-            public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
-            }
-        });
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                        if(response.body()== null ||response.body().size()==0) return;
-                        conversations = (ArrayList<Conversation>) response.body();
-                        ArrayList<Conversation> _Conv = new ArrayList<>();
-                        for (Conversation conversation : conversations) {
-                            if(conversation.isGroupChat() ||
-                                    (conversation.getReceiver().equals(userInfos.get(1)) && conversation.isReceiverShown() != false) ||
-                                    (conversation.getSender().equals(userInfos.get(1)) && conversation.isSenderShown() != false)){
-                                _Conv.add(conversation);
-                            }
-                        }
-                        ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
-                        conversations = _Conv;
-                        listView.setAdapter(adapter);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
-                    }
-                });
+                reloadlist();
                 swiperefresh.setRefreshing(false);
             }
         });
@@ -196,10 +156,14 @@ public class ConversationListFragment extends Fragment {
     }
 
     public void reloadlist(){
+        load.startLoading();
         ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                if(response.body()== null ||response.body().size()==0) return;
+                if(response.body()== null ||response.body().size()==0) {
+                    load.stopLoading();
+                    return;
+                }
                 conversations = (ArrayList<Conversation>) response.body();
                 ArrayList<Conversation> _Conv = new ArrayList<>();
                 for (Conversation conversation : conversations) {
@@ -212,36 +176,13 @@ public class ConversationListFragment extends Fragment {
                 ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
                 conversations = _Conv;
                 listView.setAdapter(adapter);
+                load.stopLoading();
             }
 
             @Override
             public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
-            }
-        });
-    }
-    public void reloadList(){
-        ApiService.api.getAllConversationByUserID(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
-            @Override
-            public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
-                if(response.body()== null ||response.body().size()==0) return;
-                conversations = (ArrayList<Conversation>) response.body();
-                ArrayList<Conversation> _Conv = new ArrayList<>();
-                for (Conversation conversation : conversations) {
-                    if(conversation.isGroupChat() ||
-                            (conversation.getReceiver().equals(userInfos.get(1)) && conversation.isReceiverShown() != false) ||
-                            (conversation.getSender().equals(userInfos.get(1)) && conversation.isSenderShown() != false)){
-                        _Conv.add(conversation);
-                    }
-                }
-                ConversationListAdapter adapter = new ConversationListAdapter(_Conv, getContext());
-                conversations = _Conv;
-                listView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                load.stopLoading();
             }
         });
     }

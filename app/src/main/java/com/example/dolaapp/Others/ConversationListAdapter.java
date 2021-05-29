@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dolaapp.UserSettingActivity;
@@ -57,6 +59,7 @@ public class ConversationListAdapter extends BaseAdapter {
 
         if(list.get(position).isGroupChat()) {
             ((TextView) convertView.findViewById(R.id.txtUserName)).setText(list.get(position).getConversationName() + "");
+            ((ImageView) convertView.findViewById(R.id.isGroup)).setVisibility(View.VISIBLE);
         }else {
             for (String s : list.get(position).getConversationMember()) {
                 if (s.equals(userInfos.get(1))) {

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dolaapp.Others.Fragments.ConversationListFragment;
@@ -34,6 +35,7 @@ import io.socket.emitter.Emitter;
 public class ConversationScreenActivity extends AppCompatActivity {
     ImageButton imgBtnConversation,imgBtnContact,btnNewMessage,btnWaitMessage;
     EditText txtSearchConversation;
+    TextView textView;
     ImageView imgUserSetting;
     Session sessionManagement;
     ConversationListFragment fragment;
@@ -52,6 +54,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
         btnWaitMessage = findViewById(R.id.btnWaitMessage);
         imgBtnConversation = (ImageButton)findViewById(R.id.imgBtnConversation);
         imgBtnContact = (ImageButton)findViewById(R.id.imgBtnContact);
+        textView = (TextView) findViewById(R.id.textView);
 
         sessionManagement = new Session(ConversationScreenActivity.this);
         SocketIOSetting();
@@ -122,6 +125,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
 
         imgBtnConversation.setImageResource(R.drawable.message_focus_40);
         imgBtnContact.setImageResource(R.drawable.contact_blur_40);
+        textView.setText("Các đoạn hội thoại");
     }
 
     public void contactListClick(View view) {
@@ -133,6 +137,7 @@ public class ConversationScreenActivity extends AppCompatActivity {
 
         imgBtnConversation.setImageResource(R.drawable.message_blur_40);
         imgBtnContact.setImageResource(R.drawable.contact_focus_40);
+        textView.setText("Danh sách bạn bè");
     }
 
     public void newGroup(View view) {

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
@@ -42,7 +43,6 @@ public class FindFriendActivity extends AppCompatActivity {
         btnSeach = findViewById(R.id.btnSeach);
         listView_FindFriend = (ListView) findViewById(R.id.listView_FindFriend);
         loading = new Loading(FindFriendActivity.this);
-
         sessionManagement = new Session(FindFriendActivity.this);
         userInfos = sessionManagement.getSession();
 
@@ -70,25 +70,31 @@ public class FindFriendActivity extends AppCompatActivity {
         btnSeach.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loading.startLoading();
                 reloadList();
             }
         });
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                loading.startLoading();
                 ApiService.api.SearchAccountByName(userInfos.get(1),txtSearchUser.getText().toString()).enqueue(new Callback<ArrayList<User>>() {
                     @Override
                     public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                        if(response.body()==null) return;
-                        if(response.body().size()<=0) return;
+                        if(response.body()==null || response.body().size()<=0) {
+
+                            loading.stopLoading();
+                            return;
+                        }
                         findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                         listView_FindFriend.setAdapter(findFriendListAdapter);
+
+                        loading.stopLoading();
                     }
 
                     @Override
                     public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
+                        Toast.makeText(FindFriendActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                        loading.stopLoading();
                     }
                 });
                 swiperefresh.setRefreshing(false);
@@ -102,19 +108,26 @@ public class FindFriendActivity extends AppCompatActivity {
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-    }private void reloadList(){
+    }
+    private void reloadList(){
+        loading.startLoading();
         ApiService.api.SearchAccountByName(userInfos.get(1),"").enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-                if(response.body()==null) return;
-                if(response.body().size()<=0) return;
+                if(response.body()==null || response.body().size()<=0) {
+
+                    loading.stopLoading();
+                    return;
+                }
                 findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
                 listView_FindFriend.setAdapter(findFriendListAdapter);
+                loading.stopLoading();
             }
 
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
+                Toast.makeText(FindFriendActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                loading.stopLoading();
             }
         });
     }

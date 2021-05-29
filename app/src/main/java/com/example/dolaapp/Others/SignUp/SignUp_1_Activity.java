@@ -11,12 +11,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.dolaapp.LoginScreenActivity;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.AppInfoActivity;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -123,7 +126,7 @@ public class SignUp_1_Activity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
-    public void register(View view) {
+    public void register(View view) throws ParseException {
         boolean isReturn = false;
         String Pass1 = txtRegisPassword.getText().toString();
         String Pass2 = txtRegisPasswordRe.getText().toString();
@@ -155,17 +158,18 @@ public class SignUp_1_Activity extends AppCompatActivity {
             if(user.getUserPhone().equals(Phone.trim()))
             {
                 isReturn = true;
+                Toast.makeText(SignUp_1_Activity.this, "Số điện thoại đã tồn tại!", Toast.LENGTH_SHORT).show();
                 break;
             }
         }
-        if(isReturn && !Phone.isEmpty()) {
-            Toast.makeText(SignUp_1_Activity.this, "Số điện thoại đã tồn tại!", Toast.LENGTH_SHORT).show();
+        if(isReturn) {
             return;
         }
         if (Pass1.equals(Pass2)){
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
             ApiService.api.createNewUser(Phone,
                     Name,
-                    new Date(Birth).toString(),
+                    String.valueOf(format.parse(Birth.toString())),
                     email,
                     Pass1)
                     .enqueue(new Callback<User>() {
@@ -177,6 +181,8 @@ public class SignUp_1_Activity extends AppCompatActivity {
                         public void onFailure(Call<User> call, Throwable t) {
                         }
                     });
+                    finish();
+                    Toast.makeText(SignUp_1_Activity.this, "Đăng ký thành công! Vui lòng đăng nhập.", Toast.LENGTH_SHORT).show();
             finish();
         }else {
             txtRegisPasswordRe.setError("Xác nhận mật khẩu không chính xác!");

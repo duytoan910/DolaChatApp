@@ -74,6 +74,15 @@ public interface ApiService {
     @GET("Users/{id}/SendPassword")
     Call<String> sendPassword(@Path("id") String id);
 
+    @POST("Users/{id}")
+    @FormUrlEncoded
+    Call<User> updatePersonalInfo(
+            @Path("id") String id,
+            @Field("name") String name,
+            @Field("Dob") String Dob,
+            @Field("mail") String mail
+            );
+
     @POST("Users/ChangePassword")
     @FormUrlEncoded
     Call<String> ChangePassword(

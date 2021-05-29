@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.MemberListSelect_BottomSheet;
@@ -28,11 +30,15 @@ public class MemberGroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_group);
 
+        Loading loading = new Loading(MemberGroupActivity.this);
+
         listView_GroupMember = findViewById(R.id.listView_GroupMember);
 
         Intent intent = getIntent();
         Session sessionManagement = new Session(MemberGroupActivity.this);
         ArrayList<String> userInfos = sessionManagement.getSession();
+
+        loading.startLoading();
 
         ApiService.api.getAllConversationMember(intent.getStringExtra("group_member")).enqueue(new Callback<ArrayList<User>>() {
             @Override
@@ -41,12 +47,14 @@ public class MemberGroupActivity extends AppCompatActivity {
                     userList = (ArrayList<User>) response.body();
                     UserListAdapter adapter = new UserListAdapter(userList, MemberGroupActivity.this);
                     listView_GroupMember.setAdapter(adapter);
+                    loading.stopLoading();
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
+                Toast.makeText(MemberGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                loading.stopLoading();
             }
         });
 //        listView_GroupMember.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.dolaapp.ChatScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.RequestListAdapter;
@@ -91,20 +93,25 @@ public class RequestListFragment extends Fragment {
         return view;
     }
     public void reloadList(){
+        Loading load = new Loading(getActivity());
+        load.startLoading();
         ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
                 if (response.body()==null || response.body().size() == 0) {
+                    load.stopLoading();
                     return;
                 }
                 conversations = (ArrayList<User>) response.body();
                 findFriendListAdapter = new RequestListAdapter(conversations, getContext());
                 listView_RequestMessage.setAdapter(findFriendListAdapter);
+                load.stopLoading();
             }
 
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                load.stopLoading();
             }
         });
     }

@@ -59,7 +59,7 @@ public class RequestMessageActivity extends AppCompatActivity {
     }
 
     public void requestMessage(View view) {
-        ConversationListFragment fragment = new ConversationListFragment("asdasd");
+        RequestListFragment fragment = new RequestListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentRequestList, fragment);

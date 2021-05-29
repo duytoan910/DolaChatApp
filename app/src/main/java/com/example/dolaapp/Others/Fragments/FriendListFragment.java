@@ -2,6 +2,7 @@ package com.example.dolaapp.Others.Fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,10 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.dolaapp.ChatScreenActivity;
+import com.example.dolaapp.Others.Conversaion_Group_BottomSheet;
+import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
 import com.example.dolaapp.Entities.User;
@@ -28,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FriendListFragment extends Fragment {
-    private ArrayList<Conversation> conversations;
+    private ArrayList<User> userList;
     ListView listViewFriendList;
     SwipeRefreshLayout swiperefresh;
 
@@ -76,44 +81,55 @@ public class FriendListFragment extends Fragment {
         listViewFriendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent result = new Intent(getContext(), ChatScreenActivity.class);
-//                result.putExtra("userObject", conversations.get(position).getUserName());
-//                startActivity(result);
+                ApiService.api.GetConversationOf2Users(
+                        userList.get(position).getUserPhone(),
+                        userInfos.get(1)).enqueue(new Callback<Conversation>() {
+                    @Override
+                    public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                        Intent result = new Intent(getContext(), ChatScreenActivity.class);
+                        result.putExtra("conversationObject", response.body());
+                        startActivity(result);
+                    }
+
+                    @Override
+                    public void onFailure(Call<Conversation> call, Throwable t) {
+
+                    }
+                });
             }
         });
         listViewFriendList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                new AlertDialog.Builder(getContext()).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(userList.get(position), true);
+                modal.show(getFragmentManager(),"info_u2u_Modal");
 
-                    }
-                }).create().show();
-
-                Log.e("Long click: ","Long press at " + position);
-
-                return false;
+                return true;
             }
         });
 
         return view;
     }
     public void reloadList(){
+        Loading load = new Loading(getActivity());
+        load.startLoading();
         ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
                 if(response.body()!=null){
                     if(response.body().size()>0){
-                        UserListAdapter adapter = new UserListAdapter((ArrayList<User>) response.body(), getContext());
+                        userList = (ArrayList<User>) response.body();
+                        UserListAdapter adapter = new UserListAdapter(userList, getContext());
                         listViewFriendList.setAdapter(adapter);
+                        load.stopLoading();
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                Toast.makeText(getContext(), "Nah", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                load.stopLoading();
             }
         });
     }

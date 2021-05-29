@@ -12,10 +12,13 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.dolaapp.ConversationScreenActivity;
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ChatScreenActivity;
@@ -90,10 +93,13 @@ public class DeniedListFragment extends Fragment {
         return view;
     }
     private void reloadList(){
+        Loading load = new Loading(getActivity());
+        load.startLoading();
         ApiService.api.getDeniedList(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
             @Override
             public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
                 if(response.body().size()==0){
+                    load.stopLoading();
                     return;
                 }
                 conversations = (ArrayList<Conversation>) response.body();
@@ -113,11 +119,13 @@ public class DeniedListFragment extends Fragment {
                 listView_RequestMessage.setAdapter(findFriendListAdapter);
 
                 conversations = _Conv;
+                load.stopLoading();
             }
 
             @Override
             public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
-
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                load.stopLoading();
             }
         });
     }
@@ -205,6 +213,8 @@ class DeniedListAdapter extends BaseAdapter {
 
                                     }
                                 });
+                                list.remove(position);
+                                notifyDataSetChanged();
                             }
                         })
                         .setNeutralButton("Trở về", new DialogInterface.OnClickListener() {

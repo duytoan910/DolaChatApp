@@ -8,6 +8,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -131,7 +132,8 @@ public class ChatScreenActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ArrayList<Message>> call, Throwable t) {
-
+                Toast.makeText(ChatScreenActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                loading.stopLoading();
             }
         });
 

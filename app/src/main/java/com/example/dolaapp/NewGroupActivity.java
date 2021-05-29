@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.Conversation;
@@ -46,6 +47,7 @@ public class NewGroupActivity extends AppCompatActivity {
     ArrayList<User> selectedUser;
     Intent intent;
     Button btnNewGroup;
+    Loading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class NewGroupActivity extends AppCompatActivity {
         swiperefresh = findViewById(R.id.swiperefresh);
         chipGroupUser = findViewById(R.id.chipGroupUser);
         btnNewGroup = findViewById(R.id.btnNewGroup);
-
+        loading = new Loading(NewGroupActivity.this);
+        loading.startLoading();
         ApiService.api.getAllListFriend(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
             @Override
             public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
@@ -90,13 +93,17 @@ public class NewGroupActivity extends AppCompatActivity {
                                 adapter.notifyDataSetChanged();
                             }
                         }
+                        loading.stopLoading();
                     }
+                }else{
+                    loading.stopLoading();
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-                Toast.makeText(NewGroupActivity.this, "Nah", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewGroupActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                loading.stopLoading();
             }
         });
 
@@ -133,7 +140,7 @@ public class NewGroupActivity extends AppCompatActivity {
                 if (chipGroupUser.getChildCount() == 0) {
                     btnNewGroup.setText("Tạo nhóm chat");
                 } else{
-                    btnNewGroup.setText("Tạo nhóm chat (" + chipGroupUser.getChildCount());
+                    btnNewGroup.setText("Tạo nhóm chat (" + chipGroupUser.getChildCount() + ")");
                 };
             }
         });
@@ -166,7 +173,7 @@ public class NewGroupActivity extends AppCompatActivity {
     }
 
     public void createGroup(View view) {
-        if(chipGroupUser.getChildCount() < 3 ){
+        if(chipGroupUser.getChildCount() < 2 ){
             new AlertDialog.Builder(NewGroupActivity.this)
                     .setTitle("Thông báo")
                     .setMessage("Vui lòng chọn ít nhất 2 người bạn")

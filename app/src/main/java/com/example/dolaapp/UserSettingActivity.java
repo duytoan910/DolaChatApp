@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dolaapp.Entities.User;
+import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Others.Session;
 import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
@@ -33,6 +34,8 @@ public class UserSettingActivity extends AppCompatActivity {
     ArrayList<String> userInfos;
     Session sessionManagement;
     TextInputEditText txtDialog_OldPass,txtDialog_NewPass,txtDialog_ReEnter;
+    Loading load;
+
     public Socket mSocket= SocketIo.getInstance().getmSocket();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,9 @@ public class UserSettingActivity extends AppCompatActivity {
 
         sessionManagement = new Session(UserSettingActivity.this);
         userInfos = sessionManagement.getSession();
+
+        load = new Loading(UserSettingActivity.this);
+
         if(userInfos.get(0) != ""){
             ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
                 @Override
@@ -48,11 +54,13 @@ public class UserSettingActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.userSettingName)).setText(response.body().getUserName());
                     ((TextView) findViewById(R.id.userSettingPhone)).setText(response.body().getUserPhone());
                     new AppServices().setImageToImageView(UserSettingActivity.this, response.body().getAvatar(), findViewById(R.id.userAvt));
+
+                    load.stopLoading();
                 }
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-
+                    load.startLoading();
                 }
             });
         }
@@ -62,12 +70,14 @@ public class UserSettingActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
 
+        load.startLoading();
         ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 ((TextView) findViewById(R.id.userSettingName)).setText(response.body().getUserName());
                 ((TextView) findViewById(R.id.userSettingPhone)).setText(response.body().getUserPhone());
                 new AppServices().setImageToImageView(UserSettingActivity.this, response.body().getAvatar(), findViewById(R.id.userAvt));
+                load.stopLoading();
             }
 
             @Override
