@@ -1,6 +1,7 @@
 package com.example.dolaapp.Others;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.dolaapp.AddUserToGroupActivity;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ConversationScreenActivity;
 import com.example.dolaapp.Entities.Conversation;
@@ -39,6 +41,7 @@ public class Conversaion_Group_BottomSheet extends BottomSheetDialogFragment {
         TextView userSettingName = v.findViewById(R.id.userSettingName);
         LinearLayout loUserList = v.findViewById(R.id.loUserList);
         LinearLayout loLeaveGroup = v.findViewById(R.id.loLeaveGroup);
+        LinearLayout loUAddUser = v.findViewById(R.id.loUAddUser);
 
         Session sessionManagement = new Session(getContext());
         ArrayList<String> userInfos = sessionManagement.getSession();
@@ -72,10 +75,10 @@ public class Conversaion_Group_BottomSheet extends BottomSheetDialogFragment {
 
                                     }
                                 });
+                                dismiss();
                                 Intent intent = new Intent(getContext(), ConversationScreenActivity.class);
                                 startActivity(intent);
                                 getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                                dismiss();
                             }
                         }).setNegativeButton("Trở về", new DialogInterface.OnClickListener() {
                             @Override
@@ -83,6 +86,15 @@ public class Conversaion_Group_BottomSheet extends BottomSheetDialogFragment {
                                 dialog.dismiss();
                             }
                         }).show();
+            }
+        });
+
+        loUAddUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AddUserToGroupActivity.class);
+                intent.putExtra("conversationObject",currConv);
+                startActivity(intent);
             }
         });
 

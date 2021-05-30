@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.dolaapp.ConversationScreenActivity;
+import com.example.dolaapp.Others.Conversaion_U2U_BottomSheet;
 import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
@@ -92,7 +93,7 @@ public class DeniedListFragment extends Fragment {
         });
         return view;
     }
-    private void reloadList(){
+    public void reloadList(){
         Loading load = new Loading(getActivity());
         load.startLoading();
         ApiService.api.getDeniedList(userInfos.get(1)).enqueue(new Callback<ArrayList<Conversation>>() {
@@ -181,6 +182,19 @@ class DeniedListAdapter extends BaseAdapter {
                                 response.body().getAvatar(),
                                 finalConvertView.findViewById(R.id.imgUserSetting)
                         );
+                        ApiService.api.isFriend(userInfos.get(1),otherUser.getUserPhone()).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response1) {
+                                if(response1.body()=="false"){
+                                    btnReject.setVisibility(View.INVISIBLE);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+
+                            }
+                        });
 //        ((TextView) convertView.findViewById(R.id.txtUserMessage)).setText(list.get(position).getConversationName() + "");
 //        ((TextView) convertView.findViewById(R.id.txtUserMessageTime)).setText(list.get(position).getConversationName() + "");
 

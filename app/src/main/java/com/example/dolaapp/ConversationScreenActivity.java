@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -59,11 +60,23 @@ public class ConversationScreenActivity extends AppCompatActivity {
         sessionManagement = new Session(ConversationScreenActivity.this);
         SocketIOSetting();
 
+
         fragment = new ConversationListFragment("asdasd");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.replace(R.id.fragmentConversationList, fragment);
         transaction.commit();
+
+        Intent intent = getIntent();
+        if(intent.getStringExtra("isDenied") != null &&intent.getStringExtra("isDenied").equals("true")){
+            new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            imgBtnContact.performClick();
+                        }
+                    },
+                    500);
+        }
     }
 
     @Override
@@ -75,6 +88,9 @@ public class ConversationScreenActivity extends AppCompatActivity {
             Intent intent = new Intent(ConversationScreenActivity.this, LoginScreenActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }else{
+
+            new AppServices().setImageToImageView(ConversationScreenActivity.this,userInfos.get(3), findViewById(R.id.userAvt));
         }
     }
 

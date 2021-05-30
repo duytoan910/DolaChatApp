@@ -128,6 +128,15 @@ public interface ApiService {
             );
 
     // Switch Conversation State Show
+    @POST("Conversations/AddListMember")
+    @FormUrlEncoded
+    Call<String> AddListMember(@Field("ConversationId") String ConversationId, @Field("ListNewMember") ArrayList<String> ListNewMember);
+
+    // Switch Conversation State Show
+    @GET("{UserId}/GetListUserFriendNotInGroup/{ConversationId}")
+    Call<ArrayList<User>> GetListUserFriendNotInGroup(@Path("UserId") String UserId, @Path("ConversationId") String ConversationId);
+
+    // Switch Conversation State Show
     @GET("{UserId}/HaveConversation/{TargetId}")
     Call<ArrayList<Conversation>> HaveConversation(@Path("UserId") String UserId, @Path("TargetId") String TargetId);
 

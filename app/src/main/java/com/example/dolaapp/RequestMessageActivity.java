@@ -5,7 +5,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -56,6 +59,16 @@ public class RequestMessageActivity extends AppCompatActivity {
         transaction.replace(R.id.fragmentRequestList, fragment);
         transaction.commit();
 
+        Intent intent = getIntent();
+        if(intent.getStringExtra("isDenied") != null &&intent.getStringExtra("isDenied").equals("true")){
+            new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            imgBtnDenied.performClick();
+                        }
+                    },
+                    500);
+        }
     }
 
     public void requestMessage(View view) {

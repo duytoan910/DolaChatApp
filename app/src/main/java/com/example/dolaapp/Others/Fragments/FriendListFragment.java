@@ -88,6 +88,7 @@ public class FriendListFragment extends Fragment {
                     public void onResponse(Call<Conversation> call, Response<Conversation> response) {
                         Intent result = new Intent(getContext(), ChatScreenActivity.class);
                         result.putExtra("conversationObject", response.body());
+                        result.putExtra("isRequest", true);
                         startActivity(result);
                     }
 
@@ -101,8 +102,20 @@ public class FriendListFragment extends Fragment {
         listViewFriendList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(userList.get(position), true);
-                modal.show(getFragmentManager(),"info_u2u_Modal");
+//                ApiService.api.isFriend(userInfos.get(1),userList.get(position).getUserPhone()).enqueue(new Callback<String>() {
+//                    @Override
+//                    public void onResponse(Call<String> call, Response<String> response1) {
+//                        if(response1.body()=="true"){
+//                            Conversaion_U2U_BottomSheet modal = new Conversaion_U2U_BottomSheet(userList.get(position), true);
+//                            modal.show(getFragmentManager(),"info_u2u_Modal");
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<String> call, Throwable t) {
+//
+//                    }
+//                });
 
                 return true;
             }
@@ -121,9 +134,9 @@ public class FriendListFragment extends Fragment {
                         userList = (ArrayList<User>) response.body();
                         UserListAdapter adapter = new UserListAdapter(userList, getContext());
                         listViewFriendList.setAdapter(adapter);
-                        load.stopLoading();
                     }
                 }
+                load.stopLoading();
             }
 
             @Override

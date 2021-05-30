@@ -1,6 +1,7 @@
 package com.example.dolaapp.Others;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.dolaapp.ChatScreenActivity;
+import com.example.dolaapp.RequestMessageActivity;
 import com.example.dolaapp._AppConfig.AppServices;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.ConversationScreenActivity;
@@ -33,8 +35,10 @@ import retrofit2.Response;
 public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
     User currUser;
     boolean isConversationScreen;
+    Context context;
     public Conversaion_U2U_BottomSheet(User user){
         this.currUser = user;
+        this.context = context;
         this.isConversationScreen = false;
     }
     public Conversaion_U2U_BottomSheet(User user, @Nullable boolean isConversationScreen){
@@ -91,16 +95,36 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
                                 ApiService.api.DeleteFriend(userInfos.get(1), currUser.getUserPhone()).enqueue(new Callback<String>() {
                                     @Override
                                     public void onResponse(Call<String> call, Response<String> response) {
-                                        if(!isConversationScreen){
-                                            Intent intent = new Intent(getContext(), ConversationScreenActivity.class);
-                                            startActivity(intent);
-                                        }
                                         dismiss();
                                     }
 
                                     @Override
                                     public void onFailure(Call<String> call, Throwable t) {
-                                        Toast.makeText(getContext(), t.toString(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                ApiService.api.GetConversationOf2Users(userInfos.get(1),currUser.getUserPhone()).enqueue(new Callback<Conversation>() {
+                                    @Override
+                                    public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                                        ApiService.api.SwitchConversationStateShow(response.body().getConversationID(),userInfos.get(1)).enqueue(new Callback<String>() {
+                                            @Override
+                                            public void onResponse(Call<String> call, Response<String> response) {
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<String> call, Throwable t) {
+
+                                            }
+                                        });
+                                        Intent intent = new Intent(getContext(), RequestMessageActivity.class);
+                                        intent.putExtra("isDenied","true");
+                                        startActivity(intent);
+                                        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                        dismiss();
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Conversation> call, Throwable t) {
+
                                     }
                                 });
                             }
@@ -141,6 +165,10 @@ public class Conversaion_U2U_BottomSheet extends BottomSheetDialogFragment {
 
                                     }
                                 });
+                                Intent intent = new Intent(getContext(), RequestMessageActivity.class);
+                                intent.putExtra("isDenied","true");
+                                startActivity(intent);
+                                getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 dismiss();
                             }
                         }).setNegativeButton("Trở về", new DialogInterface.OnClickListener() {

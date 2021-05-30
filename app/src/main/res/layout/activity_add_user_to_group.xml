@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/dola_gradient"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".NewGroupActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="#4d000000"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/topHeader"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.5"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageButton
+                android:id="@+id/btnReturn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="9"
+                android:background="@color/transparent"
+                android:src="@drawable/go_left"
+                android:onClick="pressBack"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:text="Thêm bạn bè vào nhóm chat"
+                    android:textColor="@color/dola_control_white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+<!--                <EditText-->
+<!--                    android:id="@+id/txtSearchUser"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="1.1"-->
+<!--                    android:layout_marginTop="2dp"-->
+<!--                    android:layout_marginBottom="2dp"-->
+<!--                    android:background="@drawable/border_radius"-->
+<!--                    android:backgroundTint="@color/dola_control_white"-->
+<!--                    android:paddingLeft="20dp"-->
+<!--                    android:paddingRight="10dp"-->
+<!--                    android:hint="Tìm kiếm"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:maxLines="1"-->
+<!--                    />-->
+<!--                <ImageButton-->
+<!--                    android:id="@+id/btnSeach"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:layout_weight="8.9"-->
+<!--                    android:background="@color/transparent"-->
+<!--                    android:src="@drawable/search_40"-->
+<!--                    android:layout_marginLeft="5dp"-->
+<!--                    />-->
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottomFooter"
+        android:layout_below="@+id/topHeader"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical"
+        android:scrollbars="vertical">
+
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupUser"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/border_radius"
+            android:backgroundTint="#4DFFFFFF"
+            android:paddingLeft="10dp"
+            android:paddingTop="0dp"
+            android:paddingRight="10dp"
+            app:chipSpacing="0dp"
+            app:chipSpacingHorizontal="3dp"
+            app:chipSpacingVertical="1dp"
+            app:singleLine="false"
+            app:singleSelection="true">
+
+        </com.google.android.material.chip.ChipGroup>
+
+
+        <ListView
+            android:id="@+id/listView_NewGroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#FFFFFF"
+            android:paddingBottom="10dp"
+            android:longClickable="true"></ListView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#4d000000"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:id="@+id/bottomFooter"
+        android:weightSum="10">
+
+        <Button
+            android:id="@+id/btnNewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_radius"
+            android:layout_gravity="right"
+            android:backgroundTint="@color/dola_green"
+            android:text="Thêm vào nhóm"
+            android:textColor="@color/dola_control_white"
+            app:backgroundTint="@color/dola_green"
+            android:onClick="createGroup"/>
+    </LinearLayout>
+</RelativeLayout>

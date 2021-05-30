@@ -26,6 +26,7 @@
         <activity android:name=".ChatScreenActivity" />
         <activity android:name=".ConversationScreenActivity" />
         <activity android:name=".AppInfoActivity" />
+        <activity android:name=".AddUserToGroupActivity" />
         <activity android:name=".Others.SignUp.SignUp_3_Activity" />
         <activity android:name=".Others.SignUp.SignUp_2_Activity" />
         <activity android:name=".Others.SignUp.SignUp_1_Activity" />
