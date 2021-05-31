@@ -55,6 +55,7 @@ public class UserSettingActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.userSettingPhone)).setText(response.body().getUserPhone());
                     new AppServices().setImageToImageView(UserSettingActivity.this, response.body().getAvatar(), findViewById(R.id.userAvt));
 
+                    sessionManagement.saveSession(response.body());
                     load.stopLoading();
                 }
 
