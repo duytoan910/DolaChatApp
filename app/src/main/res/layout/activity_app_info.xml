@@ -49,70 +49,89 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="10dp"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="Thông tin"
-            android:textColor="@color/dola_control_white"
-            android:textSize="25dp"
-            android:textFontWeight="700"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="
-            Tên ứng dụng: Dola Chat App\n\n
-            Ngày phát hành: 01/06/2021\n\n
-            Phát triển bởi: \n
-            Châu Nguyễn Duy Toàn &amp; Phan Trọng Hinh\n\n
-            Phiên bản mới nhất: 1.0.7\n\n
-            Yêu cầu: Android 5.1+"
-            android:textColor="@color/dola_control_white"
-            android:textSize="18dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:layout_marginTop="20dp"
-            android:text="Thông tin nhà phát triển"
-            android:textColor="@color/dola_control_white"
-            android:textSize="25dp"
-            android:textFontWeight="700"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineHeight="25dp"
-            android:text="
-            Họ tên: Châu Nguyễn Duy Toàn\n
-            MSSV: 17013401\n
-            Facebook: \n
-            https://www.facebook.com/d.toan910/"
-            android:textColor="@color/dola_control_white"
-            android:textSize="18dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:lineHeight="25dp"
-            android:text="
-            Họ tên: Phan Trọng Hinh\n
-            MSSV: 17015461\n
-            Facebook: \n
-            https://www.facebook.com/tronghinh2809/"
-            android:textColor="@color/dola_control_white"
-            android:textSize="18dp" />
-    </LinearLayout>
-    <ProgressBar
-        android:id="@+id/loading"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"/>
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="Thông tin"
+                android:textColor="@color/dola_control_white"
+                android:textSize="25dp"
+                android:textFontWeight="700"
+                />
+            <LinearLayout
+                android:background="@drawable/border_radius_multiple_line"
+                android:backgroundTint="#4dffffff"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="
+- Tên ứng dụng: Dola Chat App\n\n
+- Ngày phát hành: 01/06/2021\n\n
+- Phát triển bởi: \n
+    Châu Nguyễn Duy Toàn &amp; Phan Trọng Hinh\n\n
+- Phiên bản mới nhất: 1.0.7\n\n
+- Yêu cầu: Android 5.1+"
+                    android:textColor="@color/dola_control_white"
+                    android:textSize="18dp" />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="20dp"
+                android:text="Thông tin nhà phát triển"
+                android:textColor="@color/dola_control_white"
+                android:textSize="25dp"
+                android:textFontWeight="700"
+                />
+
+            <LinearLayout
+                android:background="@drawable/border_radius_multiple_line"
+                android:backgroundTint="#4dffffff"
+                android:layout_width="match_parent"
+                android:padding="15dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:lineHeight="25dp"
+                    android:text="
+Họ tên: Châu Nguyễn Duy Toàn\n
+MSSV: 17013401\n
+Facebook: \n
+https://www.facebook.com/d.toan910/"
+                    android:textColor="@color/dola_control_white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:lineHeight="25dp"
+                    android:text="
+Họ tên: Phan Trọng Hinh\n
+MSSV: 17015461\n
+Facebook: \n
+https://www.facebook.com/tronghinh2809/"
+                    android:textColor="@color/dola_control_white"
+                    android:textSize="18dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
