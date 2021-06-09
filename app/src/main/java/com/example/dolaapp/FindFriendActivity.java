@@ -1,28 +1,52 @@
 package com.example.dolaapp;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.dolaapp.Entities.Conversation;
+import com.example.dolaapp.Entities.Message;
+import com.example.dolaapp.Others.RequestListAdapter;
 import com.example.dolaapp._AppConfig.ExternalServices.ApiService;
 import com.example.dolaapp.Entities.User;
 import com.example.dolaapp.Others.FindFriendListAdapter;
 import com.example.dolaapp.Others.Loading;
 import com.example.dolaapp.Others.Session;
+import com.example.dolaapp._AppConfig.ExternalServices.JsonObjectGenerator;
+import com.example.dolaapp._AppConfig.ExternalServices.SocketIo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
+import io.socket.client.Socket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FindFriendActivity extends AppCompatActivity {
+    public int CODE_SCAN_QR = 15982;
+
     private ArrayList<User> users;
     ListView listView_FindFriend;
     FindFriendListAdapter findFriendListAdapter;
@@ -32,6 +56,7 @@ public class FindFriendActivity extends AppCompatActivity {
     Session sessionManagement;
     Loading loading;
     ArrayList<String> userInfos;
+    public Socket mSocket= SocketIo.getInstance().getmSocket();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +70,6 @@ public class FindFriendActivity extends AppCompatActivity {
         loading = new Loading(FindFriendActivity.this);
         sessionManagement = new Session(FindFriendActivity.this);
         userInfos = sessionManagement.getSession();
-
-//        ApiService.api.getAllUser().enqueue(new Callback<ArrayList<User>>() {
-//            @Override
-//            public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
-//                Session sessionManagement = new Session(FindFriendActivity.this);
-//                ArrayList<String> userInfos = sessionManagement.getSession();
-//                for (int i=0; i< ((ArrayList<User>) response.body()).size() ; i++){
-//                    if(response.body().get(i).getUserPhone().equals(userInfos.get(1))){
-//                        response.body().remove(i);
-//                    }
-//                }
-//                findFriendListAdapter = new FindFriendListAdapter((ArrayList<User>) response.body(),FindFriendActivity.this);
-//                listView_FindFriend.setAdapter(findFriendListAdapter);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<User>> call, Throwable t) {
-//                Toast.makeText(FindFriendActivity.this, t.getMessage() + "", Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         reloadList();
         btnSeach.setOnClickListener(new View.OnClickListener() {
@@ -130,5 +135,202 @@ public class FindFriendActivity extends AppCompatActivity {
                 loading.stopLoading();
             }
         });
+    }
+
+    public void qrScan(View view) {
+        Intent intent = new Intent(FindFriendActivity.this, QRScanActivity.class);
+        startActivityForResult(intent, CODE_SCAN_QR);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CODE_SCAN_QR){
+            loading.startLoading();
+            String userName = data.getStringExtra("scannedUserPhone").split("\\|")[0];
+            String userPhone = data.getStringExtra("scannedUserPhone").split("\\|")[1];
+            AlertDialog.Builder builder = new AlertDialog.Builder(FindFriendActivity.this);
+            builder.setTitle("Gửi lời mời kết bạn đến " + userName);
+            final EditText input = new EditText(FindFriendActivity.this);
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            builder.setView(input);
+            params.setMargins(10, 10, 10, 0);
+            input.setLayoutParams(params);
+            input.setText("Xin chào! Mình kết bạn nha.");
+            builder.setPositiveButton("Gửi", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ArrayList<String> arr = new ArrayList<String>(){{add(userInfos.get(1));add(userPhone);}};
+                    ArrayList<String> arrAd = new ArrayList<String>();
+
+                    ApiService.api.HaveConversation(userInfos.get(1),userPhone).enqueue(new Callback<ArrayList<Conversation>>() {
+                        @Override
+                        public void onResponse(Call<ArrayList<Conversation>> call, Response<ArrayList<Conversation>> response) {
+                            if(response.body()== null || response.body().size()==0){
+                                ApiService.api.createConversation(
+                                        "",
+                                        arr,
+                                        arrAd,
+                                        false,
+                                        true,
+                                        false,
+                                        userInfos.get(1),
+                                        userPhone
+                                ).enqueue(new Callback<Conversation>() {
+                                    @Override
+                                    public void onResponse(Call<Conversation> call, Response<Conversation> response) {
+                                        ApiService.api.createMessage(
+                                                input.getText().toString().trim(),
+                                                userInfos.get(1),
+                                                response.body().getConversationID(),
+                                                userInfos.get(0),
+                                                ((Date) Calendar.getInstance().getTime()).toString(),
+                                                userInfos.get(0))
+                                                .enqueue(new Callback<Message>() {
+                                                    @Override
+                                                    public void onResponse(Call<Message> call, Response<Message> response) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<Message> call, Throwable t) {
+
+                                                    }
+                                                });
+                                    }
+                                    @Override
+                                    public void onFailure(Call<Conversation> call, Throwable t) {
+
+                                    }
+                                });
+                            }else{
+                                ApiService.api.createMessage(
+                                        input.getText().toString().trim(),
+                                        userInfos.get(1),
+                                        response.body().get(0).getConversationID(),
+                                        userInfos.get(0),
+                                        ((Date) Calendar.getInstance().getTime()).toString(),
+                                        userInfos.get(0))
+                                        .enqueue(new Callback<Message>() {
+                                            @Override
+                                            public void onResponse(Call<Message> call, Response<Message> response) {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<Message> call, Throwable t) {
+
+                                            }
+                                        });
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Conversation>> call, Throwable t) {
+
+                        }
+                    });
+
+                    Toast.makeText(FindFriendActivity.this, "Đã gửi lời mời kết bạn!", Toast.LENGTH_SHORT).show();
+
+                    ApiService.api.SendAddFriendReQuest(userInfos.get(1),userPhone).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {}
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {}
+                    });
+
+                    try {
+                        JSONObject jsonObj = JsonObjectGenerator
+                                .AddFriendRequestJsonObject(userPhone,userInfos.get(0));
+                        mSocket.emit("Send-Add-Friend-Request",jsonObj);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            builder.setNegativeButton("Trở về", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            ApiService.api.isFriend(userInfos.get(1), userPhone).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if(response.body()=="false"){
+
+                        ApiService.api.getUserById(userInfos.get(1)).enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response1) {
+                                boolean isExist = false;
+                                if(response1.body().getRequestSend().size()>0){
+                                    for (String requestSend : response1.body().getRequestSend()) {
+                                        if(requestSend.equals(userPhone)){
+                                            isExist = true;
+                                            loading.stopLoading();
+                                            Toast.makeText(FindFriendActivity.this, "Bạn đã gửi lời mời kết bạn đến " + userName + " rồi!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                                if(!isExist){
+                                    ApiService.api.getAllListRequest(userInfos.get(1)).enqueue(new Callback<ArrayList<User>>() {
+                                        @Override
+                                        public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response2) {
+                                            if (response2.body()==null || response2.body().size() == 0) {
+                                                loading.stopLoading();
+                                                builder.show();
+                                                return;
+                                            }
+                                            boolean isExist2 = false;
+                                            for (User user : response2.body()) {
+                                                if(user.getUserPhone().equals(userPhone)){
+                                                    isExist2 = true;
+                                                    loading.stopLoading();
+                                                    Toast.makeText(FindFriendActivity.this, userName +" đã gửi cho bạn một lời mời trước đó!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                            if(!isExist2){
+                                                builder.show();
+                                                loading.stopLoading();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                                            Toast.makeText(FindFriendActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                                            loading.stopLoading();
+                                        }
+                                    });
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                                Toast.makeText(FindFriendActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                                loading.stopLoading();
+                            }
+                        });
+
+                    }else{
+                        Toast.makeText(FindFriendActivity.this, userName + " đã là bạn bè!", Toast.LENGTH_SHORT).show();
+                        loading.stopLoading();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast.makeText(FindFriendActivity.this, t.toString(), Toast.LENGTH_SHORT).show();
+                    loading.stopLoading();
+                }
+            });
+
+        }
     }
 }

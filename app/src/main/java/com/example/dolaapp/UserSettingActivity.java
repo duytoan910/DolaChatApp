@@ -61,7 +61,7 @@ public class UserSettingActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<User> call, Throwable t) {
-                    load.startLoading();
+                    load.stopLoading();
                 }
             });
         }
@@ -83,7 +83,7 @@ public class UserSettingActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                load.stopLoading();
             }
         });
     }
@@ -221,5 +221,11 @@ public class UserSettingActivity extends AppCompatActivity {
             return false;
         }
         return  true;
+    }
+
+    public void userQRCode(View view) {
+        Intent intent = new Intent(UserSettingActivity.this, MyQrCodeActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

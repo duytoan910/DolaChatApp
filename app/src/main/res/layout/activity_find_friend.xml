@@ -9,7 +9,7 @@
     android:background="@drawable/dola_gradient"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".UserSettingActivity">
+    tools:context=".FindFriendActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,13 +47,13 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_weight="1"
-                android:weightSum="10">
+                android:weightSum="20">
 
                 <EditText
                     android:id="@+id/txtSearchUser"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1.1"
+                    android:layout_weight="2"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"
                     android:background="@drawable/border_radius"
@@ -68,10 +68,22 @@
                     android:id="@+id/btnSeach"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="8.9"
+                    android:layout_weight="9"
+                    android:paddingLeft="2dp"
                     android:background="@color/transparent"
                     android:src="@drawable/search_40"
                     android:layout_marginLeft="5dp"
+                    />
+                <ImageButton
+                    android:id="@+id/btnScan"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="9"
+                    android:paddingLeft="2dp"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_baseline_qr_code_scanner_24"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="qrScan"
                     />
             </LinearLayout>
 

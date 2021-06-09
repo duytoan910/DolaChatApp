@@ -231,10 +231,4 @@ public class ConversationScreenActivity extends AppCompatActivity {
             });
         }
     };
-
-    public void newConversation(View view) {
-        Intent intent = new Intent(ConversationScreenActivity.this, NewConversationActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
 }

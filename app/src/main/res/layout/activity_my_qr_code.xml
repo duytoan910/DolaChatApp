@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dola_gradient"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MyQrCodeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentTop="true"
+        android:background="#4d000000"
+        android:gravity="top"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingTop="10dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:weightSum="10">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5.5"
+            android:gravity="left|center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <ImageButton
+                android:id="@+id/btnReturn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:src="@drawable/go_left"
+                android:onClick="pressBack"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="1.5"
+                android:text="Mã QR của tôi"
+                android:textColor="@color/dola_control_white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:text="Mã QR của tôi"
+            android:textSize="20dp"
+            android:textColor="@color/dola_control_white"
+            android:layout_height="wrap_content"></TextView>
+        <ImageView
+            android:id="@+id/myQR"
+            android:layout_width="300dp"
+            android:layout_height="300dp">
+        </ImageView>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/border_radius"
+                android:backgroundTint="@color/dola_green"
+                android:text="Lưu mã vào thư viện"
+                android:textColor="@color/dola_control_white"
+                app:backgroundTint="@color/dola_green"
+                android:onClick="saveQR"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

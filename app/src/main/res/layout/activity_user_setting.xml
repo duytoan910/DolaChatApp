@@ -130,8 +130,8 @@
                         android:layout_width="46dp"
                         android:layout_height="46dp"
                         android:background="@drawable/border_radius"
-                        android:scaleType="fitCenter"
                         android:backgroundTint="#4d000000"
+                        android:scaleType="center"
                         android:src="@drawable/ic_baseline_person_24" />
                 </LinearLayout>
 
@@ -149,6 +149,54 @@
                         android:layout_weight="5"
                         android:gravity="fill"
                         android:text="Thông tin cá nhân"
+                        android:textSize="18sp"
+                        android:textColor="@color/white"
+                        android:textStyle="normal" />
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:paddingTop="0dp"
+                android:paddingRight="15dp"
+                android:paddingLeft="35dp"
+                android:background="@drawable/border_shadow"
+                android:layout_height="wrap_content"
+                android:onClick="userQRCode">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_weight="8.5">
+
+                    <ImageView
+                        android:layout_width="46dp"
+                        android:layout_height="46dp"
+                        android:background="@drawable/border_radius"
+                        android:backgroundTint="#4d000000"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_baseline_qr_code_scanner_24" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:weightSum="10"
+                    android:paddingLeft="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:gravity="fill"
+                        android:text="Mã QR của tôi"
                         android:textSize="18sp"
                         android:textColor="@color/white"
                         android:textStyle="normal" />

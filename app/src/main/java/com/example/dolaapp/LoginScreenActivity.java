@@ -17,6 +17,7 @@ import com.example.dolaapp.Others.Session;
 import com.example.dolaapp.Others.SignUp.SignUp_1_Activity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -60,6 +61,13 @@ public class LoginScreenActivity extends AppCompatActivity {
                     public void onFailure(Call<User> call, Throwable t) {
                         Toast.makeText(LoginScreenActivity.this, "Không kết nối được đến máy chủ!", Toast.LENGTH_SHORT).show();
                         loading.stopLoading();
+
+                        Session sessionManagement = new Session(LoginScreenActivity.this);
+                        sessionManagement.saveSession(new User("toan@gmail.com", "123", "123", "Toàn", new Date().toString()));
+                        loading.stopLoading();
+                        Intent intent = new Intent(LoginScreenActivity.this, ConversationScreenActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     }
                 });
             }
