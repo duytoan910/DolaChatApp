@@ -68,7 +68,7 @@
                     android:id="@+id/btnSeach"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="9"
+                    android:layout_weight="6"
                     android:paddingLeft="2dp"
                     android:background="@color/transparent"
                     android:src="@drawable/search_40"
@@ -78,12 +78,23 @@
                     android:id="@+id/btnScan"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="9"
+                    android:layout_weight="6"
                     android:paddingLeft="2dp"
                     android:background="@color/transparent"
-                    android:src="@drawable/ic_baseline_qr_code_scanner_24"
+                    android:src="@drawable/ic_baseline_qr_code_scanner_24_white"
                     android:layout_marginLeft="5dp"
                     android:onClick="qrScan"
+                    />
+                <ImageButton
+                    android:id="@+id/btnContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="6"
+                    android:paddingLeft="2dp"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_baseline_perm_contact_calendar_24"
+                    android:layout_marginLeft="5dp"
+                    android:onClick="searchContact"
                     />
             </LinearLayout>
 

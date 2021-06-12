@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "895771855310",
+    "project_id": "dolachatapp-e6e4a",
+    "storage_bucket": "dolachatapp-e6e4a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:895771855310:android:7a2c56d0fe05f318b9039f",
+        "android_client_info": {
+          "package_name": "com.example.dolaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "895771855310-hm2f2puabo9bb31lsbei425jcku2gft0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dolaapp",
+            "certificate_hash": "58b23a2a40ba9501b82887d34a3770c9b0d5da4b"
+          }
+        },
+        {
+          "client_id": "895771855310-p63cavh3abir7r8irr27he9sm0qs2gte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4vKiBIQqRmCfXBSOi09L31V5rvRUDYaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "895771855310-p63cavh3abir7r8irr27he9sm0qs2gte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

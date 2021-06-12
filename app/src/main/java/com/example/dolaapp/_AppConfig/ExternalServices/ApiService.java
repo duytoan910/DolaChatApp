@@ -62,6 +62,11 @@ public interface ApiService {
     @GET("{id}/ListRequests")
     Call<ArrayList<User>> getAllListRequest(@Path("id") String id);
 
+    //Get user by id
+    @POST("getListUserByListIDFilter")
+    @FormUrlEncoded
+    Call<ArrayList<User>> getListUserByListIDFilter(@Field("UserId") String UserId, @Field("ListPhoneNumb") ArrayList<String> ListPhoneNumb);
+
     //Get user denied list
     @GET("{id}/DeniedList")
     Call<ArrayList<Conversation>> getDeniedList(@Path("id") String id);

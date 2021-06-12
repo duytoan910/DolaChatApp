@@ -8,11 +8,15 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,8 +40,12 @@ import org.json.JSONObject;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import io.socket.client.Socket;
 import retrofit2.Call;
@@ -145,8 +153,7 @@ public class FindFriendActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CODE_SCAN_QR){
+        if(requestCode == CODE_SCAN_QR && data != null){
             loading.startLoading();
             String userName = data.getStringExtra("scannedUserPhone").split("\\|")[0];
             String userPhone = data.getStringExtra("scannedUserPhone").split("\\|")[1];
@@ -330,7 +337,84 @@ public class FindFriendActivity extends AppCompatActivity {
                     loading.stopLoading();
                 }
             });
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
+    public void searchContact(View view) {
+        loading.startLoading();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            ApiService.api.getListUserByListIDFilter(userInfos.get(1), getContactList()).enqueue(new Callback<ArrayList<User>>() {
+                @Override
+                public void onResponse(Call<ArrayList<User>> call, Response<ArrayList<User>> response) {
+                    if(response.body()!=null && response.body().size()>0 ){
+                        loading.stopLoading();
+                        Intent intent = new Intent(FindFriendActivity.this, AddFriendContactActivity.class);
+                        intent.putExtra("userList", response.body());
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    }else{
+                        Toast.makeText(FindFriendActivity.this, "Không tìm thấy tài khoản DôLa nào trong danh bạ!", Toast.LENGTH_SHORT).show();
+                        loading.stopLoading();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<User>> call, Throwable t) {
+                    Toast.makeText(FindFriendActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    loading.stopLoading();
+                }
+            });
+        } else {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
+                ActivityCompat.requestPermissions(FindFriendActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 0);
+            }
+        }
+    }
+
+    private ArrayList<String> getContactList() {
+        ArrayList<String> arr = new ArrayList<>();
+        ContentResolver cr = getContentResolver();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+
+        if ((cur != null ? cur.getCount() : 0) > 0) {
+            while (cur != null && cur.moveToNext()) {
+                String id = cur.getString(
+                        cur.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cur.getString(cur.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME));
+
+                if (cur.getInt(cur.getColumnIndex(
+                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Cursor pCur = cr.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(
+                                ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        arr.add(phoneConvert(phoneNo));
+                    }
+                    pCur.close();
+                }
+            }
+            arr = new ArrayList<String>(new LinkedHashSet<String>(arr));
+        }
+        if(cur!=null){
+            cur.close();
+        }
+        return arr;
+    }
+
+    public String phoneConvert(String phone){
+        try{
+            return ((((phone.split("\\(")[1].split("\\)")[0] + phone.split("\\(")[1].split("\\)")[1]).split(" ")[0])+(phone.split("\\(")[1].split("\\)")[0] + phone.split("\\(")[1].split("\\)")[1]).split(" ")[1]).split("-")[0] + (((phone.split("\\(")[1].split("\\)")[0] + phone.split("\\(")[1].split("\\)")[1]).split(" ")[0]) + (phone.split("\\(")[1].split("\\)")[0] + phone.split("\\(")[1].split("\\)")[1]).split(" ")[1]).split("-")[1]).trim();
+        }catch (Exception E){
+            return phone.trim();
         }
     }
 }
